@@ -92,7 +92,7 @@
                                 <div class="col-md-6">
                                     <div class="mt-3">
                                         <label for="favicon">Favicon<span class="text-danger"> 32×32 pixels</span></label>
-                                        <input type="file" value="{{$websiteSettings->favicon}}" name="logo" id="logo" class="form-control">
+                                        <input type="file" value="{{$websiteSettings->favicon}}" name="favicon" id="logo" class="form-control">
                                         
                                         
                                     </div>
