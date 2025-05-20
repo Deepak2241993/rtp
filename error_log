@@ -1,0 +1,88 @@
+[22-Mar-2024 21:32:23 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:32:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:32:57 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:32:57 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:33:16 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:33:16 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:33:49 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:33:49 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:34:29 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:34:29 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:42:22 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:42:22 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:42:51 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:42:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:54:05 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:54:05 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:54:57 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[22-Mar-2024 21:54:57 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[30-Mar-2024 09:47:50 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[30-Mar-2024 09:47:50 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[30-Mar-2024 09:48:02 UTC] PHP Warning:  require(/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php): Failed to open stream: No such file or directory in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
+[30-Mar-2024 09:48:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/readytoprint/public_html/vendor/composer/../../App/Helpers/helper.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home/readytoprint/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/readytoprint/public_html/vendor/composer/autoload_real.php(45): {closure}('44e8d8f1162a124...', '/home/readytopr...')
+#1 /home/readytoprint/public_html/vendor/autoload.php(25): ComposerAutoloaderInit9c491b8531eec05ba41a11d9276a5749::getLoader()
+#2 /home/readytoprint/public_html/artisan(18): require('/home/readytopr...')
+#3 {main}
+  thrown in /home/readytoprint/public_html/vendor/composer/autoload_real.php on line 41
