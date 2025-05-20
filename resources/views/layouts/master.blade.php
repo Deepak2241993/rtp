@@ -605,8 +605,8 @@
 								<h3 class="widget-title">{{$content->title}}</h3>
 								<ul class="clearfix">
 									<li style="color: #ffffff;">
-                                      <a href="mailto:{{$web->phone}}" style="color: #ffffff;">
-                                        <i class="las la-envelope-open-text mr-1"></i>{{$web->phone}}
+                                      <a href="mailto:{{$web->email}}" style="color: #ffffff;">
+                                        <i class="las la-envelope-open-text mr-1"></i>{{$web->email}}
                                       </a>
                                     </li>
 

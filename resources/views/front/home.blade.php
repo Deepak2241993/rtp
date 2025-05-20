@@ -204,8 +204,11 @@
 
     <section id="promotion-section" class="promotion-section sec-ptb-50 pb-0 clearfix">
         <div class="container">
+             @php
+                    $content = staticcontent(7);
+                @endphp
             <div class="section-title text-center mb-50">
-                <h2 class="title-text mb-3">Our Most Popular Product</h2>
+                <h2 class="title-text mb-3">{{$content->title ?? ''}}</h2>
                 <!-- <p class="mb-0"></p> -->
             </div>
             <div class="container-fluid ppppp">
@@ -271,8 +274,12 @@
 
         <section id="promotion-section" class="promotion-section sec-ptb-100 pb-0 clearfix">
             <div class="container">
+                @php
+                    $content = staticcontent(6);
+                @endphp
                 <div class="section-title text-center mb-70">
-                    <h2 class="title-text mb-3">Explore All Categories
+                    <h2 class="title-text mb-3">{{ $content->title ?? ''}}</h2>
+                    {{-- <p class="mb-0">{!! $item->description ?? '' !!}</p> --}}
                     </h2>
                 </div>
                 <div class="brand-carousel mt--40 owl-carousel owl-theme">
@@ -409,9 +416,11 @@
 
     <section class="shop-section sec-ptb-100 clearfix">
         <div class="container">
-
+    @php
+        $content = staticcontent(5);
+    @endphp
             <div class="section-title text-center mb-70">
-                <h2 class="title-text mb-3">Current Deals</h2>
+                <h2 class="title-text mb-3">{{ $content->title ?? ''}}</h2>
             </div>
 
             <div id="column-4-carousel" class="column-4-carousel arrow-right-left owl-carousel owl-theme">
@@ -486,6 +495,9 @@
 
     <!-- offer-section - start
             ================================================== -->
+    @php
+        $content = staticcontent(1);
+    @endphp
     <section id="offer-section" class="offer-section sec-ptb-100 bg-gray clearfix">
         <div class="container">
             <div class="offer-item clearfix">
@@ -500,17 +512,16 @@
 
                     <div class="col-lg-5 col-md-9 col-sm-12 col-xs-12">
                         <div class="item-content">
-                            @if ($homesections->isNotEmpty())
-                                @foreach ($homesections as $item)
-                                <h2 class="title-text mb-3">{{ $item->heading }}</h2>
-                                <p class="mb-30">{{ $item->sub_heading}}</p>
+                            
+                                <h2 class="title-text mb-3">{{$content->title}}</h2>
+                                {{-- <p class="mb-30">{{ $item->sub_heading}}</p> --}}
                                 <div class="info-list ul-li-block mb-30 clearfix">
-                                    {!! $item->description !!}
+                                    {!! $content->description !!}
                                 </div>
                                 <a href="{{ route('front.product-list') }}" class="btn bg-royal-blue">SHOP NOW</a>
-                                @endforeach
+                                
 
-                            @endif
+                           
                             <!-- <h4 class="sub-title text-royal-blue mb-3">50% Discount</h4> -->
 
                         </div>
