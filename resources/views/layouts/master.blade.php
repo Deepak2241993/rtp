@@ -553,7 +553,7 @@
 									</a>
 								</div>
 								<p class="mb-30">
-									{{$content->description}}
+									{!! $content->description !!}
 								</p>
 								<!-- <div class="social-icon-circle ul-li clearfix">-->
 								<!--	<ul class="clearfix">-->
@@ -651,7 +651,7 @@
 								<ul class="mb-3 clearfix">
 									<li><a href="#!"><img src="{{$content->image}}" alt="payment_logo" width="150px;"></a></li>
 								</ul>
-								<p class="mb-0">{{$content->description}}</a></p>
+								<p class="mb-0">{!! $content->description !!}</a></p>
 							</div>
 
 						</div>
