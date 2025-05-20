@@ -92,7 +92,7 @@ class WebsiteSettingsController extends Controller
 
         $websiteSettings->favicon = url('/uploads/favicon/'.$newFaviconName);
     }
-dd($websiteSettings);
+// dd($websiteSettings);
     // Update other fields
     $websiteSettings->email = $request->email;
     $websiteSettings->phone = $request->phone;

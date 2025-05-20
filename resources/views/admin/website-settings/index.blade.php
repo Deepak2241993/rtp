@@ -100,7 +100,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         
-                                        <img src="{{$websiteSettings->favicon}}" alt="Logo" class="img-fluid" style="width: 270px; height: 50px;">
+                                        <img src="{{$websiteSettings->favicon}}" alt="favicon" class="img-fluid" style="width: 50px; height: 50px;">
                                         
                                     </div>
                                     
