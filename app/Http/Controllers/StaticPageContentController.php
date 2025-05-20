@@ -34,7 +34,7 @@ class StaticPageContentController extends Controller
                 'page_name' => 'required|string|max:255',
                 'title' => 'nullable|string|max:255',
                 'description' => 'nullable|string',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
                 'status' => 'required|in:active,inactive',
             ]);
         
@@ -83,7 +83,7 @@ class StaticPageContentController extends Controller
             'page_name' => 'required|string|max:255',
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'status' => 'required|in:active,inactive',
         ]);
     
