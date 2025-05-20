@@ -549,6 +549,9 @@
 
     <!-- promotion-section - start
             ================================================== -->
+            @php
+                    $content = staticcontent(2);
+                @endphp
     <section id="promotion-section" class="promotion-section sec-ptb-100 pb-0 clearfix" style="margin-bottom: 40px;">
         <div class="container">
             <div class="masonry-grid">
@@ -557,20 +560,22 @@
                 <div class="grid-item">
                     <div class="promotion-fullimage clearfix">
                         <a href="#!" class="item-image">
-                            <img src="{{ asset('front-assets/images/promotion/img_5.png ') }}" alt="image_not_found">
+                            <img src="{{$content->image ?? ''}}" alt="image_not_found">
                         </a>
                         <div class="promotion-content position-top size-decrease">
                             <!-- <small class="d-block text-white mb-1">Medical Supplies</small> -->
                             <h3 class="item-title">
-                                <span class="d-block">Delivery Australia wide</span>
-                                <span class="d-block">24-hour fast production</span>
+                                <span class="d-block">{{$content->title ?? ''}}</span>
                                 <!-- <span class="d-block">Supplies</span> -->
                             </h3>
-                            <a href="{{ route('front.product-list') }}" class="btn-underline">Shop Now</a>
+                            {!! $content->description ?? ''!!}
                         </div>
                     </div>
                 </div>
 
+                 @php
+                    $content = staticcontent(3);
+                @endphp
                 <div class="grid-item w-66">
                     <div class="promotion-fullimage clearfix">
                         <a href="#!" class="item-image">
@@ -578,12 +583,9 @@
                         </a>
                         <div class="promotion-content size-increase position-vertical-center">
                             <h3 class="item-title">
-                                <strong class="text-royal-blue d-block mb-1"></strong> <span class="d-block">Professional
-                                    Signage </span> <span class="d-block">Designs</span>
+                                <strong class="text-royal-blue d-block mb-1"></strong> <span class="d-block">{!! $content->title ?? '' !!}</span>
                             </h3>
-                            <p class="p-text">Our seasoned in-house team of designers is poised to assist you across the
-                                spectrum of design requirements, from crafting print-ready files for straightforward
-                                text-based signs to executing intricate and elaborate designs.</p>
+                           {!! $content->description ?? '' !!}
                             <a href="{{ route('front.product-list') }}" class="btn bg-royal-blue">shop now</a>
                         </div>
                     </div>
@@ -600,10 +602,12 @@
             ================================================== -->
     <section id="testimonial-section" class="testimonial-section sec-ptb-50 clearfix">
         <div class="container">
-
+                @php
+                    $content = staticcontent(4);
+                @endphp
             <div class="section-title size-lg text-center mb-60">
-                <h2 class="title-text mb-3">Client Reviews</h2>
-                <p class="mb-0">Exceptional service, quality, and satisfaction testimonials speak our excellence.</p>
+                <h2 class="title-text mb-3">{!! $content->title ?? '' !!}</h2>
+                <p class="mb-0">{!! $content->description ?? '' !!}</p>
             </div>
 
             <div class="testimonial-carousel owl-carousel owl-theme">
