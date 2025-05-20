@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HomeSection;
 use App\Models\Product;
 use App\Models\ProductRating;
+
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ class FrontController extends Controller
         $currentproducts = Product::where('product_feature', 1 )->where('product_status', 'active')->get();
         $data['currentProducts'] = $currentproducts;
         $homesections = HomeSection::where('status', 'active' )->get();
+       
         $data['homesections'] = $homesections;
         return view('front.home', $data);
     }

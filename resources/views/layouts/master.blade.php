@@ -1,3 +1,6 @@
+@php
+    $web = websettings(1);  // Call your helper to get the object
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Ready To Print</title>
-    <link rel="shortcut icon" href="{{ asset('front-assets/images/logo/favourite_icon_1.png') }}">
+    <link rel="shortcut icon" href="{{$web->favicon}}">
 
     <!-- css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/bootstrap.min.css') }}">
@@ -75,16 +78,20 @@
                     <div class="col-lg-6">
                         <div class="info-list ul-li clearfix">
                             <ul class="clearfix">
-
+                                @php
+                                    $content = staticcontent(14);
+                                @endphp
                                 <li>
-                                    <a href="#!"><img src="{{ asset('front-assets/images/solution/2911366.png') }}"
+                                    <a href="#!"><img src="{!! $content->image !!}"
                                             alt="Kangaroo Image"
                                             style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 5px;">
-                                        Proudly Australian Owned</a>
+                                        {!! $content->title !!}</a>
                                 </li>
 
-
-                                <li><a href="mailto:info@readytoprint.com.au"><i class="las la-envelope-open-text mr-1"></i>info@readytoprint.com.au</a></li>
+                                @php
+                                    $content = staticcontent(14);
+                                @endphp
+                                <li><a href="mailto:{{$web->email}}"><i class="las la-envelope-open-text mr-1"></i>{{$web->email}}</a></li>
 
                             </ul>
                         </div>
@@ -93,7 +100,7 @@
                     <div class="col-lg-6">
                         <div class="info-list ul-li-right clearfix">
                             <ul class="clearfix">
-                                <li><a href="tel:0296213111"><span class="mr-1">Contact Us:</span> (02) 96213111</a></li>
+                                <li><a href="tel:{{$web->phone}}"><span class="mr-1">Contact Us:</span> {{$web->phone}}</a></li>
                                 <!-- <li>
           <div class="dropdown select-option">
            <button class="dropdown-toggle" type="button" id="language-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -123,7 +130,7 @@
                     <div class="col-lg-3 col-md-12">
                         <div class="brand-logo clearfix">
                             <a href="{{ route('front.home')}}" class="brand-link">
-                                <img src="{{ asset('front-assets/images/logo/logo_1.png') }}" alt="logo_not_found">
+                                <img src="{{$web->logo}}" alt="logo_not_found">
                             </a>
 
                             <div class="btns-group ul-li-right clearfix">
@@ -504,14 +511,14 @@
         @yield('content')
 
 		<div class="side-ribbon">
-			<a href="tel:+(02) 96213111" title="Call" class="call"><i class="las la-phone"></i></a>
-			<a href="https://wa.me/1234567890" target="_blank" class="whatsapp" title="WhatsApp"><i
+			<a href="tel:{{$web->phone}}" title="Call" class="call"><i class="las la-phone"></i></a>
+			<a href="https://wa.me/{{$web->whatsapp}}" target="_blank" class="whatsapp" title="WhatsApp"><i
 					class="lab la-whatsapp"></i></a>
-			<a href="https://www.instagram.com/your_instagram_username" target="_blank" class="instagram"
+			<a href="{{$web->instagram}}" target="_blank" class="instagram"
 				title="Instagram"><i class="lab la-instagram"></i></a>
-			<a href="https://www.facebook.com/your_facebook_page" target="_blank" class="facebook" title="Facebook"><i
+			<a href="{{$web->facebook}}" target="_blank" class="facebook" title="Facebook"><i
 					class="lab la-facebook"></i></a>
-			<a href="https://www.linkedin.com/in/your_linkedin_profile" target="_blank" class="linkedin" title="LinkedIn"><i
+			<a href="{{$web->linkedin}}" target="_blank" class="linkedin" title="LinkedIn"><i
 					class="lab la-linkedin"></i></a>
 		</div>
 
@@ -535,16 +542,18 @@
 
 				<div class="widget-area mb-60 clearfix">
 					<div class="row justify-content-lg-between justify-content-md-center justify-content-md-center">
-
+                        @php
+                            $content = staticcontent(8);
+                        @endphp
 						<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
 							<div class="about-content">
 								<div class="brand-logo mb-4 clearfix">
 									<a href="{{ route('front.home')}}" class="brand-link">
-										<img src="{{ asset('front-assets/images/logo/logo_1.png') }}" alt="logo_not_found">
+										<img src="{{$content->image}}" alt="logo_not_found">
 									</a>
 								</div>
 								<p class="mb-30">
-									<span style="font-weight: bold">Ready To Print </span>is an Australian-owned printing company specialising in customised, print-ready solutions, offering quick and convenient services for all your printing and signage requirements. Utilising state-of-the-art technology, we aim to be your one-stop shop for all your printing needs.
+									{{$content->description}}
 								</p>
 								<!-- <div class="social-icon-circle ul-li clearfix">-->
 								<!--	<ul class="clearfix">-->
@@ -559,7 +568,10 @@
 
 						<div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
 							<div class="useful-links ul-li-block clearfix">
-								<h3 class="widget-title">Products</h3>
+                                 @php
+                                    $content = staticcontent(9);
+                                @endphp
+								<h3 class="widget-title">{{$content->title}}</h3>
                                 <ul class="clearfix">
                                 @if (getCategories()->isNotEmpty())
                                     @foreach (getCategories() as $item)
@@ -571,7 +583,10 @@
 						</div>
                         <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
 							<div class="useful-links ul-li-block clearfix">
-								<h3 class="widget-title">Quick Link</h3>
+								@php
+                                    $content = staticcontent(10);
+                                @endphp
+								<h3 class="widget-title">{{$content->title}}</h3>
 								<ul class="clearfix">
 									<li><a href="https://thetemz.in/readytoprint/public/privacy-policy">Privacy Policy</a></li>
 									<!--<li><a href="#!">Refund Policy</a></li>-->
@@ -584,18 +599,21 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
 							<div class="btns-group ul-li-block mb-2">
-								<h3 class="widget-title">Information</h3>
+								@php
+                                    $content = staticcontent(11);
+                                @endphp
+								<h3 class="widget-title">{{$content->title}}</h3>
 								<ul class="clearfix">
 									<li style="color: #ffffff;">
-                                      <a href="mailto:info@readytoprint.com.au" style="color: #ffffff;">
-                                        <i class="las la-envelope-open-text mr-1"></i>info@readytoprint.com.au
+                                      <a href="mailto:{{$web->phone}}" style="color: #ffffff;">
+                                        <i class="las la-envelope-open-text mr-1"></i>{{$web->phone}}
                                       </a>
                                     </li>
 
 								
 									<li style="color: #ffffff;">
                                       <i class="las la-phone ml-1"></i>
-                                      Contact Us: <a href="tel:+61296213111" style="color: #ffffff;">(02) 9621 3111</a>
+                                      Contact Us: <a href="tel:{{$web->phone}}" style="color: #ffffff;">{{$web->phone}}</a>
                                     </li>
 
 
@@ -625,23 +643,26 @@
 							</div>
 							<br>
 							<div class="payment-cards ul-li mb-30 clearfix">
-								<h3 class="widget-title">Payments</h3>
+								@php
+                                    $content = staticcontent(12);
+                                @endphp
+								<h3 class="widget-title">{{$content->title}}</h3>
 								<!--<p class="mb-3">Secure Payments</p>-->
 								<ul class="mb-3 clearfix">
-									<li><a href="#!"><img src="{{ asset('front-assets/images/payment_card/visa.png') }}" alt="_not_found" width="50px;"></a></li>
-									<li><a href="#!"><img src="{{ asset('front-assets/images/payment_card/mastercard.png') }}" alt="_not_found" width="50px;"></a></li>
-									<li><a href="#!"><img src="{{ asset('front-assets/images/payment_card/AX.png') }}" alt="_not_found" width="50px;"></a></li>
+									<li><a href="#!"><img src="{{$content->image}}" alt="payment_logo" width="150px;"></a></li>
 								</ul>
-								<p class="mb-0">We accept purchase orders from schools, government, and non-government organizations. Leave your details on the 'Request a Quote' page, and our staff will assist you.</a></p>
+								<p class="mb-0">{{$content->description}}</a></p>
 							</div>
 
 						</div>
 
 					</div>
 				</div>
-
+@php
+$content = staticcontent(13);
+@endphp
 				<div class="footer-bottom text-center border-top clearfix">
-					<p class="mb-0">&#169; Copyright 2024 <a href="#!">Zash Media</a>. All Rights Reserved.</p>
+					<p class="mb-0">&#169; Copyright {{date('Y')}} <a href="#!">{{$content->title}}</a></p>
 				</div>
 
 			</div>
