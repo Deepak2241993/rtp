@@ -473,7 +473,7 @@
                                     <h3 class="item-title">
                                         <a href="{{ route('front.product', $currentProduct->product_slug) }}">{{ $currentProduct->product_name }}</a>
                                     </h3>
-                                    <span class="item-price">{{ $currentProduct->product_price }}</span>
+                                    {{-- <span class="item-price">{{ $currentProduct->product_price }}</span> --}}
                                     <div class="rating-star ul-li-center clearfix">
                                         <ul class="clearfix">
                                             <li class="active"><i class="las la-star"></i></li>
