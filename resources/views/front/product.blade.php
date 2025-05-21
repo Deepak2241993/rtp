@@ -583,7 +583,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-md-12 input-holder">
-                                        <label style="margin-left: 20px;" for="sizeDropdown">Pickup Option:</label>
+                                        {{-- <label style="margin-left: 20px;" for="sizeDropdown">Pickup Option:</label> --}}
                                         <div style="display: flex; align-items: center;">
                                             <input style="margin-left: 20px;" type="checkbox" id="pickup_option"
                                                 name="pickup_option" value="Kings Park, NSW">

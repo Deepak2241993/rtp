@@ -308,7 +308,7 @@ table.quote-results td {
             <ul class="clearfix">
                 <li><strong>Subtotal</strong> <span>${{ number_format($subtotal, 2) }}</span></li>
                 <li><strong>GST (10%)</strong> <span>${{ number_format($gst, 2) }}</span></li>
-                <li><strong>Total</strong> <span><strong>${{ round($total) }}</strong></span></li>
+                <li><strong>Total</strong> <span><strong>${{ number_format($total, 2) }}</strong></span></li>
             </ul>
         </div>
 

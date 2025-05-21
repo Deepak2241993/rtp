@@ -170,7 +170,7 @@
                                     @endphp
                                     <div class="total-cost clearfix">
                                         <strong>Total</strong>
-                                        <span>${{ round($totalCost) }}</span>
+                                        <span>${{ number_format($totalCost, 2) }}</span>
                                     </div>
                                 </div>
                                 <div class="payment-information ul-li-block mb-60 clearfix">
