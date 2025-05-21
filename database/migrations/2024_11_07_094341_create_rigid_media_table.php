@@ -15,8 +15,8 @@ class CreateRigidMediaTable extends Migration
             $table->decimal('max_range', 10, 2); 
             $table->decimal('price', 10, 2); 
         
-            $table->unsignedBigInteger('product_id');  
-            $table->unsignedBigInteger('product_price_id');  
+            $table->unsignedBigInteger('product_id')->nullable();  
+            $table->unsignedBigInteger('product_price_id')->nullable();  
         
             $table->timestamps();  
             

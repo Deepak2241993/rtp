@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('product_name');
-            $table->string('product_sku')->unique();
+           $table->string('product_sku')->nullable()->change();
             $table->string('price_option')->nullable();
             $table->text('product_description')->nullable();
             $table->text('product_short_description')->nullable();
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('product_meta_title')->nullable();
             $table->string('product_meta_keyword')->nullable();
             $table->text('product_meta_desp')->nullable();
-            $table->boolean('product_status')->default(1);
+           $table->string('product_status')->default('active')->change();
             $table->string('product_tag')->nullable();
             $table->boolean('product_feature')->default(0);
             $table->boolean('product_is_selected')->default(0);
