@@ -141,6 +141,12 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    @else
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="alert alert-danger text-center">
+                                                <strong>No Products Found!</strong>
+                                            </div>
+                                        </div>
                                 @endif
 
                             </div>
@@ -226,6 +232,12 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                     @else
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="alert alert-danger text-center">
+                                                <strong>No Products Found!</strong>
+                                            </div>
+                                        </div>
                                 @endif
                             </div>
 
@@ -314,6 +326,12 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    @else
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="alert alert-danger text-center">
+                                                <strong>No Products Found!</strong>
+                                            </div>
+                                        </div>
                                 @endif
                             </div>
 
@@ -382,6 +400,7 @@
                                         @endphp
                                         <div class="item">
                                             <div class="product-fullimage text-center clearfix">
+                                                 @if(isset($product)!= null)
                                                 <a href="{{ route('front.product', $product->product_slug) }}"
                                                     class="image-wrap">
                                                     @if (!empty($productsImage->image))
@@ -392,13 +411,14 @@
                                                             alt="Default" />
                                                     @endif
                                                 </a>
+                                                @endif
 
                                                 {{-- <div class="post-label ul-li-right clearfix">
                                             <ul class="clearfix">
                                                 <li class="bg-skyblue">-20%</li>
                                             </ul>
                                         </div> --}}
-
+ @if(isset($product)!= null)
                                                 <div class="item-content">
                                                     <h3 class="item-title">
                                                         <a
@@ -406,27 +426,9 @@
                                                     </h3>
                                                     {{-- <span class="item-price">${{ $currentProduct->product_price }}</span> --}}
                                                 </div>
+                                                @endif
 
-                                                <!--<div class="btns-group ul-li-block clearfix">-->
-                                                <!--    <ul class="clearfix">-->
-                                                <!--        <li><a href="{{ route('front.product', $product->product_slug) }}"-->
-                                                <!--                data-toggle="tooltip" data-placement="right"-->
-                                                <!--                title="Add To Cart"><i-->
-                                                <!--                    class="las la-shopping-basket"></i></a>-->
-                                                <!--        </li>-->
-                                                <!--        <li>-->
-                                                <!--            <a class="tooltipes" href="#!" data-placement="right"-->
-                                                <!--                title="Quick View" data-toggle="modal"-->
-                                                <!--                data-target="#quickview-modal">-->
-                                                <!--                <i class="las la-dot-circle"></i>-->
-                                                <!--            </a>-->
-                                                <!--        </li>-->
-                                                <!--        {{-- <li><a href="#!" data-toggle="tooltip" data-placement="right"-->
-                                                <!--        title="Compare Product"><i class="las la-sync"></i></a></li> --}}-->
-                                                <!--<li><a onclick="addToWishList({{ $product->id }})" href="javascript:void(0);" data-toggle="tooltip" data-placement="right"-->
-                                                <!--        title="Add To Wishlist"><i class="lar la-heart"></i></a></li>-->
-                                                <!--    </ul>-->
-                                                <!--</div>-->
+                                                
                                             </div>
                                         </div>
                                     @endforeach
@@ -506,8 +508,10 @@
                     <div class="btns-group ul-li mb-30">
                         <ul class="clearfix">
                             <li><a href="#!" class="btn bg-royal-blue">Buy Now</a></li>
+                             @if(isset($product)!= null)
                             <li><a href="{{ route('front.product', $product->product_slug) }}"
                                     class="btn bg-royal-blue">Add to Cart</a></li>
+                                    @endif
                             <li><a href="#!" data-toggle="tooltip" data-placement="top" title=""
                                     data-original-title="Compare Product"><i class="las la-sync"></i></a></li>
                             <li><a href="#!" data-toggle="tooltip" data-placement="top" title=""
