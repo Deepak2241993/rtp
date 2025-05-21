@@ -299,16 +299,16 @@
                                         </div>
                                     @endif
                                     @if (!empty($product->rigidMedia) && collect($product->rigidMedia)->contains(function ($media) { 
-                                        return in_array($media['media_type'], ['single', 'double']);
+                                        return in_array($media['media_type'], ['single side', 'double side']);
                                     }))
                                         <div class="form-group col-md-6 input-holder">
                                             <label for="printSidesDropdown">Print Sides</label>
                                             <select class="form-control" id="printSidesDropdown" name="printSides" required>
                                                
                                                 @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
-                                                    @if (!empty($media['media_type']) && in_array($media['media_type'], ['single', 'double']))
+                                                    @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
                                                         <option value="{{ $media['media_type'] }}"
-                                                            @if ($media['media_type'] === 'single') selected @endif>
+                                                            @if ($media['media_type'] === 'single side') selected @endif>
                                                             {{ ucfirst($media['media_type']) }}
                                                         </option>
                                                     @endif
@@ -628,7 +628,7 @@
                                     </div>
                                     
                             <div class="form-group col-md-6 ">
-                                <a href="{{ route('front.request-a-quote') }}" style="line-height: 1.5;"
+                                <a href="{{ route('front.design-for-you') }}" style="line-height: 1.5;"
                                     class="btn bg-royal-blue">Let us design one for
                                     you <br>*Charges Apply</a>
                             </div>

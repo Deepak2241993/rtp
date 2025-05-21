@@ -65,6 +65,10 @@ class FrontController extends Controller
         return view('front.request-a-quote');
     }
 
+    public function DesignForYou(){
+        return view('front.design_for_you');
+    }
+
     public function saveRating(Request $request,$productId) {
         $validator = Validator::make($request->all(),[
             'name' => 'required|min:5',

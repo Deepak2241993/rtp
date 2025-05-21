@@ -480,15 +480,15 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="singleOption0" value="single"
-                                                    @if($product->rigidMedia->contains('media_type', 'single')) checked @endif>
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="singleOption0" value="single side"
+                                                    @if($product->rigidMedia->contains('media_type', 'single side')) checked @endif>
                                                 <label class="form-check-label" for="singleOption0">Single Side</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="doubleOption0" value="double"
-                                                    @if($product->rigidMedia->contains('media_type', 'double')) checked @endif>
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="doubleOption0" value="double side"
+                                                    @if($product->rigidMedia->contains('media_type', 'double side')) checked @endif>
                                                 <label class="form-check-label" for="doubleOption0">Double Side</label>
                                             </div>
                                         </div>
@@ -498,7 +498,7 @@
                                     <div class="row mt-3">
                                         <!-- Single Side Options on the Left -->
                                         <div class="col-md-6" id="singleSideContainer" style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
-                                            @foreach ($product->rigidMedia->where('media_type', 'single') as $index => $rigidMediaOption)
+                                            @foreach ($product->rigidMedia->where('media_type', 'single side') as $index => $rigidMediaOption)
                                                 <div class="price-fields-container mt-3">
                                                     <h5>Single Side</h5>
                                                     <div class="row price-fields">
@@ -545,7 +545,7 @@
 
                                         <!-- Double Side Options on the Right -->
                                         <div class="col-md-6" id="doubleSideContainer" style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
-                                            @foreach ($product->rigidMedia->where('media_type', 'double') as $index => $rigidMediaOption)
+                                            @foreach ($product->rigidMedia->where('media_type', 'double side') as $index => $rigidMediaOption)
                                                 <div class="price-fields-container mt-3">
                                                     <h5>Double Side</h5>
                                                     <div class="row price-fields">

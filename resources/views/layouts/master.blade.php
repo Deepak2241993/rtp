@@ -596,6 +596,7 @@
                                         $content = staticcontent(16);
                                     @endphp
 									<li><a href="{{route('front.terms')}}">{{$content->title}}</a></li>
+									<li><a href="{{route('front.request-a-quote')}}">Request For Quote</a></li>
 									<!--<li><a href="#!">Refund Policy</a></li>-->
 									<!--<li><a href="#!">Shipping &amp; Returns</a></li>-->
 									<!--<li><a href="#!">Help Center</a></li>-->

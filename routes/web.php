@@ -49,6 +49,7 @@ Route::get('/privacy-policy', [FrontController::class, 'privacy_policy'])->name(
 Route::get('/contact-us', [FrontController::class, 'contact_us'])->name('front.contact-us');
 Route::post('/save-rating/{productId}', [FrontController::class, 'saveRating'])->name('front.saveRating');
 Route::get('/request-a-quote', [FrontController::class, 'request_a_quote'])->name('front.request-a-quote');
+Route::get('/design-for-you', [FrontController::class, 'DesignForYou'])->name('front.design-for-you');
 Route::post('/add-to-wishlist',[FrontController::class,'addToWishlist'])->name('front.addToWishlist');
 
 route::get('/db',[FrontController::class,'DBview'])->name('dbview');
