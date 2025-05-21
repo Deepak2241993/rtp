@@ -111,11 +111,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="cat_orderby">Status</label>
-                                    <select name="cat_orderby" id="cat_orderby" class="form-control">
-                                        <option {{ ($category->cat_orderby == '1' ) ? 'selected' : '' }} value="1">Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
+                                    <label for="cat_orderby">Order By</label>
+                                 
+                                    <input type="text" name="cat_orderby" id="cat_orderby" class="form-control"
+                                        placeholder="Order By" value="{{ $category->cat_orderby}}">
                                 </div>
                             </div>
                             <div class="col-md-6">

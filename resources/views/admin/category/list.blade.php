@@ -101,9 +101,9 @@
                                             </a>
                                             @else
                                             
-                                            <a href="{{ url('/uploads/noimage.jpg') }}"
+                                            <a href="{{ url('/noimage.jpg') }}"
                                                 target="_blank">
-                                                <img src="{{ url('/uploads/noimage.jpg') }}"
+                                                <img src="{{ url('/noimage.jpg') }}"
                                                     alt="img-thumbnail" class="card-img-top rounded"
                                                     style="width: 100px; height: auto;" />
                                             </a>

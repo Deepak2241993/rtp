@@ -272,11 +272,13 @@
             ================================================== -->
     <div id="brand-section" class="brand-section clearfix ">
 
+        {{-- Explore All Categories --}}
         <section id="promotion-section" class="promotion-section sec-ptb-100 pb-0 clearfix">
             <div class="container">
                 @php
                     $content = staticcontent(6);
                 @endphp
+              
                 <div class="section-title text-center mb-70">
                     <h2 class="title-text mb-3">{{ $content->title ?? ''}}</h2>
                     {{-- <p class="mb-0">{!! $item->description ?? '' !!}</p> --}}
@@ -286,15 +288,11 @@
                     @if(!$categories->isEmpty())
                         @foreach ($categories as $item)
                             <div class="item">
-                                <a class="brand-logo" href="{{ route('front.product-list',$item->cat_slug) }}">
-                                    @if (!empty($item->cat_image))
-                                    <img src="{{ asset('/uploads/category/' . $item->cat_image) }}"
-                                        alt="img-thumbnail"  />
-                                @else
-                                    <img src="{{ asset('admin-assets/img/default-150X150.png') }}" alt="Default"
-                                        />
-                                @endif
-                                </a>
+                                <a class="brand-logo" href="{{ route('front.product-list', $item->cat_slug) }}">
+    <img src="{{ !empty($item->cat_image) ? asset('uploads/category/' . $item->cat_image) : url('/noimage.webp') }}"
+         alt="img-thumbnail" />
+</a>
+
                                 <div class="swan-standard-tile-contents">
                                     <a href="{{ route('front.product-list',$item->cat_slug) }}" class="swan-link swan-link-skin-unstyled swan-link-covering">
                                         <div class="swan-standard-tile-name">
@@ -309,6 +307,7 @@
 
             </div>
         </section>
+        {{-- Explore All Categories --}}
     </div>
 
 
