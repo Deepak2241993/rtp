@@ -588,8 +588,14 @@
                                 @endphp
 								<h3 class="widget-title">{{$content->title}}</h3>
 								<ul class="clearfix">
-									<li><a href="{{route('front.privacy-policy')}}">Privacy Policy</a></li>
-									<li><a href="{{route('front.terms')}}">Tearms &amp; Condition</a></li>
+                                    @php
+                                        $content = staticcontent(15);
+                                    @endphp
+									<li><a href="{{route('front.privacy-policy')}}">{{$content->title}}</a></li>
+                                     @php
+                                        $content = staticcontent(16);
+                                    @endphp
+									<li><a href="{{route('front.terms')}}">{{$content->title}}</a></li>
 									<!--<li><a href="#!">Refund Policy</a></li>-->
 									<!--<li><a href="#!">Shipping &amp; Returns</a></li>-->
 									<!--<li><a href="#!">Help Center</a></li>-->
