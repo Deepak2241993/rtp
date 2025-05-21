@@ -82,6 +82,7 @@
                                 @php
                                     $counter = 1;
                                 @endphp
+                                {{-- {{dd($categories)}} --}}
                                 @foreach ($categories as $item)
                                     <tr>
                                         <td>{{ $counter++ }}</td>
@@ -89,15 +90,27 @@
                                         <td>{{ $item->cat_name }}</td>
                                         <td>{{ $item->cat_slug }}</td>
                                         <td>
-                                            @if (!empty($item->cat_image))
-                                                <img src="{{ asset('/uploads/category/' . $item->cat_image) }}"
+                                        
+                                            @if($item->cat_image != null && $item->cat_image !='')
+                                            
+                                            <a href="{{ asset('uploads/category/' . $item->cat_image) }}"
+                                                target="_blank">
+                                                <img src="{{ asset('uploads/category/' . $item->cat_image) }}"
                                                     alt="img-thumbnail" class="card-img-top rounded"
                                                     style="width: 100px; height: auto;" />
+                                            </a>
                                             @else
-                                                <img src="{{ asset('admin-assets/img/default-150X150.png') }}"
-                                                    alt="Default" class="card-img-top rounded" />
+                                            
+                                            <a href="{{ url('/uploads/noimage.jpg') }}"
+                                                target="_blank">
+                                                <img src="{{ url('/uploads/noimage.jpg') }}"
+                                                    alt="img-thumbnail" class="card-img-top rounded"
+                                                    style="width: 100px; height: auto;" />
+                                            </a>
                                             @endif
                                         </td>
+
+
                                         <td>
                                             @if ($item->cat_status === 'active')
                                                 <svg class="text-success-500 h-6 w-6 text-success"

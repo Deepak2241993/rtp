@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('cat_slug')->unique();
             $table->text('cat_description')->nullable();
             $table->string('cat_image')->nullable();
-            $table->boolean('cat_status')->default(1);
+            $table->enum('cat_status', ['active', 'inactive'])->default('active');
+
             $table->integer('cat_orderby')->default(0);
             $table->boolean('is_selected')->default(0);
             $table->string('meta_title')->nullable();
