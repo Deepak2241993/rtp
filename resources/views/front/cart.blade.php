@@ -68,7 +68,7 @@ table.quote-results td {
         @foreach ($cartContent as $item)
             @php
           $attributePrice = App\Models\ProductAttribute::where('product_id', $item->id)->sum('attribute_price');
-         
+         $subtotal += $item->price * $item->qty; // <-- Add this line
             @endphp
 {{-- {{dd($item->id);}} --}}
             <tr>
@@ -261,7 +261,7 @@ table.quote-results td {
 
                         <tr>
                             <td colspan="2"><strong>Item Price:</strong></td>
-                            <td><strong class="item-price">${{ $item->price }}</strong></td>
+                            <td><strong class="item-price">${{ number_format($item->price,2) }}</strong></td>
                         </tr>
                     </table>
                 </td>
@@ -296,32 +296,32 @@ table.quote-results td {
             </div>
 
             <div class="row justify-content-lg-end justify-content-md-center justify-content-sm-center">
-                <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
-                    <div class="total-cost-bar mb-30 clearfix">
-                        <h3 class="title-text mb-0">Total Cost</h3>
-                        <div class="cost-info ul-li-block clearfix">
-                            <ul class="clearfix">
-                                <li><strong>Subtotal</strong> <span>${{ $subtotal }}</span></li>
-                                @php
-                                    $gst = $subtotal * 0.1;
-                                @endphp
-                                <li><strong>GST 10%</strong> <span>${{ $gst }}</span></li>
-                                <!--<li>-->
-                                <!--    <strong>Shipping Cost</strong> <span>$5.00</span>-->
-                                <!--    <p class="mb-0 text-right">Shipping to DHL</p>-->
-                                <!--</li>-->
-                            </ul>
-                        </div>
-                        <div class="total-cost clearfix">
-                            <strong>Total</strong>
-                            <span>${{ $total = $subtotal + $gst }}</span>
-                        </div>
-                    </div>
-                    <div class="btn-wrap text-right">
-                        <a href="{{ route('front.checkout') }}" class="btn bg-royal-blue">Proceed to Checkout</a>
-                    </div>
-                </div>
-            </div>
+    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+    <div class="total-cost-bar mb-60 clearfix">
+        <h3 class="title-text mb-0">Total Cost</h3>
+        <div class="cost-info ul-li-block clearfix">
+            @php
+                $gst = $subtotal * 0.1;
+                $total = $subtotal + $gst;
+            @endphp
+
+            <ul class="clearfix">
+                <li><strong>Subtotal</strong> <span>${{ number_format($subtotal, 2) }}</span></li>
+                <li><strong>GST (10%)</strong> <span>${{ number_format($gst, 2) }}</span></li>
+                <li><strong>Total</strong> <span><strong>${{ round($total) }}</strong></span></li>
+            </ul>
+        </div>
+
+        <div class="btns-group ul-li-right mt-4">
+            <ul class="clearfix">
+                <li><a href="{{ route('front.checkout') }}" class="btn bg-royal-blue">Proceed to Checkout</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div>
+
 
             @else
                 <div class="col-md-12">

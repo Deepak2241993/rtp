@@ -14,20 +14,21 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->double('subtotal',10,2);
-            $table->double('shipping',10,2);
+            $table->double('subtotal',10,2)->nullable();
+            $table->double('shipping',10,2)->nullable();
             $table->string('coupon_code')->nullable();
             $table->double('discount',10,2)->nullable();
             $table->double('grand_total',10,2);
 
             //user adderess related coloums
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('phone');
-            $table->string('email');
-            $table->text('address');
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->text('address')->nullable();
             $table->text('notee')->nullable();
-            $table->text('status')->default(0);
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+
             $table->timestamps();
         });
     }

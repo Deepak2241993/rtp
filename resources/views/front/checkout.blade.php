@@ -33,10 +33,10 @@
                                 <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-item">
-                                            <h4 class="form-title">Name*</h4>
+                                            <h4 class="form-title">Name<span class="text-danger">*</span></h4>
                                             <input type="text" name="firstname" id="firstname" class="form-control"
                                                 placeholder=" Name"
-                                                value="{{ auth()->check() ? auth()->user()->name : (isset($customerAddress) ? $customerAddress->firstname : '') }}">
+                                                value="{{ auth()->check() ? auth()->user()->name : (isset($customerAddress) ? $customerAddress->firstname : '') }}" required>
                                             <p></p>
                                         </div>
                                     </div>
@@ -51,33 +51,33 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-item">
-                                            <h4 class="form-title">Phone Number*</h4>
+                                            <h4 class="form-title">Phone Number<span class="text-danger">*</span></h4>
                                             <input type="tel" name="phone" id="phone" class="form-control"
                                                 placeholder="Phone Number"
-                                                value="{{ auth()->check() ? auth()->user()->phone : (isset($customerAddress) ? $customerAddress->phone : '') }}">
+                                                value="{{ auth()->check() ? auth()->user()->phone : (isset($customerAddress) ? $customerAddress->phone : '') }}" required>
                                             <p></p>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-item">
-                                            <h4 class="form-title">Email Address*</h4>
+                                            <h4 class="form-title">Email Address<span class="text-danger">*</span></h4>
                                             <input type="email" name="email" id="email" class="form-control"
                                                 placeholder="Email"
-                                                value="{{ auth()->check() ? auth()->user()->email : (isset($customerAddress) ? $customerAddress->email : '') }}">
+                                                value="{{ auth()->check() ? auth()->user()->email : (isset($customerAddress) ? $customerAddress->email : '') }}" required>
                                             <p></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-item">
-                                    <h4 class="form-title">Address*</h4>
+                                    <h4 class="form-title">Address<span class="text-danger">*</span></h4>
                                     <input type="text" name="address" id="address" class="form-control"
                                         placeholder="e.g. House, Road, Street Name"
-                                        value="{{ !empty($customerAddress) ? $customerAddress->address : '' }}">
+                                        value="{{ !empty($customerAddress) ? $customerAddress->address : '' }}"required>
                                     <p></p>
                                 </div>
                                 <div class="form-item">
-                                    <h4 class="form-title">Alternate Address*</h4>
+                                    <h4 class="form-title">Alternate Address</h4>
                                     <input type="text" name="alternateaddress" id="alternateaddress" class="form-control"
                                         placeholder="e.g. Alternate Address"
                                         value="">
@@ -121,12 +121,12 @@
                                                     <h4 class="item-title">{{ $item->name }}</h4>
                                                     <input type="hidden" id="itemName" value="{{ $item->name }}">
                                                     <input type="hidden" id="printSide" value="{{ $item->printedSides }}">
-                                                    <span class="item-price">${{ $item->price }}</span>
-                                                    <span class="item-size" id="itemSize">{{ $item->size }}</span>
+                                                    <span class="item-price">Price: ${{ number_format($item->price,2) }}</span>
+                                                    <span class="item-size" id="itemSize">Size: {{ $item->size }}</span>
                                                     <input type="hidden" id="itemSizeInput" value="{{ $item->size }}">
                                                     <input type="hidden" id="itemColor" value="{{ $item->color }}">
                                                     <input type="hidden" id="itemQty" value="{{ $item->qty }}">
-                                                    <span class="item-color" id="itemColorSpan">{{ $item->color }}</span>
+                                                    <span class="item-color" id="itemColorSpan">Color: {{ $item->color }}</span>
                                                     <input type="hidden" id="itemprintSide" value="{{ $item->printedSides }}">
                                                     <input type="hidden" id="itemPickupOption" value="{{ $item->pickup_option }}">
                                                     <input type="hidden" id="itemFinishings" value="{{ $item->finishings }}">
@@ -170,7 +170,7 @@
                                     @endphp
                                     <div class="total-cost clearfix">
                                         <strong>Total</strong>
-                                        <span>${{ number_format($totalCost, 2) }}</span>
+                                        <span>${{ round($totalCost) }}</span>
                                     </div>
                                 </div>
                                 <div class="payment-information ul-li-block mb-60 clearfix">
@@ -254,10 +254,10 @@
                 });
             }
         }
-        $(document).ready(function() {
-            $("#orderForm").submit(function(event) {
-                event.preventDefault();
-                $('button[type="submit"]').prop('disabled', true);
+       $(document).ready(function () {
+    $("#orderForm").submit(function (event) {
+        event.preventDefault();
+        $('button[type="submit"]').prop('disabled', true).text("Processing...");
 
                 var data = {
                     firstname: $('#firstname').val(),

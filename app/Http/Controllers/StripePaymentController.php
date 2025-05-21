@@ -25,7 +25,6 @@ class StripePaymentController extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'firstname' => 'required',
-            'lastname' => 'required',
             'phone' => 'required',
             'email' => 'required|email',
             'address' => 'required',
