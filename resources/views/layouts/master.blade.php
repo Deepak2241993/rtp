@@ -241,7 +241,7 @@
                                                     <div class="item-content">
                                                         <h4 class="item-title">{{ $item->name}}</h4>
                                                         <span class="item-qty">Qty:-{{ $item->qty }}</span>
-                                                        <span class="item-price">price:-${{ $item->price*$item->qty }}</span>
+                                                        <span class="item-price">price:-${{ $item->price }}</span>
                                                     </div>
                                                     <button type="button" class="remove-btn"
                                             onclick="deleteItem('{{ $item->rowId }}');"><i
