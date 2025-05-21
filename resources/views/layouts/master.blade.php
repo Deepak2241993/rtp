@@ -588,10 +588,10 @@
                                 @endphp
 								<h3 class="widget-title">{{$content->title}}</h3>
 								<ul class="clearfix">
-									<li><a href="https://thetemz.in/readytoprint/public/privacy-policy">Privacy Policy</a></li>
+									<li><a href="{{route('front.privacy-policy')}}">Privacy Policy</a></li>
+									<li><a href="{{route('front.terms')}}">Tearms &amp; Condition</a></li>
 									<!--<li><a href="#!">Refund Policy</a></li>-->
 									<!--<li><a href="#!">Shipping &amp; Returns</a></li>-->
-									<!--<li><a href="#!">Tearms &amp; Condition</a></li>-->
 									<!--<li><a href="#!">Help Center</a></li>-->
 								</ul>
 							</div>

@@ -44,6 +44,7 @@ use App\Http\Controllers\StaticPageContentController;
 
 
 Route::get('/', [FrontController::class, 'home'])->name('front.home');
+Route::get('/terms-and-conditions', [FrontController::class, 'Terms'])->name('front.terms');
 Route::get('/privacy-policy', [FrontController::class, 'privacy_policy'])->name('front.privacy-policy');
 Route::get('/contact-us', [FrontController::class, 'contact_us'])->name('front.contact-us');
 Route::post('/save-rating/{productId}', [FrontController::class, 'saveRating'])->name('front.saveRating');

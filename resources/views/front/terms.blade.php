@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $content = staticcontent(15);
+    $content = staticcontent(16);
 @endphp
     <div class="container terms-head">
         <h1>{!! $content->title !!}</h1>

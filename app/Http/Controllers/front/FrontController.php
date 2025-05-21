@@ -38,6 +38,9 @@ class FrontController extends Controller
     public function privacy_policy(){
         return view('front.privacy-policy');
     }
+    public function Terms(){
+        return view('front.terms');
+    }
      public function product_list(){
         return view('front.product-list');
     }
