@@ -1946,12 +1946,12 @@
                     <h5>${side.charAt(0).toUpperCase() + side.slice(1)} Side</h5>
                     <div class="row price-fields">
                         <div class="col-md-4">
-                            <label>Minimum Range</label>
-                            <input type="number" name="rigidMedia[${side}][${index}][min_range]" class="form-control" min="0" step="0.01" placeholder="min mm">
+                            <label>Minimum Qty</label>
+                            <input type="number" name="rigidMedia[${side}][${index}][min_range]" class="form-control" min="0" step="0.01" placeholder="min qty mm">
                         </div>
                         <div class="col-md-4">
-                            <label>Maximum Range</label>
-                            <input type="number" name="rigidMedia[${side}][${index}][max_range]" class="form-control" min="0" step="0.01" placeholder="max mm">
+                            <label>Maximum Qty</label>
+                            <input type="number" name="rigidMedia[${side}][${index}][max_range]" class="form-control" min="0" step="0.01" placeholder="max qty mm">
                         </div>
                         <div class="col-md-4">
                             <label>Price</label>
