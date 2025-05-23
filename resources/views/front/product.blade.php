@@ -23,28 +23,31 @@
         .input-holder {
             height: 90px;
         }
+
         .price-container {
- 
-          padding: 15px;
+
+            padding: 15px;
         }
-        
+
         .gst-info {
-          font-size: 16px;
-          color: #888; 
-          margin-bottom: 3px; 
-          font-style: italic;
-          margin-left: 12px;
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 3px;
+            font-style: italic;
+            margin-left: 12px;
         }
-        
+
         .item-price {
-          font-size: 40px !important;
-          color: #FF5722; 
-          font-weight: bold; 
+            font-size: 40px !important;
+            color: #FF5722;
+            font-weight: bold;
         }
+
         .gst-info::before {
-          content: '* ';
-          color: red; 
+            content: '* ';
+            color: red;
         }
+
         .price-valid {
             font-size: 16px;
             color: green;
@@ -54,17 +57,15 @@
             font-size: 16px !important;
             color: red !important;
         }
+
         span.as-low {
             font-size: 14px;
             font-weight: 600;
-            line-height: 1; 
-            display: inline-block; 
-            margin: 0; 
-            padding: 0; 
+            line-height: 1;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
         }
-
-        
-
     </style>
 @endsection
 
@@ -112,7 +113,7 @@
                                 <li class="active"><i class="las la-star"></i></li>
                                 <li><i class="las la-star"></i></li>
                             </ul> --}}
-                           
+
                             <!--<span-->
                             <!--    class="review-text">({{ $product->product_ratings_count > 1 ? $product->product_ratings_count . ' Reviews' : $product->product_ratings_count . ' Review' }})</span>-->
                         </div>
@@ -210,15 +211,16 @@
                                 <div class="price-container">
                                     <div class="price-row">
                                         <span class="item-price">
-                                            <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span class="gst-info">* Excluding GST</span>
+                                            <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span
+                                                class="gst-info">* Excluding GST</span>
                                         </span>
-                                        
+
                                     </div>
                                     <span class="item-price" id="priceDisplay" hidden>${{ $product->product_price }}</span>
                                 </div>
 
                                 <!--<span class="item-price mb-30" id="priceDisplay">${{ $product->product_price }}</span>-->
-                                
+
                                 <div class="row mt-2">
                                     <div class="form-group col-md-6 input-holder">
                                         <label for="quantity">Quantity:</label>
@@ -229,7 +231,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                    
+
                                     @if (!empty($product->product_prices))
                                         <div class="form-group col-md-6 input-holder">
                                             <label for="sizeDropdown">Size Options:</label>
@@ -256,7 +258,7 @@
                                                         foreach ($product->fixed_price_options as $fixedPrice) {
                                                             if ($fixedPrice->product_id == $product->id) {
                                                                 $size = [
-                                                                    'width' =>  $fixedPrice->width,
+                                                                    'width' => $fixedPrice->width,
                                                                     'height' => $fixedPrice->height,
                                                                 ];
                                                                 if (!in_array($size, $uniqueSizes)) {
@@ -266,17 +268,20 @@
                                                         }
                                                     }
                                                     // Format size without commas
-                                                    function formatSize($value) {
-                                                        return (fmod($value, 1) == 0) ? intval($value) : $value;
+                                                    function formatSize($value)
+                                                    {
+                                                        return fmod($value, 1) == 0 ? intval($value) : $value;
                                                     }
                                                 @endphp
                                                 @foreach ($uniqueSizes as $size)
-                                                    <option value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
-                                                        {{ formatSize($size['width']) }}mm W x {{ formatSize($size['height']) }}mm H
+                                                    <option
+                                                        value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
+                                                        {{ formatSize($size['width']) }}mm W x
+                                                        {{ formatSize($size['height']) }}mm H
                                                     </option>
                                                 @endforeach
-                                                 <!-- Other size options -->
-                                                    @if($product->product_allows_custom_size == 1)
+                                                <!-- Other size options -->
+                                                @if ($product->product_allows_custom_size == 1)
                                                     <option value="Custom Size">Custom Size</option>
                                                 @endif
                                             </select>
@@ -286,25 +291,46 @@
                                             <div class="row">
                                                 <div class="col-md-6 input-holder">
                                                     <label for="width">Width (mm):</label>
-                                                    <input type="text" class="form-control" id="width" name="width">
-                                                    <p id="widthError" style="display: none; color: red;">Width must be at least 30mm.</p>
+                                                    <input type="text" class="form-control" id="width"
+                                                        name="width">
+                                                    <p id="widthError" style="display: none; color: red;">Width must be at
+                                                        least 30mm.</p>
                                                 </div>
                                                 <div class="col-md-6 input-holder">
                                                     <label for="height">Height (mm):</label>
-                                                    <input type="text" class="form-control" id="height" name="height">
-                                                    <p id="heightError" style="display: none; color: red;">Height must be at least 30mm.</p>
+                                                    <input type="text" class="form-control" id="height"
+                                                        name="height">
+                                                    <p id="heightError" style="display: none; color: red;">Height must be at
+                                                        least 30mm.</p>
                                                 </div>
                                             </div>
-                                            <p id="customSizeError" style="color: red; display: none;">Both Width and Height are required and must be at least 30mm.</p>
+                                            <p id="customSizeError" style="color: red; display: none;">Both Width and Height
+                                                are required and must be at least 30mm.</p>
                                         </div>
                                     @endif
-                                    @if (!empty($product->rigidMedia) && collect($product->rigidMedia)->contains(function ($media) { 
-                                        return in_array($media['media_type'], ['single side', 'double side']);
-                                    }))
+                                    @if (!empty($product->cutting))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="sizeDropdown">Cutting Options:</label>
+                                            @php
+                                                $cuttingOptions = explode('|', $product->cutting);
+                                            @endphp
+                                            <select class="form-control" id="sizeDropdown" name="size" required>
+                                                @foreach ($cuttingOptions as $cuttingOption)
+                                                    <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+
+                                    @if (
+                                        !empty($product->rigidMedia) &&
+                                            collect($product->rigidMedia)->contains(function ($media) {
+                                                return in_array($media['media_type'], ['single side', 'double side']);
+                                            }))
                                         <div class="form-group col-md-6 input-holder">
                                             <label for="printSidesDropdown">Print Sides</label>
                                             <select class="form-control" id="printSidesDropdown" name="printSides" required>
-                                               
+
                                                 @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
                                                     @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
                                                         <option value="{{ $media['media_type'] }}"
@@ -314,7 +340,8 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <p id="media_typeError" style="color: red; display: none;">Please select a Print Side.</p>
+                                            <p id="media_typeError" style="color: red; display: none;">Please select a Print
+                                                Side.</p>
                                         </div>
                                     @endif
 
@@ -357,7 +384,6 @@
                                             <label for="finishingsDropdown">Finishings</label>
                                             <select class="form-control" id="finishingsDropdown" name="finishings"
                                                 required>
-                                                <option value="">Select Finishing</option>
                                                 @foreach ($finishings as $finishing)
                                                     <option value="{{ $finishing }}">{{ $finishing }}</option>
                                                 @endforeach
@@ -617,16 +643,18 @@
                                         <input type="hidden" id="uploadedFileName" name="uploadedFileName">
                             </div> --}}
                             <div class="form-group col-md-6">
-                                        <button id="checkAuthButton" class="btn bg-royal-blue">
-                                            Upload Finished Artwork<br>Print-Ready Files
-                                        </button>
-                                        <input type="file" id="fileInput" name="uploadedFiles[]" class="hidden" multiple onchange="handleFileUpload()">
-                                        <input type="hidden" id="uploadTokenFile" name="uploadTokenFile" value="{{ $token }}">
-                                        <p id="uploadMessage"></p> <!-- Display upload status message here -->
-                                        <div id="uploadedFileNames"></div> <!-- Display uploaded file names here -->
-                                        <input type="hidden" id="uploadedFileName" name="uploadedFileName">
-                                    </div>
-                                    
+                                <button id="checkAuthButton" class="btn bg-royal-blue">
+                                    Upload Finished Artwork<br>Print-Ready Files
+                                </button>
+                                <input type="file" id="fileInput" name="uploadedFiles[]" class="hidden" multiple
+                                    onchange="handleFileUpload()">
+                                <input type="hidden" id="uploadTokenFile" name="uploadTokenFile"
+                                    value="{{ $token }}">
+                                <p id="uploadMessage"></p> <!-- Display upload status message here -->
+                                <div id="uploadedFileNames"></div> <!-- Display uploaded file names here -->
+                                <input type="hidden" id="uploadedFileName" name="uploadedFileName">
+                            </div>
+
                             <div class="form-group col-md-6 ">
                                 <a href="{{ route('front.design-for-you') }}" style="line-height: 1.5;"
                                     class="btn bg-royal-blue">Let us design one for
@@ -803,52 +831,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div id="reviews-tab" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                <iframe src="{{ $product->guidlines }}" width="100%" height="600px"
+                                    style="border: none;"></iframe>
+                            </div>
 
-                <div id="reviews-tab" class="tab-pane fade">
-                    <div class="row">
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <!--                            <form action="" name="productRatingForm" id="productRatingForm" method="POST">-->
-                            <!--                                <h3 class="title-text mb-15">Write a Review</h3>-->
-                            <!--                                <p class="mb-30">Your email address will not be published. Required fields are marked.</p>-->
-                            <!--                                <div class="form-group mb-3">-->
-                            <!--                                    <label for="rating">Rating</label>-->
-                            <!--                                    <br>-->
-                            <!--                                   <div class="rating" style="width: 9.5rem">-->
-                            <!--    <input id="rating-1" type="radio" name="rating" value="1"><label for="rating-1"><i class="fas fa-3x fa-star"></i></label>-->
-                            <!--    <input id="rating-2" type="radio" name="rating" value="2"><label for="rating-2"><i class="fas fa-3x fa-star"></i></label>-->
-                            <!--    <input id="rating-3" type="radio" name="rating" value="3"><label for="rating-3"><i class="fas fa-3x fa-star"></i></label>-->
-                            <!--    <input id="rating-4" type="radio" name="rating" value="4"><label for="rating-4"><i class="fas fa-3x fa-star"></i></label>-->
-                            <!--    <input id="rating-5" type="radio" name="rating" value="5"><label for="rating-5"><i class="fas fa-3x fa-star"></i></label>-->
-                            <!--</div>-->
-
-                            <!--                                    <p class="product-rating-error"></p>-->
-                            <!--                                </div>-->
-
-                            <!--                                <div class="form-item form-group">-->
-                            <!--                                    <textarea name="comment" class="form-control" id="comment" placeholder="Your Message"></textarea>-->
-                            <!--                                    <p></p>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="row">-->
-                            <!--                                    <div class="col-lg-6 col-md-6 input-holder col-sm-12 col-xs-12">-->
-                            <!--                                        <div class="form-item form-group">-->
-                            <!--                                            <input type="text" class="form-control" name="name" id="name" placeholder="Full Name*">-->
-                            <!--                                            <p></p>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-
-                            <!--                                    <div class="col-lg-6 col-md-6 input-holder col-sm-12 col-xs-12">-->
-                            <!--                                        <div class="form-item form-group">-->
-                            <!--                                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email">-->
-                            <!--                                            <p></p>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                                <button type="submit" class="btn bg-royal-blue">Submit Now</button>-->
-                            <!--                            </form>-->
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
         </div>
@@ -856,11 +850,11 @@
         </div>
     </section>
     <!-- details-section - end
-                        ================================================== -->
+                            ================================================== -->
 
 
     <!-- shop-section - start
-                        ================================================== -->
+                            ================================================== -->
     <section id="shop-section" class="shop-section sec-ptb-100 decoration-wrap clearfix">
         <div class="container">
 
@@ -1010,24 +1004,8 @@
 @endsection
 
 @section('javascript.js')
-
-{{-- inputquantity  --}}
-<script>
-    // Ensure quantity input field value is not negative or zero
-    $('#quantityInput').on('change', function() {
-        var quantity = $(this).val();
-        if (quantity <= 0) {
-            $(this).val(1);
-        }
-    });
-</script>
-{{-- inputquantity Value --}}
-
-<script>
-    var loginUrl = '{{ route("account.login") }}';
-</script>
-<script>
-    $(document).ready(function() {
+    {{-- inputquantity  --}}
+    <script>
         // Ensure quantity input field value is not negative or zero
         $('#quantityInput').on('change', function() {
             var quantity = $(this).val();
@@ -1035,327 +1013,349 @@
                 $(this).val(1);
             }
         });
+    </script>
+    {{-- inputquantity Value --}}
 
-        // Log updated quantity value
-        $('#quantityInput').on('input', function() {
-            var updatedValue = $(this).val();
-            console.log(updatedValue); // Use this value as needed
-        });
+    <script>
+        var loginUrl = '{{ route('account.login') }}';
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Ensure quantity input field value is not negative or zero
+            $('#quantityInput').on('change', function() {
+                var quantity = $(this).val();
+                if (quantity <= 0) {
+                    $(this).val(1);
+                }
+            });
 
-        // Validate form and add to cart
-        $('#buyNowButton').on('click', function() {
-            var size = $('#sizeDropdown').val();
-            var baseColor = $('#baseColorDropdown').val();
-            var printedSides = $('#sideDropdown').val();
-            var quantity = $('#quantityInput').val();
+            // Log updated quantity value
+            $('#quantityInput').on('input', function() {
+                var updatedValue = $(this).val();
+                console.log(updatedValue); // Use this value as needed
+            });
 
-            var sizeErrorElement = $('#sizeError');
-            var colorErrorElement = $('#colorError');
-            var sideErrorElement = $('#sideError');
+            // Validate form and add to cart
+            $('#buyNowButton').on('click', function() {
+                var size = $('#sizeDropdown').val();
+                var baseColor = $('#baseColorDropdown').val();
+                var printedSides = $('#sideDropdown').val();
+                var quantity = $('#quantityInput').val();
 
-            sizeErrorElement.hide();
-            colorErrorElement.hide();
-            sideErrorElement.hide();
+                var sizeErrorElement = $('#sizeError');
+                var colorErrorElement = $('#colorError');
+                var sideErrorElement = $('#sideError');
 
-            if (!size) {
-                sizeErrorElement.show();
-                return;
-            }
+                sizeErrorElement.hide();
+                colorErrorElement.hide();
+                sideErrorElement.hide();
 
-            if (!baseColor) {
-                colorErrorElement.show();
-                return;
-            }
+                if (!size) {
+                    sizeErrorElement.show();
+                    return;
+                }
 
-            if (!printedSides) {
-                sideErrorElement.show();
-                return;
-            }
+                if (!baseColor) {
+                    colorErrorElement.show();
+                    return;
+                }
 
-            addToCart('{{ $product->id }}', baseColor, size, printedSides, quantity);
-        });
+                if (!printedSides) {
+                    sideErrorElement.show();
+                    return;
+                }
 
-        // Handle product rating form submission
-        $("#productRatingForm").submit(function(event) {
-            event.preventDefault();
+                addToCart('{{ $product->id }}', baseColor, size, printedSides, quantity);
+            });
 
-            $.ajax({
-                url: '{{ route('front.saveRating', $product->id) }}',
-                type: 'POST',
-                data: $(this).serializeArray(),
-                dataType: 'json',
-                success: function(response) {
-                    if (!response.status) {
-                        if (response.errors) {
-                            $("#name").toggleClass('is-invalid', !!response.errors.name).siblings("p").toggleClass('invalid-feedback', !!response.errors.name).html(response.errors.name || '');
-                            $("#email").toggleClass('is-invalid', !!response.errors.email).siblings("p").toggleClass('invalid-feedback', !!response.errors.email).html(response.errors.email || '');
-                            $("#comment").toggleClass('is-invalid', !!response.errors.message).siblings("p").toggleClass('invalid-feedback', !!response.errors.message).html(response.errors.message || '');
-                            $(".product-rating-error").html(response.errors.rating || '');
+            // Handle product rating form submission
+            $("#productRatingForm").submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '{{ route('front.saveRating', $product->id) }}',
+                    type: 'POST',
+                    data: $(this).serializeArray(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (!response.status) {
+                            if (response.errors) {
+                                $("#name").toggleClass('is-invalid', !!response.errors.name)
+                                    .siblings("p").toggleClass('invalid-feedback', !!response
+                                        .errors.name).html(response.errors.name || '');
+                                $("#email").toggleClass('is-invalid', !!response.errors.email)
+                                    .siblings("p").toggleClass('invalid-feedback', !!response
+                                        .errors.email).html(response.errors.email || '');
+                                $("#comment").toggleClass('is-invalid', !!response.errors
+                                    .message).siblings("p").toggleClass('invalid-feedback',
+                                    !!response.errors.message).html(response.errors
+                                    .message || '');
+                                $(".product-rating-error").html(response.errors.rating || '');
+                            }
+                        } else {
+                            window.location.href =
+                                "{{ route('front.product', $product->product_slug) }}";
                         }
+                    }
+                });
+            });
+
+            // Fetch range prices and calculate price
+            let rangePrices = [];
+            const initialPrice = "0"; // Initial price
+
+            $.getJSON('/range-prices', function(data) {
+                rangePrices = data;
+            });
+
+            function validateAndCalculate() {
+                const width = $('#width').val().trim();
+                const height = $('#height').val().trim();
+                const quantity = $('#quantityInput').val().trim();
+
+                if (isNaN(width) || isNaN(height) || isNaN(quantity)) {
+                    $('#error').text('All fields are required and must be numeric.').show();
+                    $('#price').text('');
+                    return;
+                }
+
+                if (parseFloat(width) < 30 || parseFloat(height) < 30) {
+                    $('#error').text('Width and Height must be at least 30mm.').show();
+                    $('#price').text('');
+                } else {
+                    $('#error').hide();
+
+                    const result = (parseFloat(width) * parseFloat(height) / 1000000) * parseFloat(quantity);
+                    let price = 0;
+
+                    for (let rangePrice of rangePrices) {
+                        if (result >= rangePrice.start_range && result <= rangePrice.end_range) {
+                            price = rangePrice.price;
+                            break;
+                        }
+                    }
+
+                    if (price === 0 && rangePrices.length > 0) {
+                        price = Math.max(...rangePrices.map(p => p.price));
+                    }
+
+                    $('#price').text(`The price for the given dimensions is: $${price}`);
+                    $('#priceDisplay').text(`$${price}`);
+                }
+
+                updatePrice();
+            }
+
+            function updatePrice() {
+                const selectedDropdowns = {
+                    size: $("#sizeDropdown").val(),
+                    colors: $("#colorsDropdown").val(),
+                    print_sides: $("#printSidesDropdown").val(),
+                    finishings: $("#finishingsDropdown").val(),
+                    thickness: $("#thicknessDropdown").val(),
+                    wirestakesqtys: $("#wirestakesqtysDropdown").val(),
+                    framesizes: $("#framesizesDropdown").val(),
+                    displaytypes: $("#displaytypesDropdown").val(),
+                    installations: $("#installationsDropdown").val(),
+                    materials: $("#materialsDropdown").val(),
+                    corners: $("#cornersDropdown").val(),
+                    applications: $("#applicationsDropdown").val(),
+                    paperthickness: $("#paperthicknessDropdown").val(),
+                    qtys: $("#qtysDropdown").val(),
+                    pagesinbooks: $("#pagesinbooksDropdown").val(),
+                    copiesrequireds: $("#copiesrequiredsDropdown").val(),
+                    pagesinnotepads: $("#pagesinnotepadsDropdown").val()
+                };
+
+                $.ajax({
+                    url: '{{ route('front.getPrice') }}',
+                    type: 'GET',
+                    data: {
+                        height: $('#height').val().trim(),
+                        width: $('#width').val().trim(),
+                        quantity: $('#quantityInput').val().trim(),
+                        ...selectedDropdowns,
+                        product_id: "{{ $product->id }}",
+                        price_option: "{{ $product->price_option }}",
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.price) {
+                            $("#priceDisplay")
+                                .text('$' + data.price)
+                                .removeClass('price-error') // Remove error class if price is valid
+                                .addClass('price-valid'); // Add valid class
+                        } else {
+                            $("#priceDisplay")
+                                .text('The product is not in the price/quantity range.')
+                                .removeClass('price-valid') // Remove valid class if price is invalid
+                                .addClass('price-error'); // Add error class
+                        }
+                    },
+                    error: function() {
+                        console.log("Something Went Wrong");
+                        $("#priceDisplay")
+                            .text('The product is not in the price/quantity range')
+                            .removeClass('price-valid')
+                            .addClass('price-error'); // Apply error class
+
+                        $(".gst-info").css("display", "none");
+                    }
+                });
+
+            }
+
+
+            // Event listeners for form fields
+            $('#width, #height, #quantityInput').on('keyup change', validateAndCalculate);
+
+            $("#sizeDropdown, #colorsDropdown, #printSidesDropdown, #finishingsDropdown, #thicknessDropdown, #wirestakesqtysDropdown, #framesizesDropdown, #displaytypesDropdown, #installationsDropdown, #materialsDropdown, #cornersDropdown, #applicationsDropdown, #paperthicknessDropdown, #qtysDropdown, #pagesinbooksDropdown, #copiesrequiredsDropdown, #pagesinnotepadsDropdown")
+                .on('change', updatePrice);
+
+            // Handle file upload
+            // $('#fileInput').on('change', function() {
+            //     var fileInput = document.getElementById('fileInput');
+            //     var uploadMessage = document.getElementById('uploadMessage');
+            //     var uploadedFileNamesDiv = document.getElementById('uploadedFileNames');
+            //     var hiddenInput = document.getElementById('uploadedFileName');
+            //     var files = fileInput.files;
+
+            //     if (files.length > 0) {
+            //         var formData = new FormData();
+            //         Array.from(files).forEach(file => {
+            //             formData.append('uploadedFiles[]', file);
+            //         });
+
+            //         $.ajax({
+            //             url: '{{ route('upload.files') }}',
+            //             type: 'POST',
+            //             data: formData,
+            //             processData: false,
+            //             contentType: false,
+            //             success: function(response) {
+            //                 uploadMessage.innerHTML = 'Files uploaded successfully!';
+            //                 uploadedFileNamesDiv.innerHTML = '';
+            //                 var fileNames = [];
+            //                 response.files.forEach(file => {
+            //                     const para = document.createElement("p");
+            //                     para.innerText = 'Uploaded File: ' + file.name;
+            //                     uploadedFileNamesDiv.appendChild(para);
+            //                     fileNames.push(file.name);
+            //                 });
+            //                 hiddenInput.value = fileNames.join(', ');
+            //                 uploadedFileNamesDiv.style.display = 'block';
+            //             },
+            //             error: function(xhr) {
+            //                 if (xhr.status === 401) {
+            //                     window.location.href = loginUrl;
+            //                 } else {
+            //                     uploadMessage.innerHTML = 'Error in uploading files: ' + xhr.responseText;
+            //                 }
+            //             }
+            //         });
+            //     } else {
+            //         uploadMessage.innerHTML = 'Please select files to upload.';
+            //     }
+            // });
+
+
+            // Show/hide custom size fields based on dropdown value
+            $('#sizeDropdown').on('change', function() {
+                var customSizeFields = $('#customSizeFields');
+                if ($(this).val() === 'Custom Size') {
+                    customSizeFields.show();
+                } else {
+                    customSizeFields.hide();
+                    $('#error').hide();
+                }
+            });
+
+            // Validate custom size fields on form submit
+            $('form').on('submit', function(event) {
+                if ($('#sizeDropdown').val() === 'Custom Size') {
+                    const width = parseInt($('#width').val(), 10);
+                    const height = parseInt($('#height').val(), 10);
+                    if (isNaN(width) || isNaN(height) || width < 30 || height < 30) {
+                        $('#error').show();
+                        event.preventDefault();
                     } else {
-                        window.location.href = "{{ route('front.product', $product->product_slug) }}";
+                        $('#error').hide();
                     }
                 }
             });
         });
+    </script>
 
-        // Fetch range prices and calculate price
-        let rangePrices = [];
-        const initialPrice = "0"; // Initial price
-
-        $.getJSON('/range-prices', function(data) {
-            rangePrices = data;
+    <script>
+        const checkAuthUrl = '{{ route('check.auth') }}';
+        document.getElementById('checkAuthButton').addEventListener('click', function() {
+            fetch(checkAuthUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        // Show the file input and enable file selection
+                        document.getElementById('fileInput').classList.remove('hidden');
+                        document.getElementById('fileInput')
+                    .click(); // Optional: Automatically open file dialog
+                    } else {
+                        document.getElementById('uploadMessage').innerText = 'Please log in to upload files.';
+                        // Optionally redirect to login page
+                        window.location.href = loginUrl;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking authentication:', error);
+                    document.getElementById('uploadMessage').innerText =
+                        'An error occurred. Please try again later.';
+                });
         });
 
-        function validateAndCalculate() {
-            const width = $('#width').val().trim();
-            const height = $('#height').val().trim();
-            const quantity = $('#quantityInput').val().trim();
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadedFileNames = document.getElementById('uploadedFileNames');
+            const uploadMessage = document.getElementById('uploadMessage');
+            const files = fileInput.files;
 
-            if (isNaN(width) || isNaN(height) || isNaN(quantity)) {
-                $('#error').text('All fields are required and must be numeric.').show();
-                $('#price').text('');
+            // Clear previous messages and file names
+            uploadedFileNames.innerHTML = '';
+            uploadMessage.innerText = '';
+
+            if (files.length === 0) {
+                uploadMessage.innerText = 'Please select files to upload.';
                 return;
             }
 
-            if (parseFloat(width) < 30 || parseFloat(height) < 30) {
-                $('#error').text('Width and Height must be at least 30mm.').show();
-                $('#price').text('');
-            } else {
-                $('#error').hide();
+            const fileNames = Array.from(files).map(file => file.name);
 
-                const result = (parseFloat(width) * parseFloat(height) / 1000000) * parseFloat(quantity);
-                let price = 0;
+            // Display selected file names
+            uploadedFileNames.innerHTML = fileNames.join('<br>');
+            uploadMessage.innerText = 'Files selected for upload.';
 
-                for (let rangePrice of rangePrices) {
-                    if (result >= rangePrice.start_range && result <= rangePrice.end_range) {
-                        price = rangePrice.price;
-                        break;
+            // Optional: Implement file upload logic here
+            const formData = new FormData();
+            Array.from(files).forEach(file => {
+                formData.append('uploadedFiles[]', file);
+            });
+
+            fetch('{{ route('upload.files') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
-                }
-
-                if (price === 0 && rangePrices.length > 0) {
-                    price = Math.max(...rangePrices.map(p => p.price));
-                }
-
-                $('#price').text(`The price for the given dimensions is: $${price}`);
-                $('#priceDisplay').text(`$${price}`);
-            }
-
-            updatePrice();
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.files) {
+                        uploadMessage.innerText = 'Files uploaded successfully!';
+                        document.getElementById('uploadedFileName').value = fileNames.join(', ');
+                    } else {
+                        uploadMessage.innerText = 'Error in uploading files.';
+                    }
+                })
+                .catch(() => {
+                    uploadMessage.innerText = 'Error in uploading files.';
+                });
         }
-
-        function updatePrice() {
-    const selectedDropdowns = {
-        size: $("#sizeDropdown").val(),
-        colors: $("#colorsDropdown").val(),
-        print_sides: $("#printSidesDropdown").val(),
-        finishings: $("#finishingsDropdown").val(),
-        thickness: $("#thicknessDropdown").val(),
-        wirestakesqtys: $("#wirestakesqtysDropdown").val(),
-        framesizes: $("#framesizesDropdown").val(),
-        displaytypes: $("#displaytypesDropdown").val(),
-        installations: $("#installationsDropdown").val(),
-        materials: $("#materialsDropdown").val(),
-        corners: $("#cornersDropdown").val(),
-        applications: $("#applicationsDropdown").val(),
-        paperthickness: $("#paperthicknessDropdown").val(),
-        qtys: $("#qtysDropdown").val(),
-        pagesinbooks: $("#pagesinbooksDropdown").val(),
-        copiesrequireds: $("#copiesrequiredsDropdown").val(),
-        pagesinnotepads: $("#pagesinnotepadsDropdown").val()
-    };
-
-        $.ajax({
-        url: '{{ route('front.getPrice') }}',
-        type: 'GET',
-        data: {
-            height: $('#height').val().trim(),
-            width: $('#width').val().trim(),
-            quantity: $('#quantityInput').val().trim(),
-            ...selectedDropdowns,
-            product_id: "{{ $product->id }}",
-            price_option: "{{ $product->price_option }}",
-        },
-        dataType: 'json',
-        success: function(data) {
-            if (data.price) {
-                $("#priceDisplay")
-                    .text('$' + data.price)
-                    .removeClass('price-error')  // Remove error class if price is valid
-                    .addClass('price-valid');  // Add valid class
-            } else {
-                $("#priceDisplay")
-                    .text('The product is not in the price/quantity range.')
-                    .removeClass('price-valid')  // Remove valid class if price is invalid
-                    .addClass('price-error');  // Add error class
-            }
-        },
-        error: function() {
-            console.log("Something Went Wrong");
-            $("#priceDisplay")
-                .text('The product is not in the price/quantity range')
-                .removeClass('price-valid')
-                .addClass('price-error');  // Apply error class
-    
-            $(".gst-info").css("display", "none");
-        }
-    });
-
-}
-
-
-        // Event listeners for form fields
-        $('#width, #height, #quantityInput').on('keyup change', validateAndCalculate);
-
-        $("#sizeDropdown, #colorsDropdown, #printSidesDropdown, #finishingsDropdown, #thicknessDropdown, #wirestakesqtysDropdown, #framesizesDropdown, #displaytypesDropdown, #installationsDropdown, #materialsDropdown, #cornersDropdown, #applicationsDropdown, #paperthicknessDropdown, #qtysDropdown, #pagesinbooksDropdown, #copiesrequiredsDropdown, #pagesinnotepadsDropdown")
-            .on('change', updatePrice);
-
-        // Handle file upload
-        // $('#fileInput').on('change', function() {
-        //     var fileInput = document.getElementById('fileInput');
-        //     var uploadMessage = document.getElementById('uploadMessage');
-        //     var uploadedFileNamesDiv = document.getElementById('uploadedFileNames');
-        //     var hiddenInput = document.getElementById('uploadedFileName');
-        //     var files = fileInput.files;
-
-        //     if (files.length > 0) {
-        //         var formData = new FormData();
-        //         Array.from(files).forEach(file => {
-        //             formData.append('uploadedFiles[]', file);
-        //         });
-
-        //         $.ajax({
-        //             url: '{{ route("upload.files") }}',
-        //             type: 'POST',
-        //             data: formData,
-        //             processData: false,
-        //             contentType: false,
-        //             success: function(response) {
-        //                 uploadMessage.innerHTML = 'Files uploaded successfully!';
-        //                 uploadedFileNamesDiv.innerHTML = '';
-        //                 var fileNames = [];
-        //                 response.files.forEach(file => {
-        //                     const para = document.createElement("p");
-        //                     para.innerText = 'Uploaded File: ' + file.name;
-        //                     uploadedFileNamesDiv.appendChild(para);
-        //                     fileNames.push(file.name);
-        //                 });
-        //                 hiddenInput.value = fileNames.join(', ');
-        //                 uploadedFileNamesDiv.style.display = 'block';
-        //             },
-        //             error: function(xhr) {
-        //                 if (xhr.status === 401) {
-        //                     window.location.href = loginUrl;
-        //                 } else {
-        //                     uploadMessage.innerHTML = 'Error in uploading files: ' + xhr.responseText;
-        //                 }
-        //             }
-        //         });
-        //     } else {
-        //         uploadMessage.innerHTML = 'Please select files to upload.';
-        //     }
-        // });
-
-
-        // Show/hide custom size fields based on dropdown value
-        $('#sizeDropdown').on('change', function() {
-            var customSizeFields = $('#customSizeFields');
-            if ($(this).val() === 'Custom Size') {
-                customSizeFields.show();
-            } else {
-                customSizeFields.hide();
-                $('#error').hide();
-            }
-        });
-
-        // Validate custom size fields on form submit
-        $('form').on('submit', function(event) {
-            if ($('#sizeDropdown').val() === 'Custom Size') {
-                const width = parseInt($('#width').val(), 10);
-                const height = parseInt($('#height').val(), 10);
-                if (isNaN(width) || isNaN(height) || width < 30 || height < 30) {
-                    $('#error').show();
-                    event.preventDefault();
-                } else {
-                    $('#error').hide();
-                }
-            }
-        });
-    });
-</script>
-
-<script>
-    const checkAuthUrl = '{{ route("check.auth") }}';
-    document.getElementById('checkAuthButton').addEventListener('click', function() {
-    fetch(checkAuthUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.authenticated) {
-                // Show the file input and enable file selection
-                document.getElementById('fileInput').classList.remove('hidden');
-                document.getElementById('fileInput').click(); // Optional: Automatically open file dialog
-            } else {
-                document.getElementById('uploadMessage').innerText = 'Please log in to upload files.';
-                // Optionally redirect to login page
-                window.location.href = loginUrl;
-            }
-        })
-        .catch(error => {
-            console.error('Error checking authentication:', error);
-            document.getElementById('uploadMessage').innerText = 'An error occurred. Please try again later.';
-        });
-});
-
-function handleFileUpload() {
-    const fileInput = document.getElementById('fileInput');
-    const uploadedFileNames = document.getElementById('uploadedFileNames');
-    const uploadMessage = document.getElementById('uploadMessage');
-    const files = fileInput.files;
-
-    // Clear previous messages and file names
-    uploadedFileNames.innerHTML = '';
-    uploadMessage.innerText = '';
-
-    if (files.length === 0) {
-        uploadMessage.innerText = 'Please select files to upload.';
-        return;
-    }
-
-    const fileNames = Array.from(files).map(file => file.name);
-
-    // Display selected file names
-    uploadedFileNames.innerHTML = fileNames.join('<br>');
-    uploadMessage.innerText = 'Files selected for upload.';
-
-    // Optional: Implement file upload logic here
-    const formData = new FormData();
-    Array.from(files).forEach(file => {
-        formData.append('uploadedFiles[]', file);
-    });
-
-    fetch('{{ route("upload.files") }}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.files) {
-            uploadMessage.innerText = 'Files uploaded successfully!';
-            document.getElementById('uploadedFileName').value = fileNames.join(', ');
-        } else {
-            uploadMessage.innerText = 'Error in uploading files.';
-        }
-    })
-    .catch(() => {
-        uploadMessage.innerText = 'Error in uploading files.';
-    });
-}
-
     </script>
-
-
 @endsection

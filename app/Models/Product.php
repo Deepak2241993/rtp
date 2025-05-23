@@ -38,6 +38,7 @@ class Product extends Model
         'product_size',
         'product_answer',
         'product_question',
+        'guidlines',
     ];
 
      public function category()

@@ -20,7 +20,9 @@
             margin-right: 10px;
             /* Adjust the margin-right value to set the desired gap between buttons */
         }
-        .row.single-price-fields, .double-price-fields {
+
+        .row.single-price-fields,
+        .double-price-fields {
             align-items: baseline;
             margin-top: 15px;
         }
@@ -54,14 +56,14 @@
     <section class="content">
         <!-- Default box -->
         <div class="container-fluid">
-            <form action="" method="POST" id="productform" name="productform">
+            <form action="" method="POST" id="productform" name="productform" enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-md-9">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="product_name">Product Name</label>
                                             <input type="text" name="product_name" id="product_name" class="form-control"
@@ -69,21 +71,22 @@
                                             <p class="error"></p>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="product_slug">Product Slug</label>
-                                            <input type="text" readonly name="product_slug" id="product_slug"
+                                            <input type="text" name="product_slug" id="product_slug"
                                                 class="form-control" placeholder="Product Slug">
                                             <p class="error"></p>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="product_short_description">Short Description</label>
                                             <textarea name="product_short_description" id="product_short_description" cols="30" rows="10"
                                                 class="summernote" data-placeholder="Enter your short description here"></textarea>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="product_description">Description</label>
@@ -125,11 +128,11 @@
                                                 class="form-control" placeholder="Price">
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
-                          
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product Information</h2>
@@ -261,7 +264,7 @@
                                                     id="priceOptionRigidMedia" value="rigidMedia">
                                                 <label class="form-check-label" for="priceOptionRigidMedia">Rigid
                                                     Media</label>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -291,12 +294,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-danger removeBtn"><i class="fas fa-minus"></i></button>
+                                            <button type="button" class="btn btn-danger removeBtn"><i
+                                                    class="fas fa-minus"></i></button>
                                         </div>
                                     </div>
                                 </div>
 
-                               <!-- Container for Fixed Media Fields -->
+                                <!-- Container for Fixed Media Fields -->
                                 <div id="fixedMediaContainer" class="hidden">
                                     <div class="fixedMediaFieldSet mb-3" data-index="0">
                                         <div class="row">
@@ -304,11 +308,14 @@
                                             <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label for="dimension_0">Dimension</label>
-                                                    <input type="text" name="fixed_dimensions[]" id="dimension_0" class="form-control" placeholder="Dimension (e.g., 1000 X 2000)">
-                                                    <p id="dimension-error" class="error text-danger" style="display: none;">Invalid dimension format. Please use the format "1000 X 2000" or "1000*2000".</p>
+                                                    <input type="text" name="fixed_dimensions[]" id="dimension_0"
+                                                        class="form-control" placeholder="Dimension (e.g., 1000 X 2000)">
+                                                    <p id="dimension-error" class="error text-danger"
+                                                        style="display: none;">Invalid dimension format. Please use the
+                                                        format "1000 X 2000" or "1000*2000".</p>
                                                 </div>
                                             </div>
-                                
+
                                             <!-- Quantity Range & Prices -->
                                             <div class="col-md-9">
                                                 <div class="mb-3">
@@ -316,20 +323,31 @@
                                                     <div class="row fixedFieldSet">
                                                         <!-- Min Quantity -->
                                                         <div class="col-md-3">
-                                                            <input type="number" name="fixed_min_qty[0][]" class="form-control" placeholder="Min Qty" min="1" step="0.01">
+                                                            <input type="number" name="fixed_min_qty[0][]"
+                                                                class="form-control" placeholder="Min Qty" min="1"
+                                                                step="0.01">
                                                         </div>
                                                         <!-- Max Quantity -->
                                                         <div class="col-md-3">
-                                                            <input type="number" name="fixed_max_qty[0][]" class="form-control" placeholder="Max Qty" min="1" step="0.01">
+                                                            <input type="number" name="fixed_max_qty[0][]"
+                                                                class="form-control" placeholder="Max Qty" min="1"
+                                                                step="0.01">
                                                         </div>
                                                         <!-- Price -->
                                                         <div class="col-md-3">
-                                                            <input type="number" name="fixed_price[0][]" class="form-control" placeholder="Price" min="0" step="0.01">
+                                                            <input type="number" name="fixed_price[0][]"
+                                                                class="form-control" placeholder="Price" min="0"
+                                                                step="0.01">
                                                         </div>
                                                         <!-- Buttons to Add/Remove Fields -->
-                                                        <div class="col-md-3 d-flex justify-content-between align-items-center">
-                                                            <button type="button" class="btn btn-success addMoreFixedBtn"><i class="fas fa-plus"></i></button>
-                                                            <button type="button" class="btn btn-danger removeFixedBtn"><i class="fas fa-minus"></i></button>
+                                                        <div
+                                                            class="col-md-3 d-flex justify-content-between align-items-center">
+                                                            <button type="button"
+                                                                class="btn btn-success addMoreFixedBtn"><i
+                                                                    class="fas fa-plus"></i></button>
+                                                            <button type="button"
+                                                                class="btn btn-danger removeFixedBtn"><i
+                                                                    class="fas fa-minus"></i></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -344,56 +362,68 @@
                                         <!-- Single Side Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]" id="singleOption" value="single">
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
+                                                    id="singleOption" value="single">
                                                 <label class="form-check-label" for="singleOption">Single Side</label>
                                             </div>
                                             <div id="singlePriceFieldsContainer" class="mt-3" style="display: none;">
                                                 <div class="row single-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][min_range]" class="form-control" 
-                                                             placeholder="Min Range" step="0.01" min="0">
+                                                        <input type="number" name="rigidMedia[single][0][min_range]"
+                                                            class="form-control" placeholder="Min Qty" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][max_range]" class="form-control" 
-                                                             placeholder="Max Range" step="0.01" min="0">
+                                                        <input type="number" name="rigidMedia[single][0][max_range]"
+                                                            class="form-control" placeholder="Max Qty" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][price]" class="form-control" 
-                                                             placeholder="Price" step="0.01" min="0">
+                                                        <input type="number" name="rigidMedia[single][0][price]"
+                                                            class="form-control" placeholder="Price" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-single" style="display: none;"><i class="fas fa-minus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove-single"
+                                                            style="display: none;"><i class="fas fa-minus"></i></button>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-primary add-more-single mt-2"><i class="fas fa-plus"></i></button>
+                                                <button type="button" class="btn btn-primary add-more-single mt-2"><i
+                                                        class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
 
                                         <!-- Double Side Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]" id="doubleOption" value="double">
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
+                                                    id="doubleOption" value="double">
                                                 <label class="form-check-label" for="doubleOption">Double Side</label>
                                             </div>
                                             <div id="doublePriceFieldsContainer" class="mt-3" style="display: none;">
                                                 <div class="row double-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][min_range]" class="form-control" 
-                                                            placeholder="Min Range" step="0.01" min="0" >
+                                                        <input type="number" name="rigidMedia[double][0][min_range]"
+                                                            class="form-control" placeholder="Min Qty" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][max_range]" class="form-control" 
-                                                            placeholder="Max Range" step="0.01" min="0" >
+                                                        <input type="number" name="rigidMedia[double][0][max_range]"
+                                                            class="form-control" placeholder="Max Qty" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][price]" class="form-control" 
-                                                            placeholder="Price" step="0.01" min="0" >
+                                                        <input type="number" name="rigidMedia[double][0][price]"
+                                                            class="form-control" placeholder="Price" step="0.01"
+                                                            min="0">
                                                     </div>
                                                     <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-double" style="display: none;"><i class="fas fa-minus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove-double"
+                                                            style="display: none;"><i class="fas fa-minus"></i></button>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-primary add-more-double mt-2"><i class="fas fa-plus"></i></button>
+                                                <button type="button" class="btn btn-primary add-more-double mt-2"><i
+                                                        class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -406,10 +436,10 @@
                                     More</button>
                                 <button type="button" id="addFixedMediaFieldsBtn" class="btn btn-success">Add
                                     More</button>
-                                
-                                
+
+
                             </div>
-                          
+
                         </div>
 
 
@@ -420,7 +450,7 @@
                                 <h2 class="h4 mb-3">Product Size Option</h2>
                                 <div id="sizeFieldsContainer">
                                     <div class="row size-fields">
-                                        
+
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="product_width">Width MM</label>
@@ -909,23 +939,25 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="question">Question</label>
-                                                <textarea name="product_question[]" id="product_question" cols="30" rows="10" class="summernote"
-                                                    placeholder="Question"></textarea>
+                                                <textarea name="product_question[]" id="product_question"
+                                                    placeholder="Question" class="form-control" rows="3"></textarea>
                                                 <p></p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="answer">Answer</label>
-                                                <textarea name="product_answer[]" id="product_answer" cols="30" rows="10" class="summernote"
-                                                    placeholder="Answer"></textarea>
+                                                <textarea name="product_answer[]" id="product_answer"
+                                                    placeholder="Answer" class="form-control" rows="3"></textarea>
                                                 <p></p>
                                             </div>
                                         </div>
                                         <div class="col-md-12 text-right">
-                                            <button type="button" class="btn btn-danger removeBtn" style="display:none;">Remove</button>
+                                            <button type="button" class="btn btn-danger removeBtn"
+                                                style="display:none;">Remove</button>
                                         </div>
                                     </div>
+                                    <hr>
                                 </div>
                                 <button type="button" id="addFaqsBtn" class="btn btn-success">Add More FAQs</button>
                             </div>
@@ -1007,10 +1039,21 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Custom Size Allow</h2>
                                 <div class="mb-3">
-                                    <select name="product_allows_custom_size" id="product_allows_custom_size" class="form-control">
+                                    <select name="product_allows_custom_size" id="product_allows_custom_size"
+                                        class="form-control">
                                         <option value="0">No</option>
                                         <option value="1">Yes</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                    {{-- For Guidlines --}}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3"></h2>
+                                 <label for="guidlines">Uploads Guidelines</label>
+                                <div class="mb-3">
+                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf">
                                 </div>
                             </div>
                         </div>
@@ -1020,7 +1063,6 @@
 
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </form>
         </div>
@@ -1051,7 +1093,7 @@
             $("#toggleProductPrintSideBtn").click(function() {
                 $(this).toggleClass("active");
                 disableCheckButton('#productPrintSideCard input[type="text"]',
-                '#toggleProductPrintSideBtn');
+                    '#toggleProductPrintSideBtn');
             });
 
             // Toggle Product Finishing Options
@@ -1198,13 +1240,15 @@
                 }
             }
 
-           // General function to add fields
+            // General function to add fields
             function addFields(buttonSelector, containerSelector, classSelector) {
                 $(buttonSelector).click(function() {
                     var clone = $(classSelector).first().clone();
-                    clone.find('input[type="text"], input[type="number"]').val(""); // Clear both text and number input values
+                    clone.find('input[type="text"], input[type="number"]').val(
+                    ""); // Clear both text and number input values
                     $(containerSelector).append(clone);
-                    updateRemoveButtons(containerSelector, '.removeBtn'); // Update visibility of remove buttons
+                    updateRemoveButtons(containerSelector,
+                    '.removeBtn'); // Update visibility of remove buttons
                 });
             }
 
@@ -1212,7 +1256,8 @@
             function setupRemoveButtons(containerSelector) {
                 $(containerSelector).on('click', '.removeBtn', function() {
                     if ($(containerSelector).children().length > 1) {
-                        var inputFields = $(this).closest('.row').find('input[type="text"], input[type="number"]');
+                        var inputFields = $(this).closest('.row').find(
+                            'input[type="text"], input[type="number"]');
                         // Only remove if all input fields are empty
                         var allFieldsEmpty = true;
                         inputFields.each(function() {
@@ -1223,7 +1268,8 @@
 
                         if (allFieldsEmpty) {
                             $(this).closest('.row').remove();
-                            updateRemoveButtons(containerSelector, '.removeBtn'); // Update visibility of remove buttons
+                            updateRemoveButtons(containerSelector,
+                            '.removeBtn'); // Update visibility of remove buttons
                         }
                     }
                 });
@@ -1346,21 +1392,22 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="question">Question</label>
-                                <textarea name="product_question[]" class="summernote" placeholder="Question" rows="3"></textarea>
+                                <textarea name="product_question[]" class="form-control" placeholder="Question" rows="3"></textarea>
                                 <p></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="answer">Answer</label>
-                                <textarea name="product_answer[]" class="summernote" placeholder="Answer" rows="3"></textarea>
+                                <textarea name="product_answer[]" class="form-control" placeholder="Answer" rows="3"></textarea>
                                 <p></p>
                             </div>
                         </div>
                         <div class="col-md-12 text-right">
                             <button type="button" class="btn btn-danger removeBtn" style="display:none;">Remove</button>
                         </div>
-                    </div>`;
+                        
+                    </div><hr>`;
                 var $clone = $(clone); // Create jQuery object for the cloned HTML
                 $("#faqsContainer").append($clone);
 
@@ -1384,7 +1431,6 @@
 
             updateRemoveButtons(); // Initial call to set correct visibility of remove buttons
         });
-
     </script>
 
 
@@ -1429,22 +1475,27 @@
             })
 
         });
+
+        // Form Action
         $("#productform").submit(function(event) {
     event.preventDefault();
-    var element = $(this);
+
+    var form = $('#productform')[0]; // Get the raw DOM element
+    var formData = new FormData(form); // Include all form fields + files
 
     $("button[type=submit]").prop('disabled', true);
 
     $.ajax({
         url: '{{ route('products.store') }}',
-        type: 'post',
-        data: element.serializeArray(),
+        type: 'POST',
+        data: formData,
+        processData: false, // Don't process the data
+        contentType: false, // Let the browser set content-type
         dataType: 'json',
         success: function(response) {
-
             $("button[type=submit]").prop('disabled', false);
 
-            if (response["status"] == true) {
+            if (response["status"] === true) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -1460,32 +1511,66 @@
                 var errorMessages = "";
 
                 $.each(errors, function(key, value) {
-                    errorMessages += `<p>• ${value[0]}</p>`; // Collect errors
+                    errorMessages += `<p>• ${value[0]}</p>`;
                 });
 
                 Swal.fire({
                     icon: 'error',
                     title: 'Validation Errors',
-                    html: errorMessages, // Display all errors in SweetAlert
+                    html: errorMessages,
                     confirmButtonText: 'OK'
                 });
             }
         },
-        error: function(jqXHR, exception) {
-            $("button[type=submit]").prop('disabled', false);
+       error: function(jqXHR, exception) {
+    $("button[type=submit]").prop('disabled', false);
+
+    // Handle Laravel 422 validation error
+    if (jqXHR.status === 422) {
+        let response = jqXHR.responseJSON;
+
+        // Case 1: Laravel returns `errors` object (standard validation)
+        if (response.errors) {
+            let errorMessages = '';
+            $.each(response.errors, function(key, value) {
+                errorMessages += `<p>• ${value[0]}</p>`;
+            });
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Errors',
+                html: errorMessages,
+                confirmButtonText: 'OK'
+            });
+        }
+        // Case 2: Laravel returns just a `message`
+        else if (response.message) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Something went wrong. Please try again later.',
-                timer: 3000,
-                showConfirmButton: false
+                text: response.message,
+                confirmButtonText: 'OK'
             });
         }
+
+    } else {
+        // Generic error fallback
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong. Please try again later.',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    }
+}
+
     });
 });
 
 
 
+        //  For Creating Slug
         $("#product_name").change(function() {
             var element = $(this);
             $("button[type=submit]").prop('disable', true);
@@ -1507,7 +1592,7 @@
                 }
             });
         });
-
+        //  For Image Upload
         Dropzone.autoDiscover = false;
         const dropzone = new Dropzone("#image", {
             url: "{{ route('temp-images.create') }}",
@@ -1539,122 +1624,127 @@
             $("#image-row-" + id).remove();
         }
     </script>
-<script>
-    fixedMediaContainer$(document).ready(function () {
-    // Function to update button visibility
-    function updateButtonVisibility() {
-        $('#fixedMediaContainer .fixedFieldSet').each(function (index) {
-            // For the first item, show only the Add button
-            if (index === 0) {
-                $(this).find('.addMoreFixedBtn').removeClass('d-none');
-                $(this).find('.removeFixedFieldBtn').addClass('d-none');
-            } else {
-                // For other items, show only the Remove button
-                $(this).find('.addMoreFixedBtn').addClass('d-none');
-                $(this).find('.removeFixedFieldBtn').removeClass('d-none');
+
+
+    <script>
+        fixedMediaContainer$(document).ready(function() {
+            // Function to update button visibility
+            function updateButtonVisibility() {
+                $('#fixedMediaContainer .fixedFieldSet').each(function(index) {
+                    // For the first item, show only the Add button
+                    if (index === 0) {
+                        $(this).find('.addMoreFixedBtn').removeClass('d-none');
+                        $(this).find('.removeFixedFieldBtn').addClass('d-none');
+                    } else {
+                        // For other items, show only the Remove button
+                        $(this).find('.addMoreFixedBtn').addClass('d-none');
+                        $(this).find('.removeFixedFieldBtn').removeClass('d-none');
+                    }
+                });
             }
+
+            // Add a new Quantity Range & Prices field
+            $(document).on('click', '.addMoreFixedBtn', function() {
+                let newField = $(this).closest('.fixedFieldSet').clone();
+                newField.find('input').val(''); // Clear input fields
+                $('#fixedMediaContainer .fixedMediaFieldSet .mb-3').append(newField);
+                updateButtonVisibility();
+            });
+
+            // Remove a Quantity Range & Prices field
+            $(document).on('click', '.removeFixedFieldBtn', function() {
+                $(this).closest('.fixedFieldSet').remove();
+                updateButtonVisibility();
+            });
+
+            // Initial call to set button visibility on page load
+            updateButtonVisibility();
         });
-    }
+    </script>
 
-    // Add a new Quantity Range & Prices field
-    $(document).on('click', '.addMoreFixedBtn', function () {
-        let newField = $(this).closest('.fixedFieldSet').clone();
-        newField.find('input').val(''); // Clear input fields
-        $('#fixedMediaContainer .fixedMediaFieldSet .mb-3').append(newField);
-        updateButtonVisibility();
-    });
 
-    // Remove a Quantity Range & Prices field
-    $(document).on('click', '.removeFixedFieldBtn', function () {
-        $(this).closest('.fixedFieldSet').remove();
-        updateButtonVisibility();
-    });
+    <script>
+        $(document).ready(function() {
+            let fixedDimensionsIndex = 1; // Ensure the index is initialized
 
-    // Initial call to set button visibility on page load
-    updateButtonVisibility();
-});
+            // Toggle visibility of Price Card
+            $("#togglePriceCardBtn").click(function() {
+                $(this).toggleClass("active");
+                $("#priceCard").toggle(); // Ensure the #priceCard exists in your HTML
+                disableCheckButton('#priceCard input[type="text"]', '#togglePriceCardBtn');
+            });
 
-</script>
-<script>
-$(document).ready(function() {
-    let fixedDimensionsIndex = 1; // Ensure the index is initialized
+            // Handle the price option change
+            $('input[name="priceOption"]').change(function() {
+                // Check which option is selected and show the corresponding container
+                if ($('#priceOptionRollMedia').is(':checked')) {
+                    $('#rollMediaContainer').removeClass('hidden').show();
+                    $('#fixedMediaContainer').addClass('hidden').hide();
+                    $('#rigidMediaContainer').addClass('hidden').hide();
+                    $('#addRollMediaFieldsBtn').show();
+                    $('#addFixedMediaFieldsBtn').hide();
+                    clearFixedMediaFields(); // Clear Fixed Media fields
+                    clearRigidMediaFields(); // Clear Rigid Media fields
+                } else if ($('#priceOptionFixed').is(':checked')) {
+                    $('#fixedMediaContainer').removeClass('hidden').show();
+                    $('#rollMediaContainer').addClass('hidden').hide();
+                    $('#rigidMediaContainer').addClass('hidden').hide();
+                    $('#addRollMediaFieldsBtn').hide();
+                    $('#addFixedMediaFieldsBtn').show();
+                    $('#removeFixedMediaFieldsBtn').show();
+                    clearRollMediaFields(); // Clear Roll Media fields
+                    clearRigidMediaFields(); // Clear Rigid Media fields
+                } else if ($('#priceOptionRigidMedia').is(':checked')) {
+                    $('#rigidMediaContainer').removeClass('hidden').show();
+                    $('#rollMediaContainer').addClass('hidden').hide();
+                    $('#fixedMediaContainer').addClass('hidden').hide();
+                    $('#addRollMediaFieldsBtn').hide();
+                    $('#addFixedMediaFieldsBtn').hide();
+                    clearRollMediaFields(); // Clear Roll Media fields
+                    clearFixedMediaFields(); // Clear Fixed Media fields
+                }
+            });
 
-    // Toggle visibility of Price Card
-    $("#togglePriceCardBtn").click(function() {
-        $(this).toggleClass("active");
-        $("#priceCard").toggle(); // Ensure the #priceCard exists in your HTML
-        disableCheckButton('#priceCard input[type="text"]', '#togglePriceCardBtn');
-    });
+            $('#addRollMediaFieldsBtn').click(function() {
+                addRollMediaFields();
+            });
+            // Add a new field set for Fixed Media Dimensions
+            $('#addFixedMediaFieldsBtn').click(function() {
+                addFixedMediaFields();
+            });
+            $('#addRigidMediaFieldsBtn').click(function() {
+                addRigidMediaFields();
+            });
 
-    // Handle the price option change
-    $('input[name="priceOption"]').change(function() {
-    // Check which option is selected and show the corresponding container
-        if ($('#priceOptionRollMedia').is(':checked')) {
-            $('#rollMediaContainer').removeClass('hidden').show();
-            $('#fixedMediaContainer').addClass('hidden').hide();
-            $('#rigidMediaContainer').addClass('hidden').hide();
-            $('#addRollMediaFieldsBtn').show();
-            $('#addFixedMediaFieldsBtn').hide();
-            clearFixedMediaFields(); // Clear Fixed Media fields
-            clearRigidMediaFields(); // Clear Rigid Media fields
-        } else if ($('#priceOptionFixed').is(':checked')) {
-            $('#fixedMediaContainer').removeClass('hidden').show();
-            $('#rollMediaContainer').addClass('hidden').hide();
-            $('#rigidMediaContainer').addClass('hidden').hide();
-            $('#addRollMediaFieldsBtn').hide();
-            $('#addFixedMediaFieldsBtn').show();
-            $('#removeFixedMediaFieldsBtn').show();
-            clearRollMediaFields(); // Clear Roll Media fields
-            clearRigidMediaFields(); // Clear Rigid Media fields
-        } else if ($('#priceOptionRigidMedia').is(':checked')) {
-            $('#rigidMediaContainer').removeClass('hidden').show();
-            $('#rollMediaContainer').addClass('hidden').hide();
-            $('#fixedMediaContainer').addClass('hidden').hide();
-            $('#addRollMediaFieldsBtn').hide();
-            $('#addFixedMediaFieldsBtn').hide();
-            clearRollMediaFields(); // Clear Roll Media fields
-            clearFixedMediaFields(); // Clear Fixed Media fields
-        }
-    });
-
-    $('#addRollMediaFieldsBtn').click(function() {
-            addRollMediaFields();
-        });
-    // Add a new field set for Fixed Media Dimensions
-    $('#addFixedMediaFieldsBtn').click(function() {
-        addFixedMediaFields();
-    });
-    $('#addRigidMediaFieldsBtn').click(function() {
-        addRigidMediaFields();
-    });
-    function addRollMediaFields() {
-            const newFieldSet = $('.rollMediaFieldSet').first().clone();
-            newFieldSet.find('input').val(''); 
-            newFieldSet.find('.removeBtn').click(function() {
+            function addRollMediaFields() {
+                const newFieldSet = $('.rollMediaFieldSet').first().clone();
+                newFieldSet.find('input').val('');
+                newFieldSet.find('.removeBtn').click(function() {
+                    $(this).closest('.rollMediaFieldSet').remove();
+                    checkRollMediaFields();
+                });
+                $('#rollMediaContainer').append(newFieldSet);
+                checkRollMediaFields();
+            }
+            $(document).on('click', '.removeBtn', function() {
                 $(this).closest('.rollMediaFieldSet').remove();
                 checkRollMediaFields();
             });
-            $('#rollMediaContainer').append(newFieldSet);
-            checkRollMediaFields();
-        }
-        $(document).on('click', '.removeBtn', function() {
-            $(this).closest('.rollMediaFieldSet').remove();
-            checkRollMediaFields();
-        });
-        function checkRollMediaFields() {
-            const rollMediaFieldSets = $('#rollMediaContainer').children('.rollMediaFieldSet');
-            if (rollMediaFieldSets.length === 0) {
-                addRollMediaFields(); 
-            }
-            if (rollMediaFieldSets.length === 1) {
-                rollMediaFieldSets.find('.removeBtn').hide(); 
-            } else {
-                rollMediaFieldSets.find('.removeBtn').show(); 
-            }
-        }
 
-    function addFixedMediaFields() {
-        const newFieldSet = `
+            function checkRollMediaFields() {
+                const rollMediaFieldSets = $('#rollMediaContainer').children('.rollMediaFieldSet');
+                if (rollMediaFieldSets.length === 0) {
+                    addRollMediaFields();
+                }
+                if (rollMediaFieldSets.length === 1) {
+                    rollMediaFieldSets.find('.removeBtn').hide();
+                } else {
+                    rollMediaFieldSets.find('.removeBtn').show();
+                }
+            }
+
+            function addFixedMediaFields() {
+                const newFieldSet = `
             <div class="fixedMediaFieldSet mb-3" data-index="${fixedDimensionsIndex}">
                 <div class="row">
                     <div class="col-md-3">
@@ -1686,16 +1776,17 @@ $(document).ready(function() {
                 </div>
             </div>
         `;
-        $('#fixedMediaContainer').append(newFieldSet); // Ensure #fixedMediaContainer exists
-        fixedDimensionsIndex++; // Increment the index after adding the new fields
-    }
+                $('#fixedMediaContainer').append(newFieldSet); // Ensure #fixedMediaContainer exists
+                fixedDimensionsIndex++; // Increment the index after adding the new fields
+            }
 
-    // Dynamically add more quantity and price fields for an existing dimension
-    $(document).on('click', '.addMoreFixedBtn', function() {
-        const parentFieldSet = $(this).closest('.fixedMediaFieldSet');
-        const dimensionIndex = parentFieldSet.data('index'); // Ensure data-index is properly assigned
+            // Dynamically add more quantity and price fields for an existing dimension
+            $(document).on('click', '.addMoreFixedBtn', function() {
+                const parentFieldSet = $(this).closest('.fixedMediaFieldSet');
+                const dimensionIndex = parentFieldSet.data(
+                'index'); // Ensure data-index is properly assigned
 
-        const newQtyPriceRow = `
+                const newQtyPriceRow = `
             <div class="row fixedFieldSet mt-2">
                 <div class="col-md-3">
                     <input type="number" name="fixed_min_qty[${dimensionIndex}][]" class="form-control" placeholder="Min Qty" min="1" step="0.01" required>
@@ -1713,12 +1804,13 @@ $(document).ready(function() {
             </div>
         `;
 
-        parentFieldSet.find('.mb-3:last').append(newQtyPriceRow); // Add new fields below existing ones
-    });
+                parentFieldSet.find('.mb-3:last').append(
+                newQtyPriceRow); // Add new fields below existing ones
+            });
 
-     // Add Rigid Media Fields
-     function addRigidMediaFields() {
-        const newFieldSet = `
+            // Add Rigid Media Fields
+            function addRigidMediaFields() {
+                const newFieldSet = `
             <div class="rigidMediaFieldSet mb-3">
                 <div class="row">
                     <div class="col-md-3">
@@ -1749,186 +1841,182 @@ $(document).ready(function() {
                 </div>
             </div>
         `;
-        $('#rigidMediaContainer').append(newFieldSet);
-    }
-    // Remove a dynamically added field set
-    $(document).on('click', '.removeFixedBtn', function() {
-        if ($('.fixedMediaFieldSet').length > 1) {
-            $(this).closest('.fixedMediaFieldSet').remove();
-        }
-    });
+                $('#rigidMediaContainer').append(newFieldSet);
+            }
+            // Remove a dynamically added field set
+            $(document).on('click', '.removeFixedBtn', function() {
+                if ($('.fixedMediaFieldSet').length > 1) {
+                    $(this).closest('.fixedMediaFieldSet').remove();
+                }
+            });
 
-   
-    $(document).on('click', '.removeFixedFieldBtn', function() {
-        if ($(this).closest('.fixedFieldSet').siblings().length > 0) {
-            $(this).closest('.fixedFieldSet').remove();
-        }
-    });
 
-    
-    disableCheckButton('#priceCard input[type="text"]', '#togglePriceCardBtn');
-    $('#rollMediaContainer').addClass('hidden');
-    $('#fixedMediaContainer').addClass('hidden');
-    $('#addRollMediaFieldsBtn').hide();
-    $('#addFixedMediaFieldsBtn').hide();
-    $('#removeFixedMediaFieldsBtn').hide();
+            $(document).on('click', '.removeFixedFieldBtn', function() {
+                if ($(this).closest('.fixedFieldSet').siblings().length > 0) {
+                    $(this).closest('.fixedFieldSet').remove();
+                }
+            });
 
-    
-    function disableCheckButton(inputSelector, buttonSelector) {
-        $(inputSelector).prop('disabled', !$(buttonSelector).hasClass('active'));
-    }
 
-    function clearRollMediaFields() {
-        $('#rollMediaContainer').find('input').val(''); 
-    }
+            disableCheckButton('#priceCard input[type="text"]', '#togglePriceCardBtn');
+            $('#rollMediaContainer').addClass('hidden');
+            $('#fixedMediaContainer').addClass('hidden');
+            $('#addRollMediaFieldsBtn').hide();
+            $('#addFixedMediaFieldsBtn').hide();
+            $('#removeFixedMediaFieldsBtn').hide();
 
-    function clearFixedMediaFields() {
-        $('#fixedMediaContainer').find('input').val(''); 
-    }
 
-    function clearRigidMediaFields() {
-        $('#rigidMediaContainer').find('input').val('');
-    }
-});
-</script>
-<script>
- document.addEventListener('DOMContentLoaded', function() {
-    const dimensionInput = document.querySelector('#dimension_0');
-    const errorElement = document.querySelector('#dimension-error');
-    
-    const dimensionRegex = /^\d+\s*[x*]\s*\d+$/i;
+            function disableCheckButton(inputSelector, buttonSelector) {
+                $(inputSelector).prop('disabled', !$(buttonSelector).hasClass('active'));
+            }
 
-    function validateDimension() {
-        const dimensionValue = dimensionInput.value;
+            function clearRollMediaFields() {
+                $('#rollMediaContainer').find('input').val('');
+            }
 
-        if (dimensionValue === "") {
-            dimensionInput.classList.remove('is-invalid');
-            errorElement.style.display = 'none';
-            return;
-        }
+            function clearFixedMediaFields() {
+                $('#fixedMediaContainer').find('input').val('');
+            }
 
-        if (!dimensionRegex.test(dimensionValue)) {
-            dimensionInput.classList.add('is-invalid');
-            errorElement.style.display = 'inline';
-        } else {
-            dimensionInput.classList.remove('is-invalid');
-            errorElement.style.display = 'none';
-        }
-    }
-
-    dimensionInput.addEventListener('input', validateDimension);
-    dimensionInput.addEventListener('blur', validateDimension);
-    
-    const tabElements = document.querySelectorAll('.nav-link');
-    tabElements.forEach(tab => {
-        tab.addEventListener('click', function() {
-            validateDimension();
+            function clearRigidMediaFields() {
+                $('#rigidMediaContainer').find('input').val('');
+            }
         });
-    });
-});
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dimensionInput = document.querySelector('#dimension_0');
+            const errorElement = document.querySelector('#dimension-error');
 
-</script>
-<!-- JavaScript to Toggle Containers -->
-<script>
-    document.getElementById('singleOption').addEventListener('change', function () {
-        var singlePriceFields = document.getElementById('singlePriceFieldsContainer');
-        if (this.checked) {
-            singlePriceFields.style.display = 'block'; // Show the single price fields
-        } else {
-            singlePriceFields.style.display = 'none'; // Hide the single price fields
-        }
-    });
+            const dimensionRegex = /^\d+\s*[x*]\s*\d+$/i;
 
-    document.getElementById('doubleOption').addEventListener('change', function () {
-        var doublePriceFields = document.getElementById('doublePriceFieldsContainer');
-        if (this.checked) {
-            doublePriceFields.style.display = 'block'; // Show the double price fields
-        } else {
-            doublePriceFields.style.display = 'none'; // Hide the double price fields
-        }
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        // Clone single-price-template on Add More button click for single
-        $('.add-more-single').click(function() {
-            var singleTemplate = $('.single-price-template').clone();
-            singleTemplate.removeClass('single-price-template').addClass('single-price-fields').show();
-            $('#singlePriceFieldsContainer').append(singleTemplate);
+            function validateDimension() {
+                const dimensionValue = dimensionInput.value;
+
+                if (dimensionValue === "") {
+                    dimensionInput.classList.remove('is-invalid');
+                    errorElement.style.display = 'none';
+                    return;
+                }
+
+                if (!dimensionRegex.test(dimensionValue)) {
+                    dimensionInput.classList.add('is-invalid');
+                    errorElement.style.display = 'inline';
+                } else {
+                    dimensionInput.classList.remove('is-invalid');
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            dimensionInput.addEventListener('input', validateDimension);
+            dimensionInput.addEventListener('blur', validateDimension);
+
+            const tabElements = document.querySelectorAll('.nav-link');
+            tabElements.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    validateDimension();
+                });
+            });
+        });
+    </script>
+    <!-- JavaScript to Toggle Containers -->
+    <script>
+        document.getElementById('singleOption').addEventListener('change', function() {
+            var singlePriceFields = document.getElementById('singlePriceFieldsContainer');
+            if (this.checked) {
+                singlePriceFields.style.display = 'block'; // Show the single price fields
+            } else {
+                singlePriceFields.style.display = 'none'; // Hide the single price fields
+            }
         });
 
-        // Clone double-price-template on Add More button click for double
-        $('.add-more-double').click(function() {
-            var doubleTemplate = $('.double-price-template').clone();
-            doubleTemplate.removeClass('double-price-template').addClass('double-price-fields').show();
-            $('#doublePriceFieldsContainer').append(doubleTemplate);
+        document.getElementById('doubleOption').addEventListener('change', function() {
+            var doublePriceFields = document.getElementById('doublePriceFieldsContainer');
+            if (this.checked) {
+                doublePriceFields.style.display = 'block'; // Show the double price fields
+            } else {
+                doublePriceFields.style.display = 'none'; // Hide the double price fields
+            }
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Clone single-price-template on Add More button click for single
+            $('.add-more-single').click(function() {
+                var singleTemplate = $('.single-price-template').clone();
+                singleTemplate.removeClass('single-price-template').addClass('single-price-fields').show();
+                $('#singlePriceFieldsContainer').append(singleTemplate);
+            });
 
-        // Remove button functionality for single price fields
-        $(document).on('click', '.remove-single', function() {
-            $(this).closest('.single-price-fields').remove();
+            // Clone double-price-template on Add More button click for double
+            $('.add-more-double').click(function() {
+                var doubleTemplate = $('.double-price-template').clone();
+                doubleTemplate.removeClass('double-price-template').addClass('double-price-fields').show();
+                $('#doublePriceFieldsContainer').append(doubleTemplate);
+            });
+
+            // Remove button functionality for single price fields
+            $(document).on('click', '.remove-single', function() {
+                $(this).closest('.single-price-fields').remove();
+            });
+
+            // Remove button functionality for double price fields
+            $(document).on('click', '.remove-double', function() {
+                $(this).closest('.double-price-fields').remove();
+            });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Initialize counters for single and double side fields
+            let rigidMediaIndexSingle = 1;
+            let rigidMediaIndexDouble = 1;
 
-        // Remove button functionality for double price fields
-        $(document).on('click', '.remove-double', function() {
-            $(this).closest('.double-price-fields').remove();
+            // Add More for Single Side
+            $('.add-more-single').click(function() {
+                addFields('#singlePriceFieldsContainer', 'single', rigidMediaIndexSingle++);
+            });
+
+            // Add More for Double Side
+            $('.add-more-double').click(function() {
+                addFields('#doublePriceFieldsContainer', 'double', rigidMediaIndexDouble++);
+            });
+
+            // Function to dynamically add fields
+            function addFields(containerId, type, index) {
+                const clone = $(`${containerId} .${type}-price-fields:first`).clone();
+
+                // Update name attributes
+                clone.find('input').each(function() {
+                    let name = $(this).attr('name');
+                    name = name.replace(/\[\d+\]/, `[${index}]`);
+                    $(this).attr('name', name).val(''); // Clear values
+                });
+
+                clone.find('.remove-single, .remove-double').show(); // Show remove button
+
+                // Add the new fields above the "Add More" button
+                $(`${containerId} .add-more-${type}`).before(clone);
+
+                toggleRemoveButtons(containerId, `.remove-${type}`);
+            }
+
+            // Function to toggle remove buttons
+            function toggleRemoveButtons(containerId, removeButtonClass) {
+                const rows = $(`${containerId} .row`);
+                rows.length > 1 ? $(removeButtonClass).show() : $(removeButtonClass).hide();
+            }
+
+            // Remove field dynamically
+            $(document).on('click', '.remove-single, .remove-double', function() {
+                $(this).closest('.row').remove();
+                toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
+                toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
+            });
+
+            // Initialize remove buttons
+            toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
+            toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
         });
-    });
-</script>
-<script>
-   $(document).ready(function () {
-    // Initialize counters for single and double side fields
-    let rigidMediaIndexSingle = 1;
-    let rigidMediaIndexDouble = 1;
-
-    // Add More for Single Side
-    $('.add-more-single').click(function () {
-        addFields('#singlePriceFieldsContainer', 'single', rigidMediaIndexSingle++);
-    });
-
-    // Add More for Double Side
-    $('.add-more-double').click(function () {
-        addFields('#doublePriceFieldsContainer', 'double', rigidMediaIndexDouble++);
-    });
-
-    // Function to dynamically add fields
-    function addFields(containerId, type, index) {
-        const clone = $(`${containerId} .${type}-price-fields:first`).clone();
-
-        // Update name attributes
-        clone.find('input').each(function () {
-            let name = $(this).attr('name');
-            name = name.replace(/\[\d+\]/, `[${index}]`);
-            $(this).attr('name', name).val(''); // Clear values
-        });
-
-        clone.find('.remove-single, .remove-double').show(); // Show remove button
-
-        // Add the new fields above the "Add More" button
-        $(`${containerId} .add-more-${type}`).before(clone);
-
-        toggleRemoveButtons(containerId, `.remove-${type}`);
-    }
-
-    // Function to toggle remove buttons
-    function toggleRemoveButtons(containerId, removeButtonClass) {
-        const rows = $(`${containerId} .row`);
-        rows.length > 1 ? $(removeButtonClass).show() : $(removeButtonClass).hide();
-    }
-
-    // Remove field dynamically
-    $(document).on('click', '.remove-single, .remove-double', function () {
-        $(this).closest('.row').remove();
-        toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
-        toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
-    });
-
-    // Initialize remove buttons
-    toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
-    toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
-});
-
-
-</script>
-
+    </script>
 @endsection

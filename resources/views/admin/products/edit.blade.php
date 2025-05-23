@@ -18,14 +18,15 @@
             margin-right: 10px;
             /* Adjust the margin-right value to set the desired gap between buttons */
         }
+
         .row .price-fields {
             align-items: baseline;
             margin-top: 15px;
         }
-        #rigidMediaContainer {
-    display: none;
-}
 
+        #rigidMediaContainer {
+            display: none;
+        }
     </style>
 @endsection
 
@@ -51,7 +52,7 @@
     <section class="content">
         <!-- Default box -->
         <div class="container-fluid">
-            <form action="" method="POST" id="productform" name="productform">
+            <form action="" method="POST" id="productform" name="productform" enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-md-8">
@@ -318,18 +319,33 @@
                                                 $disableRigid = false;
                                                 $disableRoll = false;
 
-                                                if ($price_range instanceof \Illuminate\Support\Collection && $price_range->isNotEmpty()) {
+                                                if (
+                                                    $price_range instanceof \Illuminate\Support\Collection &&
+                                                    $price_range->isNotEmpty()
+                                                ) {
                                                     $firstItem = $price_range->first();
-                                                    $selectedOption = old('priceOption', $firstItem->price_option ?? '');
-                                                } elseif (isset($product->fixed_price_options) && $product->fixed_price_options->isNotEmpty()) {
+                                                    $selectedOption = old(
+                                                        'priceOption',
+                                                        $firstItem->price_option ?? '',
+                                                    );
+                                                } elseif (
+                                                    isset($product->fixed_price_options) &&
+                                                    $product->fixed_price_options->isNotEmpty()
+                                                ) {
                                                     $selectedOption = 'fixed';
                                                     $disableRigid = true;
                                                     $disableRoll = true;
-                                                } elseif (isset($product->rigidMedia) && $product->rigidMedia->isNotEmpty()) {
+                                                } elseif (
+                                                    isset($product->rigidMedia) &&
+                                                    $product->rigidMedia->isNotEmpty()
+                                                ) {
                                                     $selectedOption = 'rigidMedia';
                                                     $disableFixed = true;
                                                     $disableRoll = true;
-                                                } elseif (isset($product->rollMedia) && $product->rollMedia->isNotEmpty()) {
+                                                } elseif (
+                                                    isset($product->rollMedia) &&
+                                                    $product->rollMedia->isNotEmpty()
+                                                ) {
                                                     $selectedOption = 'rollMedia';
                                                     $disableFixed = true;
                                                     $disableRigid = true;
@@ -342,15 +358,16 @@
                                                 <input class="form-check-input" type="radio" name="priceOption"
                                                     id="priceOptionRollMedia" value="rollMedia"
                                                     {{ $selectedOption == 'rollMedia' ? 'checked' : '' }}
-                                                    @if($disableRoll) disabled @endif>
-                                                <label class="form-check-label" for="priceOptionRollMedia">Roll Media</label>
+                                                    @if ($disableRoll) disabled @endif>
+                                                <label class="form-check-label" for="priceOptionRollMedia">Roll
+                                                    Media</label>
                                             </div>
 
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="priceOption"
                                                     id="priceOptionFixed" value="fixed"
                                                     {{ $selectedOption == 'fixed' ? 'checked' : '' }}
-                                                    @if($disableFixed) disabled @endif>
+                                                    @if ($disableFixed) disabled @endif>
                                                 <label class="form-check-label" for="priceOptionFixed">Fixed</label>
                                             </div>
 
@@ -358,8 +375,9 @@
                                                 <input class="form-check-input" type="radio" name="priceOption"
                                                     id="priceOptionRigidMedia" value="rigidMedia"
                                                     {{ $selectedOption == 'rigidMedia' ? 'checked' : '' }}
-                                                    @if($disableRigid) disabled @endif>
-                                                <label class="form-check-label" for="priceOptionRigidMedia">Rigid Media</label>
+                                                    @if ($disableRigid) disabled @endif>
+                                                <label class="form-check-label" for="priceOptionRigidMedia">Rigid
+                                                    Media</label>
                                             </div>
                                         </div>
                                     </div>
@@ -421,7 +439,9 @@
                                                                 value="{{ old('fixed_dimensions.' . $index, $fixedOption->width . ' X ' . $fixedOption->height) }}"
                                                                 class="form-control"
                                                                 placeholder="Size Dimensions (e.g. 1000 X 2000)">
-                                                            <p id="dimension-error" class="error text-danger" style="display: none;">Invalid dimension format. Please use the format "1000 X 2000" or "1000*2000".</p>
+                                                            <p id="dimension-error" class="error text-danger"
+                                                                style="display: none;">Invalid dimension format. Please use
+                                                                the format "1000 X 2000" or "1000*2000".</p>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-9">
@@ -473,22 +493,25 @@
                                     @endif
                                 </div>
                                 <!-- Rigid Media Section -->
-                                <div id="rigidMediaContainer" class="{{ $selectedOption != 'rigidMedia' ? 'hidden' : '' }}">
+                                <div id="rigidMediaContainer"
+                                    class="{{ $selectedOption != 'rigidMedia' ? 'hidden' : '' }}">
                                     <h3>Rigid Media</h3>
 
                                     <!-- Checkbox Selection for Single Side or Double Side -->
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="singleOption0" value="single side"
-                                                    @if($product->rigidMedia->contains('media_type', 'single side')) checked @endif>
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="rigidMediaOption[0][]" id="singleOption0" value="single side"
+                                                    @if ($product->rigidMedia->contains('media_type', 'single side')) checked @endif>
                                                 <label class="form-check-label" for="singleOption0">Single Side</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[0][]" id="doubleOption0" value="double side"
-                                                    @if($product->rigidMedia->contains('media_type', 'double side')) checked @endif>
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="rigidMediaOption[0][]" id="doubleOption0" value="double side"
+                                                    @if ($product->rigidMedia->contains('media_type', 'double side')) checked @endif>
                                                 <label class="form-check-label" for="doubleOption0">Double Side</label>
                                             </div>
                                         </div>
@@ -497,7 +520,8 @@
                                     <!-- Dynamic Rows for Rigid Media Options -->
                                     <div class="row mt-3">
                                         <!-- Single Side Options on the Left -->
-                                        <div class="col-md-6" id="singleSideContainer" style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
+                                        <div class="col-md-6" id="singleSideContainer"
+                                            style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
                                             @foreach ($product->rigidMedia->where('media_type', 'single side') as $index => $rigidMediaOption)
                                                 <div class="price-fields-container mt-3">
                                                     <h5>Single Side</h5>
@@ -505,29 +529,36 @@
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Minimum Range (Total Sq Mtr.)</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->min_range }}" 
-                                                                    name="rigidMedia[single][{{ $index }}][min_range]" 
-                                                                    class="form-control" placeholder="Min Sq Mtr." min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->min_range }}"
+                                                                    name="rigidMedia[single][{{ $index }}][min_range]"
+                                                                    class="form-control" placeholder="Min Sq Mtr."
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Maximum Range (Total Sq Mtr.)</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->max_range }}" 
-                                                                    name="rigidMedia[single][{{ $index }}][max_range]" 
-                                                                    class="form-control" placeholder="Max Sq Mtr." min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->max_range }}"
+                                                                    name="rigidMedia[single][{{ $index }}][max_range]"
+                                                                    class="form-control" placeholder="Max Sq Mtr."
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Price</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->price }}" 
-                                                                    name="rigidMedia[single][{{ $index }}][price]" 
-                                                                    class="form-control" placeholder="Price" min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->price }}"
+                                                                    name="rigidMedia[single][{{ $index }}][price]"
+                                                                    class="form-control" placeholder="Price"
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 text-end mt-2">
-                                                            <button type="button" class="btn btn-danger remove-price-field">
+                                                            <button type="button"
+                                                                class="btn btn-danger remove-price-field">
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                         </div>
@@ -537,14 +568,16 @@
 
                                             <!-- Add More Button for Single Side -->
                                             <div class="text-center mt-3">
-                                                <button type="button" class="btn btn-primary add-more-price-field" data-side="single">
+                                                <button type="button" class="btn btn-primary add-more-price-field"
+                                                    data-side="single">
                                                     <i class="fas fa-plus"></i> Add More Single Side
                                                 </button>
                                             </div>
                                         </div>
 
                                         <!-- Double Side Options on the Right -->
-                                        <div class="col-md-6" id="doubleSideContainer" style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
+                                        <div class="col-md-6" id="doubleSideContainer"
+                                            style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
                                             @foreach ($product->rigidMedia->where('media_type', 'double side') as $index => $rigidMediaOption)
                                                 <div class="price-fields-container mt-3">
                                                     <h5>Double Side</h5>
@@ -552,29 +585,36 @@
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Minimum Range (Total Sq Mtr.)</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->min_range }}" 
-                                                                    name="rigidMedia[double][{{ $index }}][min_range]" 
-                                                                    class="form-control" placeholder="Min Sq Mtr." min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->min_range }}"
+                                                                    name="rigidMedia[double][{{ $index }}][min_range]"
+                                                                    class="form-control" placeholder="Min Sq Mtr."
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Maximum Range (Total Sq Mtr.)</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->max_range }}" 
-                                                                    name="rigidMedia[double][{{ $index }}][max_range]" 
-                                                                    class="form-control" placeholder="Max Sq Mtr." min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->max_range }}"
+                                                                    name="rigidMedia[double][{{ $index }}][max_range]"
+                                                                    class="form-control" placeholder="Max Sq Mtr."
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
                                                                 <label>Price</label>
-                                                                <input type="number" value="{{ $rigidMediaOption->price }}" 
-                                                                    name="rigidMedia[double][{{ $index }}][price]" 
-                                                                    class="form-control" placeholder="Price" min="0" step="0.01">
+                                                                <input type="number"
+                                                                    value="{{ $rigidMediaOption->price }}"
+                                                                    name="rigidMedia[double][{{ $index }}][price]"
+                                                                    class="form-control" placeholder="Price"
+                                                                    min="0" step="0.01">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 text-end mt-2">
-                                                            <button type="button" class="btn btn-danger remove-price-field">
+                                                            <button type="button"
+                                                                class="btn btn-danger remove-price-field">
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                         </div>
@@ -584,7 +624,8 @@
 
                                             <!-- Add More Button for Double Side -->
                                             <div class="text-center mt-3">
-                                                <button type="button" class="btn btn-primary add-more-price-field" data-side="double">
+                                                <button type="button" class="btn btn-primary add-more-price-field"
+                                                    data-side="double">
                                                     <i class="fas fa-plus"></i> Add More Double Side
                                                 </button>
                                             </div>
@@ -594,7 +635,7 @@
 
 
 
-                               
+
                                 <button type="button" id="addFixedFieldsBtn" class="btn btn-success">Add Fixed
                                     Media</button>
                                 <button type="button" id="addRollMediaFieldsBtn" class="btn btn-success">Add
@@ -1235,8 +1276,8 @@
                                                 <div class="col-md-5">
                                                     <div class="mb-3">
                                                         <label for="corners_price">Corners Price</label>
-                                                        <input type="text" name="corners_price[]" class="form-control"
-                                                            placeholder="Corners Price"
+                                                        <input type="text" name="corners_price[]"
+                                                            class="form-control" placeholder="Corners Price"
                                                             value="{{ $attribute->attribute_price }}">
                                                     </div>
                                                 </div>
@@ -1252,8 +1293,8 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                     <label for="product_corners">Corners</label>
-                                                    <input type="text" name="product_corners[]" class="form-control"
-                                                        placeholder="Corners">
+                                                    <input type="text" name="product_corners[]"
+                                                        class="form-control" placeholder="Corners">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -1315,8 +1356,8 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                     <label for="application_price">Application Price</label>
-                                                    <input type="text" name="application_price[]" class="form-control"
-                                                        placeholder="Application Price">
+                                                    <input type="text" name="application_price[]"
+                                                        class="form-control" placeholder="Application Price">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -1325,7 +1366,8 @@
                                         </div>
                                     @endif
                                 </div>
-                                <button type="button" id="addApplicationBtn" class="btn btn-success">Add More</button>
+                                <button type="button" id="addApplicationBtn" class="btn btn-success">Add
+                                    More</button>
                             </div>
                         </div>
                         <!-- Product Paper Thickness Option Card (Initially Hidden) -->
@@ -1748,6 +1790,38 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Upload Guidelines</h2>
+
+                                <label for="guidlines">Upload PDF Guidelines</label>
+                                <div class="mb-3">
+                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf" multiple>
+
+                                </div>
+
+                                @if (!empty($product->guidlines))
+                                    @php
+                                        $guidlines = explode('|', $product->guidlines);
+                                    @endphp
+
+                                    <div class="mt-3">
+                                        <h5>Existing Uploaded Guidelines:</h5>
+                                        @foreach ($guidlines as $value)
+                                            @if (!empty($value))
+                                                <div class="mb-2">
+                                                    <a href="{{ $value }}" target="_blank"
+                                                        class="text-primary">
+                                                        <i class="fa fa-file-pdf"></i> {{ $value }}
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -1788,9 +1862,10 @@
             });
 
             function toggleContainers(selectedOption) {
-                [rollMediaContainer, fixedContainer, rigidMediaContainer].forEach(container => container.classList.add('hidden'));
+                [rollMediaContainer, fixedContainer, rigidMediaContainer].forEach(container => container.classList
+                    .add('hidden'));
                 [addRollMediaFieldsBtn, addFixedFieldsBtn].forEach(btn => btn.style.display = 'none');
-                
+
                 if (selectedOption === 'rollMedia') {
                     rollMediaContainer.classList.remove('hidden');
                     addRollMediaFieldsBtn.style.display = 'block';
@@ -1813,19 +1888,33 @@
 
             // Roll and Fixed Media Field Additions
             addRollMediaFieldsBtn.addEventListener('click', addRollMediaFields);
-            
+
 
             function addRollMediaFields() {
-                const newFieldSet = createFieldSet('rollMediaFieldSet', [
-                    { label: 'Min Range', name: 'min_range[]', type: 'number', placeholder: 'Min Range' },
-                    { label: 'Max Range', name: 'max_range[]', type: 'number', placeholder: 'Max Range' },
-                    { label: 'Price', name: 'roll_price[]', type: 'number', placeholder: 'Price' }
+                const newFieldSet = createFieldSet('rollMediaFieldSet', [{
+                        label: 'Min Range',
+                        name: 'min_range[]',
+                        type: 'number',
+                        placeholder: 'Min Range'
+                    },
+                    {
+                        label: 'Max Range',
+                        name: 'max_range[]',
+                        type: 'number',
+                        placeholder: 'Max Range'
+                    },
+                    {
+                        label: 'Price',
+                        name: 'roll_price[]',
+                        type: 'number',
+                        placeholder: 'Price'
+                    }
                 ]);
                 rollMediaContainer.appendChild(newFieldSet);
                 updateRemoveButtons();
             }
 
-            
+
             function createFieldSet(className, fields) {
                 const newFieldSet = document.createElement('div');
                 newFieldSet.classList.add(className, 'row', 'mb-3');
@@ -1915,9 +2004,12 @@
 
             // Remove Buttons Event Delegation
             document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('removeBtn')) e.target.closest('.rollMediaFieldSet').remove();
-                if (e.target.classList.contains('removeFixedBtn')) e.target.closest('.fixedFieldSet').remove();
-                if (e.target.classList.contains('remove-price-field')) e.target.closest('.price-fields-container').remove();
+                if (e.target.classList.contains('removeBtn')) e.target.closest('.rollMediaFieldSet')
+                .remove();
+                if (e.target.classList.contains('removeFixedBtn')) e.target.closest('.fixedFieldSet')
+                    .remove();
+                if (e.target.classList.contains('remove-price-field')) e.target.closest(
+                    '.price-fields-container').remove();
                 updateRemoveButtons();
             });
 
@@ -1925,11 +2017,13 @@
                 ['rollMediaFieldSet', 'fixedFieldSet'].forEach(setClass => {
                     const fieldSets = document.querySelectorAll(`.${setClass}`);
                     fieldSets.forEach(fieldSet => {
-                        fieldSet.querySelector('.btn-danger').style.display = fieldSets.length > 1 ? 'block' : 'none';
+                        fieldSet.querySelector('.btn-danger').style.display = fieldSets.length > 1 ?
+                            'block' : 'none';
                     });
                 });
                 ['single', 'double'].forEach(side => {
-                    const containers = document.querySelectorAll(`#${side}SideContainer .price-fields-container`);
+                    const containers = document.querySelectorAll(
+                        `#${side}SideContainer .price-fields-container`);
                     containers.forEach(container => {
                         const removeBtn = container.querySelector('.remove-price-field');
                         removeBtn.style.display = containers.length > 1 ? 'block' : 'none';
@@ -1944,7 +2038,8 @@
             });
 
             function toggleCardVisibility(card, button) {
-                card.style.display = card.querySelectorAll(".row").length > 0 && button.classList.contains("active") ? 'block' : 'none';
+                card.style.display = card.querySelectorAll(".row").length > 0 && button.classList.contains(
+                    "active") ? 'block' : 'none';
             }
 
             // Initialize Input Field Checks
@@ -1954,7 +2049,8 @@
                 disableCheckButtonOnLoad(inputSelector, buttonSelector);
                 document.querySelectorAll(inputSelector).forEach(input => {
                     input.addEventListener('input', function() {
-                        const isEmpty = !Array.from(document.querySelectorAll(inputSelector)).some(input => input.value.trim() !== '');
+                        const isEmpty = !Array.from(document.querySelectorAll(inputSelector)).some(
+                            input => input.value.trim() !== '');
                         buttonSelector.classList.toggle("active", !isEmpty);
                         productPriceCard.style.display = isEmpty ? 'none' : 'block';
                     });
@@ -1962,7 +2058,8 @@
             }
 
             function disableCheckButtonOnLoad(inputSelector, buttonSelector) {
-                const isDataPresent = Array.from(document.querySelectorAll(inputSelector)).some(input => input.value.trim() !== '0');
+                const isDataPresent = Array.from(document.querySelectorAll(inputSelector)).some(input => input.value
+                    .trim() !== '0');
                 buttonSelector.disabled = !isDataPresent;
                 productPriceCard.style.display = isDataPresent ? 'block' : 'none';
             }
@@ -3793,68 +3890,72 @@
         // });
 
         $("#productform").submit(function(event) {
-            event.preventDefault();
-            var element = $(this);
+    event.preventDefault();
 
-            $("button[type=submit]").prop('disabled', true);
+    var form = $(this)[0]; // raw DOM element
+    var formData = new FormData(form);
 
-            $.ajax({
-                url: '{{ route('products.update', $product->id) }}',
-                type: 'PUT',
-                data: element.serializeArray(),
-                dataType: 'json',
-                success: function(response) {
-                    $("button[type=submit]").prop('disabled', false);
+    $("button[type=submit]").prop('disabled', true);
 
-                    if (response["status"] == true) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Product has been updated successfully!',
-                            timer: 3000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = "{{ route('products.index') }}";
-                        });
+    $.ajax({
+        url: '{{ route('products.update', $product->id) }}',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-HTTP-Method-Override': 'PUT'
+        },
+        success: function(response) {
+            $("button[type=submit]").prop('disabled', false);
+            if (response.status === true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product has been updated successfully!',
+                    timer: 3000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "{{ route('products.index') }}";
+                });
+            } else {
+                $('input, select, textarea').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+                let errorMessage = '';
 
-                        $('#product_name').removeClass('is-invalid').siblings('p').removeClass(
-                            'invalid-feedback').html("");
-                        $('#product_slug').removeClass('is-invalid').siblings('p').removeClass(
-                            'invalid-feedback').html("");
-
-                    } else {
-                        var errors = response['errors'];
-                        $(".error").removeClass('invalid-feedback').html('');
-                        $("input[type='text'], select").removeClass('is-invalid');
-
-                        var errorMessage = '';
-                        $.each(errors, function(key, value) {
-                            $(`#${key}`).addClass('is-invalid').siblings('p').addClass(
-                                'invalid-feedback').html(value.join('<br>'));
-                            errorMessage += value.join('<br>') + '<br>';
-                        });
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            html: errorMessage,
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
+                $.each(response.errors, function(key, messages) {
+                    const el = $(`#${key}`);
+                    el.addClass('is-invalid');
+                    if (el.next('.invalid-feedback').length === 0) {
+                        el.after(`<div class="invalid-feedback">${messages.join('<br>')}</div>`);
                     }
-                },
-                error: function(jqXHR, exception) {
-                    $("button[type=submit]").prop('disabled', false);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Something went wrong. Please try again later.',
-                        timer: 3000,
-                        showConfirmButton: false
-                    });
-                }
+                    errorMessage += messages.join('<br>') + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    html: errorMessage,
+                    timer: 4000,
+                    showConfirmButton: false
+                });
+            }
+        },
+        error: function(jqXHR) {
+            $("button[type=submit]").prop('disabled', false);
+            Swal.fire({
+                icon: 'error',
+                title: 'Server Error',
+                text: jqXHR.responseJSON?.message || 'Something went wrong. Please try again later.',
+                timer: 3000,
+                showConfirmButton: false
             });
-        });
+        }
+    });
+});
+
 
 
         $("#product_name").change(function() {
@@ -3960,17 +4061,18 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let fixedDimensionsIndex = {{ isset($product->fixed_price_options) ? $product->fixed_price_options->count() : 0 }};
-        
+            let fixedDimensionsIndex =
+                {{ isset($product->fixed_price_options) ? $product->fixed_price_options->count() : 0 }};
+
             const addFixedFieldsBtn = document.getElementById('addFixedFieldsBtn');
             const fixedContainer = document.getElementById('fixedContainer');
-        
+
             // Function to add fixed media fields
             function addFixedFields() {
                 const newFieldSet = document.createElement('div');
                 newFieldSet.classList.add('fixedFieldSet', 'mb-3');
                 newFieldSet.setAttribute('data-index', fixedDimensionsIndex);
-        
+
                 newFieldSet.innerHTML = `
                     <div class="row">
                         <div class="col-md-3">
@@ -4002,20 +4104,20 @@
                         </div>
                     </div>
                 `;
-        
+
                 fixedContainer.appendChild(newFieldSet);
                 fixedDimensionsIndex++;
                 updateRemoveButtons();
             }
-        
+
             // Event listener for adding fixed media fields
             addFixedFieldsBtn.addEventListener('click', addFixedFields);
-        
+
             // Event listener for adding quantity and price rows
             $(document).on('click', '.addMoreFixedBtn', function() {
                 const parentFieldSet = $(this).closest('.fixedFieldSet');
                 const dimensionIndex = parentFieldSet.data('index');
-        
+
                 const newQtyPriceRow = `
                     <div class="row fixedFieldSet mt-2">
                         <div class="col-md-3">
@@ -4034,184 +4136,185 @@
                 `;
                 parentFieldSet.find('.mb-3:last').append(newQtyPriceRow);
             });
-        
+
             // Event listener for removing fixed quantity and price rows
             $(document).on('click', '.removeFixedBtn', function() {
                 $(this).closest('.fixedFieldSet').remove();
                 updateRemoveButtons(); // Update buttons visibility after removal
             });
-        
+
             // Function to update the visibility of remove buttons
             function updateRemoveButtons() {
                 const fixedFields = document.querySelectorAll('.fixedFieldSet');
-        
+
                 fixedFields.forEach(field => {
                     const addButton = field.querySelector('.addMoreFixedBtn');
                     const removeButton = field.querySelector('.removeFixedBtn');
-        
+
                     if (addButton) {
                         addButton.style.display = 'block';
                     }
-        
+
                     if (removeButton) {
                         removeButton.style.display = fixedFields.length > 1 ? 'block' : 'none';
                     }
                 });
             }
-        
+
             // Initial call to update the remove buttons
             updateRemoveButtons();
         });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var priceOptions = document.querySelectorAll('.priceOption');
-                var priceFields = document.querySelectorAll('.price-fields');
-    
-                // Function to show/hide price fields based on selected option
-                function togglePriceFields() {
-                    var selectedOption = document.querySelector('input[name="priceOption"]:checked').value;
-                    priceFields.forEach(function(field) {
-                        if (field.getAttribute('data-option') === selectedOption) {
-                            field.classList.remove('hidden');
-                        } else {
-                            field.classList.add('hidden');
-                        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var priceOptions = document.querySelectorAll('.priceOption');
+            var priceFields = document.querySelectorAll('.price-fields');
+
+            // Function to show/hide price fields based on selected option
+            function togglePriceFields() {
+                var selectedOption = document.querySelector('input[name="priceOption"]:checked').value;
+                priceFields.forEach(function(field) {
+                    if (field.getAttribute('data-option') === selectedOption) {
+                        field.classList.remove('hidden');
+                    } else {
+                        field.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Initial setup
+            togglePriceFields();
+
+            // Event listener for radio button change
+            priceOptions.forEach(function(option) {
+                option.addEventListener('change', function() {
+                    togglePriceFields();
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dimensionRegex = /^\d+(\.\d+)?\s*[x*]\s*\d+(\.\d+)?$/i;
+
+            // Function to validate a dimension input field
+            function validateDimension(input) {
+                const errorElement = input.parentElement.querySelector(
+                '.dimension-error'); // Find error message within the same container
+
+                if (input.value === "") {
+                    input.classList.remove('is-invalid');
+                    errorElement.style.display = 'none';
+                    return;
+                }
+
+                if (!dimensionRegex.test(input.value)) {
+                    input.classList.add('is-invalid');
+                    errorElement.style.display = 'inline';
+                } else {
+                    input.classList.remove('is-invalid');
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            // Attach validation to all current and future dimension inputs
+            function attachValidationToDimensions() {
+                document.querySelectorAll('input[name="fixed_dimensions[]"]').forEach(input => {
+                    input.removeEventListener('input', validateDimensionHandler);
+                    input.removeEventListener('blur', validateDimensionHandler);
+
+                    input.addEventListener('input', validateDimensionHandler);
+                    input.addEventListener('blur', validateDimensionHandler);
+                });
+            }
+
+            // Event handler for validation
+            function validateDimensionHandler(event) {
+                validateDimension(event.target);
+            }
+
+            // Initial validation attachment
+            attachValidationToDimensions();
+
+            // MutationObserver to handle dynamically added fields
+            const observer = new MutationObserver(attachValidationToDimensions);
+            observer.observe(document.getElementById('fixedContainer'), {
+                childList: true,
+                subtree: true
+            });
+
+            // Optional: Validate dimensions before switching tabs if tabs are present
+            const tabElements = document.querySelectorAll('.nav-link');
+            if (tabElements.length > 0) {
+                tabElements.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('input[name="fixed_dimensions[]"]').forEach(
+                            input => {
+                                validateDimension(input);
+                            });
+                    });
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceOptionRadioButtons = document.querySelectorAll('input[name="priceOption"]');
+            const rigidMediaContainer = document.getElementById('rigidMediaContainer');
+
+            // Function to toggle visibility of rigid media based on selected radio button
+            function toggleRigidMediaVisibility() {
+                // Get the selected price option
+                const selectedOption = document.querySelector('input[name="priceOption"]:checked')?.value;
+
+                // Show or hide the rigid media container
+                if (selectedOption === 'rigidMedia') {
+                    rigidMediaContainer.style.display = 'block'; // Show
+                } else {
+                    rigidMediaContainer.style.display = 'none'; // Hide
+                }
+            }
+
+            // Add event listeners to all radio buttons
+            priceOptionRadioButtons.forEach(button => {
+                button.addEventListener('change', toggleRigidMediaVisibility);
+            });
+
+            // Initial check to set visibility on page load
+            toggleRigidMediaVisibility();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle Single Side Checkbox
+            const singleCheckbox = document.getElementById('singleOption0');
+            const singleContainer = document.getElementById('singleSideContainer');
+            singleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    singleContainer.style.display = 'block';
+                } else {
+                    singleContainer.style.display = 'none';
+                    // Clear all inputs inside the single side container
+                    Array.from(singleContainer.querySelectorAll('input')).forEach(input => {
+                        input.value = '';
                     });
                 }
-    
-                // Initial setup
-                togglePriceFields();
-    
-                // Event listener for radio button change
-                priceOptions.forEach(function(option) {
-                    option.addEventListener('change', function() {
-                        togglePriceFields();
+            });
+
+            // Handle Double Side Checkbox
+            const doubleCheckbox = document.getElementById('doubleOption0');
+            const doubleContainer = document.getElementById('doubleSideContainer');
+            doubleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    doubleContainer.style.display = 'block';
+                } else {
+                    doubleContainer.style.display = 'none';
+                    // Clear all inputs inside the double side container
+                    Array.from(doubleContainer.querySelectorAll('input')).forEach(input => {
+                        input.value = '';
                     });
-                });
-            });
-        </script>
-        <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const dimensionRegex = /^\d+(\.\d+)?\s*[x*]\s*\d+(\.\d+)?$/i;
-
-    // Function to validate a dimension input field
-    function validateDimension(input) {
-        const errorElement = input.parentElement.querySelector('.dimension-error'); // Find error message within the same container
-
-        if (input.value === "") {
-            input.classList.remove('is-invalid');
-            errorElement.style.display = 'none';
-            return;
-        }
-
-        if (!dimensionRegex.test(input.value)) {
-            input.classList.add('is-invalid');
-            errorElement.style.display = 'inline';
-        } else {
-            input.classList.remove('is-invalid');
-            errorElement.style.display = 'none';
-        }
-    }
-
-    // Attach validation to all current and future dimension inputs
-    function attachValidationToDimensions() {
-        document.querySelectorAll('input[name="fixed_dimensions[]"]').forEach(input => {
-            input.removeEventListener('input', validateDimensionHandler);
-            input.removeEventListener('blur', validateDimensionHandler);
-
-            input.addEventListener('input', validateDimensionHandler);
-            input.addEventListener('blur', validateDimensionHandler);
-        });
-    }
-
-    // Event handler for validation
-    function validateDimensionHandler(event) {
-        validateDimension(event.target);
-    }
-
-    // Initial validation attachment
-    attachValidationToDimensions();
-
-    // MutationObserver to handle dynamically added fields
-    const observer = new MutationObserver(attachValidationToDimensions);
-    observer.observe(document.getElementById('fixedContainer'), { childList: true, subtree: true });
-
-    // Optional: Validate dimensions before switching tabs if tabs are present
-    const tabElements = document.querySelectorAll('.nav-link');
-    if (tabElements.length > 0) {
-        tabElements.forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('input[name="fixed_dimensions[]"]').forEach(input => {
-                    validateDimension(input);
-                });
+                }
             });
         });
-    }
-});
-
-</script>
-<script>
-   document.addEventListener('DOMContentLoaded', function() {
-    const priceOptionRadioButtons = document.querySelectorAll('input[name="priceOption"]');
-    const rigidMediaContainer = document.getElementById('rigidMediaContainer');
-
-    // Function to toggle visibility of rigid media based on selected radio button
-    function toggleRigidMediaVisibility() {
-        // Get the selected price option
-        const selectedOption = document.querySelector('input[name="priceOption"]:checked')?.value;
-
-        // Show or hide the rigid media container
-        if (selectedOption === 'rigidMedia') {
-            rigidMediaContainer.style.display = 'block'; // Show
-        } else {
-            rigidMediaContainer.style.display = 'none'; // Hide
-        }
-    }
-
-    // Add event listeners to all radio buttons
-    priceOptionRadioButtons.forEach(button => {
-        button.addEventListener('change', toggleRigidMediaVisibility);
-    });
-
-    // Initial check to set visibility on page load
-    toggleRigidMediaVisibility();
-});
-
-
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Handle Single Side Checkbox
-    const singleCheckbox = document.getElementById('singleOption0');
-    const singleContainer = document.getElementById('singleSideContainer');
-    singleCheckbox.addEventListener('change', function () {
-        if (this.checked) {
-            singleContainer.style.display = 'block';
-        } else {
-            singleContainer.style.display = 'none';
-            // Clear all inputs inside the single side container
-            Array.from(singleContainer.querySelectorAll('input')).forEach(input => {
-                input.value = '';
-            });
-        }
-    });
-
-    // Handle Double Side Checkbox
-    const doubleCheckbox = document.getElementById('doubleOption0');
-    const doubleContainer = document.getElementById('doubleSideContainer');
-    doubleCheckbox.addEventListener('change', function () {
-        if (this.checked) {
-            doubleContainer.style.display = 'block';
-        } else {
-            doubleContainer.style.display = 'none';
-            // Clear all inputs inside the double side container
-            Array.from(doubleContainer.querySelectorAll('input')).forEach(input => {
-                input.value = '';
-            });
-        }
-    });
-});
-
-</script>
+    </script>
 @endsection

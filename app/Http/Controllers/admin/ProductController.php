@@ -54,102 +54,117 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // Validation Rules
+$rules = [
+    'product_name' => 'required|string|max:255',
+    'product_slug' => 'required|unique:product,product_slug',
+    'category_id' => 'required|numeric',
+];
 
-        $rules = [
-            'product_name' => 'required',
-            'product_slug' => 'required|unique:product',
-            // 'product_sku' => 'required|numeric',
-            'category_id' => 'required|numeric',
-        ];
+$validator = Validator::make($request->all(), $rules);
 
-        $validator = Validator::make($request->all(), $rules);
+if ($validator->passes()) {
+    $product = new Product;
+    $product->product_name = $request->product_name;
+    $product->product_slug = $request->product_slug;
+    $product->product_sku = $request->product_sku ?? null;
+    $product->price_option = $request->priceOption ?? null;
+    $product->product_description = $request->product_description ?? null;
+    $product->product_rating_review = $request->product_rating_review ?? null;
+    $product->product_price = $request->product_price ?? 0;
+    $product->product_discounted_price = $request->product_discounted_price ?? 0;
+    $product->category_id = $request->category_id;
+    $product->subcategory_id = $request->subcategory_id ?? null;
+    $product->product_meta_title = $request->product_meta_title ?? null;
+    $product->product_meta_keyword = $request->product_meta_keyword ?? null;
+    $product->product_meta_desp = $request->product_meta_desp ?? null;
+    $product->product_status = $request->product_status ?? 0;
+    $product->product_tag = $request->product_tag ?? null;
+    $product->product_short_description = $request->product_short_description ?? null;
+    $product->product_feature = $request->product_feature ?? null;
+    $product->product_allows_custom_size = $request->product_allows_custom_size ?? 0;
+    $product->product_key_feature = $request->product_key_feature ?? null;
+    $product->product_quantity = $request->product_quantity ?? 0;
 
-        if ($validator->passes()) {
-            $product = new Product;
-            $product->product_name = $request->product_name;
-            $product->product_slug = $request->product_slug;
-            $product->product_sku = $request->product_sku;
-            $product->price_option = $request->priceOption;
-            $product->product_description = $request->product_description;
-            $product->product_rating_review = $request->product_rating_review;
-            $product->product_price = $request->product_price;
-            $product->product_discounted_price = $request->product_discounted_price;
-            $product->category_id = $request->category_id;
-            $product->subcategory_id = $request->subcategory_id;
-            $product->product_meta_title = $request->product_meta_title;
-            $product->product_meta_keyword = $request->product_meta_keyword;
-            $product->product_meta_desp = $request->product_meta_desp;
-            $product->product_status = $request->product_status;
-            $product->product_tag = $request->product_tag;
-            $product->product_short_description = $request->product_short_description;
-            $product->product_feature = $request->product_feature;
-            $product->product_allows_custom_size = $request->product_allows_custom_size;
-            $product->product_key_feature = $request->product_key_feature;
-            $product->product_question = $request->product_question;
-            $product->product_answer = $request->product_answer;
-            $product->related_products = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
+    // Handle array to string conversion
+    $product->product_question = is_array($request->product_question) ? implode('~', $request->product_question) : $request->product_question;
+    $product->product_answer = is_array($request->product_answer) ? implode('~', $request->product_answer) : $request->product_answer;
 
-            if (is_array($request->product_answer)) {
-                $product->product_answer = implode('~', $request->product_answer);
-            } else {
-                $product->product_answer = $request->product_answer;
-            }
+    $product->related_products = !empty($request->related_products) ? implode(',', $request->related_products) : '';
 
-            if (is_array($request->product_question)) {
-                $product->product_question = implode('~', $request->product_question);
-            } else {
-                $product->product_question = $request->product_question;
-            }
-            $product->product_quantity = $request->product_quantity;
+    // PDF Upload
+$guidlines = [];
+if ($request->hasFile('guidlines')) {
+    $folder = "guidlines";
+    $destinationPath = public_path('uploads/' . $folder . '/');
 
-            // dd($product);
-            $product->save();
+    $files = is_array($request->file('guidlines')) 
+        ? $request->file('guidlines') 
+        : [$request->file('guidlines')];
 
-            if (!empty($request->image_array)) {
-                foreach ($request->image_array as $temp_image_id) {
-
-                    $tempImageInfo = TempImage::find($temp_image_id);
-                    $extArray = explode('.', $tempImageInfo->name);
-                    $ext = last($extArray); // like jpg,gif,png etc
-
-                    $productImage = new ProductImage();
-                    $productImage->product_id = $product->id;
-                    $productImage->image = 'NULL';
-                    $productImage->save();
-
-                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $ext;
-
-                    $productImage->image = $imageName;
-                    $productImage->save();
-
-                    $sPath = public_path() . '/temp/' . $tempImageInfo->name;
-                    $dPath = public_path() . '/uploads/product/' . $imageName;
-
-                    File::copy($sPath, $dPath);
-
-                    $product->product_image = $imageName;
-                    $product->save();
-                }
-            }
-
-            $this->createAttributes($request, $product);
-            $this->createProductPriceDetail($request, $product);
-            $this->createProductPriceRange($request, $product);
-            $this->createFixedPrices($request, $product);
-            $this->createRigidMediasPrices($request, $product);
-
-            $request->session()->flash('success', 'Product added successfully');
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Product added successfully',
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ]);
+    foreach ($files as $file) {
+        if ($file->isValid() && $file->getClientMimeType() === 'application/pdf') {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($destinationPath, $filename);
+            $guidlines[] = url('uploads/' . $folder . '/' . $filename);
         }
+    }
+
+    $product->guidlines = implode('|', $guidlines);
+}
+
+
+    $product->save();
+
+
+    // Image Uploads
+    if (!empty($request->image_array)) {
+        foreach ($request->image_array as $temp_image_id) {
+            $tempImageInfo = TempImage::find($temp_image_id);
+            if ($tempImageInfo) {
+                $ext = pathinfo($tempImageInfo->name, PATHINFO_EXTENSION);
+
+                $productImage = new ProductImage();
+                $productImage->product_id = $product->id;
+                $productImage->image = 'NULL'; // placeholder
+                $productImage->save();
+
+                $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $ext;
+                $productImage->image = $imageName;
+                $productImage->save();
+
+                File::copy(public_path('temp/' . $tempImageInfo->name), public_path('uploads/product/' . $imageName));
+
+                // Set product default image
+                $product->product_image = $imageName;
+                $product->save();
+            }
+        }
+    }
+
+    // Cutting Options
+    // $product->cutting = $request->has('cutting') ? implode('|', $request->input('cutting')) : '';
+    $product->save();
+
+    // Additional Product Related Tables
+    $this->createAttributes($request, $product);
+    $this->createProductPriceDetail($request, $product);
+    $this->createProductPriceRange($request, $product);
+    $this->createFixedPrices($request, $product);
+    $this->createRigidMediasPrices($request, $product);
+
+    $request->session()->flash('success', 'Product added successfully');
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Product added successfully',
+    ]);
+} else {
+    return response()->json([
+        'status' => false,
+        'errors' => $validator->errors(),
+    ]);
+}
     }
 
     protected function createProductPriceDetail(Request $request, $product)
@@ -263,6 +278,7 @@ class ProductController extends Controller
             'pagesinbook' => $request->product_pagesinbook,
             'copiesrequired' => $request->product_copiesrequired,
             'pagesinnotepad' => $request->product_pagesinnotepad,
+            'cutting' => $request->cutting,
         ];
 
         // Iterate over each attribute array and its corresponding price array
@@ -524,6 +540,34 @@ class ProductController extends Controller
                 // If it's already a string, just assign it directly
                 $product->product_question = $request->product_question;
             }
+
+           $guidlines = [];
+
+// Check if files are uploaded
+if ($request->hasFile('guidlines')) {
+    $folder = "guidlines";
+    $destinationPath = public_path('uploads/' . $folder . '/');
+
+    foreach ($request->file('guidlines') as $file) {
+        // Ensure each item is a valid UploadedFile instance
+        if ($file instanceof \Illuminate\Http\UploadedFile && $file->isValid()) {
+            if ($file->getClientMimeType() === 'application/pdf') {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move($destinationPath, $filename);
+                $guidlines[] = url('uploads/' . $folder . '/' . $filename);
+            }
+        }
+    }
+
+    // Append to existing if already present
+    if (!empty($product->guidlines)) {
+        $existing = explode('|', $product->guidlines);
+        $guidlines = array_merge($existing, $guidlines);
+    }
+
+    $product->guidlines = implode('|', $guidlines);
+}
+
 
             $product->save();
 
