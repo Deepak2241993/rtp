@@ -834,8 +834,12 @@
                     <div id="reviews-tab" class="tab-pane fade">
                         <div class="row">
                             <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                @if($product->guidlines)
                                 <iframe src="{{ $product->guidlines }}" width="100%" height="600px"
                                     style="border: none;"></iframe>
+                                    @else
+                                    <p>No templates available for this product.</p>
+                                @endif
                             </div>
 
                         </div>
@@ -852,7 +856,7 @@
     <!-- details-section - end
                             ================================================== -->
 
-
+<hr>
     <!-- shop-section - start
                             ================================================== -->
     <section id="shop-section" class="shop-section sec-ptb-100 decoration-wrap clearfix">

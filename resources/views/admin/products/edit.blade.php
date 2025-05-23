@@ -1796,7 +1796,7 @@
 
                                 <label for="guidlines">Upload PDF Guidelines</label>
                                 <div class="mb-3">
-                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf" multiple>
+                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf" >
 
                                 </div>
 
