@@ -1226,7 +1226,7 @@
             // Toggle Pages in Cuttings Options
             $("#toggleCuttingBtn").click(function() {
                 $(this).toggleClass("active");
-                disableCheckButton('#productCuttingCard input[type="radio"]',
+                disableCheckButton('#productCuttingCard input[type="text"]',
                     '#toggleCuttingBtn');
             });
 
