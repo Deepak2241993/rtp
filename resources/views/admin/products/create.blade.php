@@ -65,7 +65,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="product_name">Product Name</label>
+                                            <label for="product_name">Product Name<span class="text-danger">*</span></label>
                                             <input type="text" name="product_name" id="product_name" class="form-control"
                                                 placeholder="Product Name">
                                             <p class="error"></p>
@@ -73,13 +73,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="product_slug">Product Slug</label>
-                                            <input type="text" name="product_slug" id="product_slug"
-                                                class="form-control" placeholder="Product Slug">
+                                            <label for="product_slug">Product Slug<span class="text-danger">*</span></label>
+                                            <input type="text" name="product_slug" id="product_slug" class="form-control"
+                                                placeholder="Product Slug">
                                             <p class="error"></p>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="product_short_description">Short Description</label>
@@ -234,6 +234,8 @@
                                                     class="btn btn-info btnchange">Copies Required</button>
                                                 <button type="button" id="togglePagesinNotepadBtn"
                                                     class="btn btn-info btnchange">Pages in Notepad</button>
+                                                <button type="button" id="toggleCuttingBtn"
+                                                    class="btn btn-info btnchange">Cutting</button>
                                             </div>
                                         </div>
                                     </div>
@@ -930,6 +932,55 @@
                                     More</button>
                             </div>
                         </div>
+                        <!-- Product Pages in Cuttings Option Card (Initially Hidden) -->   
+                       <div class="card mb-3" id="productCuttingCard" style="display: none;">
+    <div class="card-body">
+        <h2 class="h4 mb-3">Pages Cutting Option</h2>
+        @php
+            $cutting = array(
+                'Trim to Size','Custom Shape'
+            );
+        @endphp
+        <div id="CuttingFieldsContainer">
+            <div class="row Cutting_class">
+                <!-- Color Input -->
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label for="product_color">Cutting</label>
+                        @foreach ($cutting as $cuttingOption)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="product_cutting[]" id="cutting_{{ $loop->index }}" value="{{ $cuttingOption }}">
+                                <label class="form-check
+-label" for="cutting_{{ $loop->index }}">
+                                    {{ $cuttingOption }}
+                                </label>
+                            </div>
+                        @endforeach
+                        
+                    </div>
+                </div>
+
+                <!-- Color Price Input -->
+                <div class="col-md-5">
+                    <div class="mb-3">
+                        <label for="color_price">Cutting Price</label>
+                        <input type="text" name="product_cutting_price[]" class="form-control" placeholder="Color Price">
+                    </div>
+                </div>
+
+                <!-- Remove Button -->
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger removeBtn w-100">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add More Button -->
+        <button type="button" id="addCuttingBtn" class="btn btn-success mt-3">Add More</button>
+    </div>
+</div>
+
+
 
                         <div class="card mb-3">
                             <div class="card-body">
@@ -939,16 +990,15 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="question">Question</label>
-                                                <textarea name="product_question[]" id="product_question"
-                                                    placeholder="Question" class="form-control" rows="3"></textarea>
+                                                <textarea name="product_question[]" id="product_question" placeholder="Question" class="form-control"
+                                                    rows="3"></textarea>
                                                 <p></p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="answer">Answer</label>
-                                                <textarea name="product_answer[]" id="product_answer"
-                                                    placeholder="Answer" class="form-control" rows="3"></textarea>
+                                                <textarea name="product_answer[]" id="product_answer" placeholder="Answer" class="form-control" rows="3"></textarea>
                                                 <p></p>
                                             </div>
                                         </div>
@@ -999,7 +1049,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h2 class="h4  mb-3">Product category</h2>
+                                <h2 class="h4  mb-3">Product category <span class="text-danger">*</span></label></h2>
                                 <div class="mb-3">
                                     <label for="category_id">Category Name</label>
                                     <select name="category_id" id="category_id" class="form-control">
@@ -1047,13 +1097,14 @@
                                 </div>
                             </div>
                         </div>
-                    {{-- For Guidlines --}}
+                        {{-- For Guidlines --}}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3"></h2>
-                                 <label for="guidlines">Uploads Guidelines</label>
+                                <label for="guidlines">Uploads Guidelines</label>
                                 <div class="mb-3">
-                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf">
+                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control"
+                                        accept="application/pdf">
                                 </div>
                             </div>
                         </div>
@@ -1172,6 +1223,13 @@
                     '#togglePagesinNotepadBtn');
             });
 
+            // Toggle Pages in Cuttings Options
+            $("#toggleCuttingBtn").click(function() {
+                $(this).toggleClass("active");
+                disableCheckButton('#productCuttingCard input[type="radio"]',
+                    '#toggleCuttingBtn');
+            });
+
             // Function to toggle the visibility of a card section
             function toggleCardVisibility(buttonId, cardId) {
                 $(buttonId).click(function() {
@@ -1229,6 +1287,8 @@
 
             // Toggle Pages in Notepad Options
             toggleCardVisibility('#togglePagesinNotepadBtn', '#productPagesinNotepadCard');
+            // Toggle Pages in Cuttings Options
+            toggleCardVisibility('#toggleCuttingBtn', '#productCuttingCard');
 
 
             // Function to update the visibility of remove buttons for any group
@@ -1245,10 +1305,10 @@
                 $(buttonSelector).click(function() {
                     var clone = $(classSelector).first().clone();
                     clone.find('input[type="text"], input[type="number"]').val(
-                    ""); // Clear both text and number input values
+                        ""); // Clear both text and number input values
                     $(containerSelector).append(clone);
                     updateRemoveButtons(containerSelector,
-                    '.removeBtn'); // Update visibility of remove buttons
+                        '.removeBtn'); // Update visibility of remove buttons
                 });
             }
 
@@ -1269,7 +1329,7 @@
                         if (allFieldsEmpty) {
                             $(this).closest('.row').remove();
                             updateRemoveButtons(containerSelector,
-                            '.removeBtn'); // Update visibility of remove buttons
+                                '.removeBtn'); // Update visibility of remove buttons
                         }
                     }
                 });
@@ -1305,6 +1365,7 @@
             addFields('#addPagesinBookBtn', '#pagesinbookFieldsContainer', '.pagesinbook');
             addFields('#addCopiesRequiredBtn', '#copiesrequiredFieldsContainer', '.copiesrequired');
             addFields('#addPagesinNotepadBtn', '#pagesinnotepadFieldsContainer', '.pagesinnotepad');
+            addFields('#addCuttingBtn', '#CuttingFieldsContainer', '.Cutting_class');
 
             setupRemoveButtons('#sizeFieldsContainer');
             setupRemoveButtons('#colorFieldsContainer');
@@ -1323,6 +1384,7 @@
             setupRemoveButtons('#pagesinbookFieldsContainer');
             setupRemoveButtons('#copiesrequiredFieldsContainer');
             setupRemoveButtons('#pagesinnotepadFieldsContainer');
+            setupRemoveButtons('#CuttingFieldsContainer');
 
             // Initialize disable check button functionality for input fields
             disableCheckButton('#productSizeCard input[type="number"]', '#toggleProductSizeBtn');
@@ -1342,6 +1404,8 @@
             disableCheckButton('#productPagesinBookCard input[type="text"]', '#togglePagesinBookBtn');
             disableCheckButton('#productCopiesRequiredCard input[type="text"]', '#toggleCopiesRequiredBtn');
             disableCheckButton('#productPagesinNotepadCard input[type="text"]', '#togglePagesinNotepadBtn');
+            disableCheckButton('#productCuttingCard input[type="text"]', '#toggleCuttingBtn');
+
 
             // Initial update calls
             updateRemoveButtons('#productSizeCard', '.removeBtn');
@@ -1361,6 +1425,7 @@
             updateRemoveButtons('#productPagesinBookCard', '.removeBtn');
             updateRemoveButtons('#productCopiesRequiredCard', '.removeBtn');
             updateRemoveButtons('#productPagesinNotepadCard', '.removeBtn');
+            updateRemoveButtons('#productCuttingCard', '.removeBtn');
         });
     </script>
 
@@ -1478,95 +1543,95 @@
 
         // Form Action
         $("#productform").submit(function(event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    var form = $('#productform')[0]; // Get the raw DOM element
-    var formData = new FormData(form); // Include all form fields + files
+            var form = $('#productform')[0]; // Get the raw DOM element
+            var formData = new FormData(form); // Include all form fields + files
 
-    $("button[type=submit]").prop('disabled', true);
+            $("button[type=submit]").prop('disabled', true);
 
-    $.ajax({
-        url: '{{ route('products.store') }}',
-        type: 'POST',
-        data: formData,
-        processData: false, // Don't process the data
-        contentType: false, // Let the browser set content-type
-        dataType: 'json',
-        success: function(response) {
-            $("button[type=submit]").prop('disabled', false);
+            $.ajax({
+                url: '{{ route('products.store') }}',
+                type: 'POST',
+                data: formData,
+                processData: false, // Don't process the data
+                contentType: false, // Let the browser set content-type
+                dataType: 'json',
+                success: function(response) {
+                    $("button[type=submit]").prop('disabled', false);
 
-            if (response["status"] === true) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Product has been saved successfully!',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
+                    if (response["status"] === true) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Product has been saved successfully!',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
 
-                window.location.href = "{{ route('products.index') }}";
+                        window.location.href = "{{ route('products.index') }}";
 
-            } else {
-                var errors = response['errors'];
-                var errorMessages = "";
+                    } else {
+                        var errors = response['errors'];
+                        var errorMessages = "";
 
-                $.each(errors, function(key, value) {
-                    errorMessages += `<p>• ${value[0]}</p>`;
-                });
+                        $.each(errors, function(key, value) {
+                            errorMessages += `<p>• ${value[0]}</p>`;
+                        });
 
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Errors',
-                    html: errorMessages,
-                    confirmButtonText: 'OK'
-                });
-            }
-        },
-       error: function(jqXHR, exception) {
-    $("button[type=submit]").prop('disabled', false);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Errors',
+                            html: errorMessages,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(jqXHR, exception) {
+                    $("button[type=submit]").prop('disabled', false);
 
-    // Handle Laravel 422 validation error
-    if (jqXHR.status === 422) {
-        let response = jqXHR.responseJSON;
+                    // Handle Laravel 422 validation error
+                    if (jqXHR.status === 422) {
+                        let response = jqXHR.responseJSON;
 
-        // Case 1: Laravel returns `errors` object (standard validation)
-        if (response.errors) {
-            let errorMessages = '';
-            $.each(response.errors, function(key, value) {
-                errorMessages += `<p>• ${value[0]}</p>`;
+                        // Case 1: Laravel returns `errors` object (standard validation)
+                        if (response.errors) {
+                            let errorMessages = '';
+                            $.each(response.errors, function(key, value) {
+                                errorMessages += `<p>• ${value[0]}</p>`;
+                            });
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Validation Errors',
+                                html: errorMessages,
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                        // Case 2: Laravel returns just a `message`
+                        else if (response.message) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                confirmButtonText: 'OK'
+                            });
+                        }
+
+                    } else {
+                        // Generic error fallback
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Something went wrong. Please try again later.',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                    }
+                }
+
             });
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Validation Errors',
-                html: errorMessages,
-                confirmButtonText: 'OK'
-            });
-        }
-        // Case 2: Laravel returns just a `message`
-        else if (response.message) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: response.message,
-                confirmButtonText: 'OK'
-            });
-        }
-
-    } else {
-        // Generic error fallback
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something went wrong. Please try again later.',
-            timer: 3000,
-            showConfirmButton: false
         });
-    }
-}
-
-    });
-});
 
 
 
@@ -1784,7 +1849,7 @@
             $(document).on('click', '.addMoreFixedBtn', function() {
                 const parentFieldSet = $(this).closest('.fixedMediaFieldSet');
                 const dimensionIndex = parentFieldSet.data(
-                'index'); // Ensure data-index is properly assigned
+                    'index'); // Ensure data-index is properly assigned
 
                 const newQtyPriceRow = `
             <div class="row fixedFieldSet mt-2">
@@ -1805,7 +1870,7 @@
         `;
 
                 parentFieldSet.find('.mb-3:last').append(
-                newQtyPriceRow); // Add new fields below existing ones
+                    newQtyPriceRow); // Add new fields below existing ones
             });
 
             // Add Rigid Media Fields

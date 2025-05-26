@@ -144,6 +144,7 @@
                                 $pagesinbooks = []; // 15
                                 $copiesrequireds = []; // 16
                                 $pagesinnotepads = []; // 17
+                                $cuttings = []; // 18
                                 
                                 // Loop through all attributes and sort them into the correct arrays
                                 foreach ($product->product_attribute as $attribute) {
@@ -199,6 +200,9 @@
                                         case 'pagesinnotepad':
                                             $pagesinnotepads[] = $attribute->attribute_value;
                                             break;
+                                        case 'cutting':
+                                        $cuttings[] = $attribute->attribute_value;
+                                        break;
                                         // add more cases as needed for different attribute types
                                     }
                                 }
@@ -308,19 +312,7 @@
                                                 are required and must be at least 30mm.</p>
                                         </div>
                                     @endif
-                                    @if (!empty($product->cutting))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="sizeDropdown">Cutting Options:</label>
-                                            @php
-                                                $cuttingOptions = explode('|', $product->cutting);
-                                            @endphp
-                                            <select class="form-control" id="sizeDropdown" name="size" required>
-                                                @foreach ($cuttingOptions as $cuttingOption)
-                                                    <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
+                                   
 
                                     @if (
                                         !empty($product->rigidMedia) &&
@@ -348,7 +340,7 @@
 
 
 
-
+                                        {{-- For Color --}}
                                     @if (!empty($colors))
                                         <div class="form-group col-md-6 input-holder">
                                             <label for="colorsDropdown">Base Color</label>
@@ -363,6 +355,23 @@
                                             </p>
                                         </div>
                                     @endif
+                                    {{-- Color End --}}
+                                    {{-- For Cutting --}}
+                                    @if (!empty($cuttings))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="colorsDropdown">Cutting Option</label>
+                                            <select class="form-control" id="colorsDropdown" name="baseColor" required>
+                                                <option value="">Select colors</option>
+                                                @foreach ($cuttings as $value)
+                                                    <option value="{{ $value }}">{{ $value }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p id="colorsError" style="color: red; display: none;">Please select a Base
+                                                Color.
+                                            </p>
+                                        </div>
+                                    @endif
+                                    {{-- Cutting END --}}
 
                                     @if (!empty($printSides))
                                         <div class="form-group col-md-6 input-holder">
@@ -586,6 +595,8 @@
                                             </p>
                                         </div>
                                     @endif
+
+                                    
                                 </div>
                                 {{-- <div class="row">
 
