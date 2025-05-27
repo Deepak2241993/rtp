@@ -89,7 +89,6 @@ class ProductController extends Controller
             // Handle array to string conversion
             $product->product_question = is_array($request->product_question) ? implode('~', $request->product_question) : $request->product_question;
             $product->product_answer = is_array($request->product_answer) ? implode('~', $request->product_answer) : $request->product_answer;
-
             $product->related_products = !empty($request->related_products) ? implode(',', $request->related_products) : '';
 
             // PDF Upload
@@ -112,9 +111,6 @@ class ProductController extends Controller
 
                 $product->guidlines = implode('|', $guidlines);
             }
-
-
-            $product->save();
 
 
             // Image Uploads
@@ -141,19 +137,25 @@ class ProductController extends Controller
                     }
                 }
             }
-
-            // Cutting Options
-            // $product->cutting = $request->has('cutting') ? implode('|', $request->input('cutting')) : '';
             $product->save();
 
-            // Additional Product Related Tables
-            $this->createAttributes($request, $product);
-            $this->createProductPriceDetail($request, $product);
-            $this->createProductPriceRange($request, $product);
-            $this->createFixedPrices($request, $product);
-            $this->createRigidMediasPrices($request, $product);
+           try {
+    // Additional Product Related Tables
+                $this->createAttributes($request, $product);
+                $this->createProductPriceDetail($request, $product);
+                $this->createProductPriceRange($request, $product);
+                $this->createFixedPrices($request, $product);
+                $this->createRigidMediasPrices($request, $product);
 
-            $request->session()->flash('success', 'Product added successfully');
+                $request->session()->flash('success', 'Product added successfully');
+            } catch (\Throwable $e) {
+                // Optional: log the actual error for debugging
+                \Log::error('Product addition error: ' . $e->getMessage());
+
+                // Flash an error message for the user
+                $request->session()->flash('error', 'Something went wrong while adding product details.');
+            }
+
 
             return response()->json([
                 'status' => true,
@@ -278,7 +280,7 @@ class ProductController extends Controller
             'pagesinbook' => $request->product_pagesinbook,
             'copiesrequired' => $request->product_copiesrequired,
             'pagesinnotepad' => $request->product_pagesinnotepad,
-            'cutting' => $request->cutting,
+            'product_cutting' => $request->product_cutting,
         ];
 
         // Iterate over each attribute array and its corresponding price array
@@ -304,6 +306,7 @@ class ProductController extends Controller
 
     protected function createAttribute($productId, $attributeType, $attributeValue, $attributePrice)
     {
+
         // Check if attribute value is not empty before creating and saving the attribute
         if (!empty($attributeValue)) {
             $attribute = new ProductAttribute;

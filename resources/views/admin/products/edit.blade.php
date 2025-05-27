@@ -246,7 +246,7 @@
                                         <div class="mb-4">
                                             <div class="btn-group" role="group" aria-label="Toggle Product Options">
                                                 <button type="button" id="toggleProductPriceBtn"
-                                                    class="btn btn-info btnchange">Product Price</button>
+                                                    class="btn btn-info btnchange active">Product Price</button>
                                                 <button type="button" id="toggleProductSizeBtn"
                                                     class="btn btn-info btnchange">Product Size</button>
                                                 <button type="button" id="toggleProductColorBtn"
@@ -299,6 +299,8 @@
                                                     class="btn btn-info btnchange">Copies Required</button>
                                                 <button type="button" id="togglePagesinNotepadBtn"
                                                     class="btn btn-info btnchange">Pages in Notepad</button>
+                                                <button type="button" id="toggleCuttingBtn"
+                                                    class="btn btn-info btnchange">Cutting</button>
                                             </div>
                                         </div>
                                     </div>
@@ -806,6 +808,83 @@
                                 <button type="button" id="addColorFieldsBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+                        {{-- Color END --}}
+
+                        {{-- For Cutting Option --}}
+                        <div class="card mb-3" id="productCuttingCard" style="display: none;">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Cutting Option</h2>
+                                <div id="colorFieldsContainer">
+                                    @foreach ($product->product_attribute as $attribute)
+                                        @if ($attribute->attribute_type == 'product_cutting')
+                                            <div class="row Cutting_class">
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label for="product_cutting">Cutting</label>
+                                                        <input type="text" name="product_cutting[]"
+                                                            class="form-control"
+                                                            value="{{ $attribute->attribute_value }}"
+                                                            placeholder="Cutting">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label for="product_cutting_price">Cutting Price</label>
+                                                        <input type="text" name="product_cutting_price[]"
+                                                            class="form-control"
+                                                            value="{{ $attribute->attribute_price }}"
+                                                            placeholder="Cutting Price">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button"
+                                                        class="btn btn-danger removeBtn">Remove</button>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    @if ($product->product_attribute->where('attribute_type', 'product_cutting')->isEmpty())
+                                        @php
+                                            $cutting = ['Trim to Size', 'Custom Shape'];
+                                        @endphp
+                                        <div class="row color">
+                                            <div class="col-md-5">
+                                                <div class="mb-3">
+                                                    <label for="product_color">Cutting</label>
+                                                    @foreach ($cutting as $cuttingOption)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="product_cutting[]" id="cutting_{{ $loop->index }}"
+                                                                value="{{ $cuttingOption }}">
+                                                            <label class="form-check
+-label"
+                                                                for="cutting_{{ $loop->index }}">
+                                                                {{ $cuttingOption }}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+
+                                                </div>
+                                            </div>
+                                            <!-- Color Price Input -->
+                                            <div class="col-md-5">
+                                                <div class="mb-3">
+                                                    <label for="color_price">Cutting Price</label>
+                                                    <input type="text" name="product_cutting_price[]"
+                                                        class="form-control" placeholder="Cutting Price">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+                                <button type="button" id="addColorFieldsBtn" class="btn btn-success">Add More</button>
+                            </div>
+                        </div>
+                        {{-- Cutting Option Off --}}
 
                         <!-- Product Print Side Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productPrintSideCard" style="display: none;">
@@ -1237,8 +1316,8 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                     <label for="product_material">Material</label>
-                                                    <input type="text" name="product_material[]" class="form-control"
-                                                        placeholder="Material">
+                                                    <input type="text" name="product_material[]"
+                                                        class="form-control" placeholder="Material">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -1796,7 +1875,8 @@
 
                                 <label for="guidlines">Upload PDF Guidelines</label>
                                 <div class="mb-3">
-                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control" accept="application/pdf" >
+                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control"
+                                        accept="application/pdf">
 
                                 </div>
 
@@ -2005,7 +2085,7 @@
             // Remove Buttons Event Delegation
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('removeBtn')) e.target.closest('.rollMediaFieldSet')
-                .remove();
+                    .remove();
                 if (e.target.classList.contains('removeFixedBtn')) e.target.closest('.fixedFieldSet')
                     .remove();
                 if (e.target.classList.contains('remove-price-field')) e.target.closest(
@@ -2207,6 +2287,17 @@
                 toggleCardVisibility($('#productColorCard'), $(this));
             });
 
+            // If data is present, activate the card and button
+            if (isDataPresent) {
+                $("#toggleCuttingBtn").addClass("active").prop('disabled', false);
+                $('#productCuttingCard').show();
+            }
+
+            $("#toggleCuttingBtn").click(function() {
+                $(this).toggleClass("active");
+                toggleCardVisibility($('#productCuttingCard'), $(this));
+            });
+
             // Add Color Fields
             function addColorFields(buttonSelector, containerSelector, classSelector) {
                 $(buttonSelector).click(function() {
@@ -2219,6 +2310,21 @@
                         "active"); // Ensure button is active when a new field is added
                     toggleCardVisibility($('#productColorCard'), $(
                         "#toggleProductColorBtn")); // Show the card when a new field is added
+                });
+            }
+
+            // Add cuttings Fields
+            function addCuttingFields(buttonSelector, containerSelector, classSelector) {
+                $(buttonSelector).click(function() {
+                    var clone = $(classSelector).first().clone();
+                    clone.find('input[type="text"]').val(""); // Clear the input values
+                    $(containerSelector).append(clone);
+                    updateRemoveButtons(containerSelector,
+                        '.removeBtn'); // Update visibility of remove buttons
+                    $("#toggleCuttingBtn").addClass(
+                        "active"); // Ensure button is active when a new field is added
+                    toggleCardVisibility($('#productCuttingCard'), $(
+                        "#toggleCuttingBtn")); // Show the card when a new field is added
                 });
             }
 
@@ -2274,6 +2380,24 @@
                 } else {
                     $("#toggleProductColorBtn").addClass("active").prop('disabled', false);
                     $('#productColorCard').show();
+                }
+            });
+
+            // Listen for input changes to enable/disable the button and show/hide the data
+            $('#productCuttingCard input[type="text"]').on('input', function() {
+                var isEmpty = true;
+                $('#productCuttingCard input[type="text"]').each(function() {
+                    if ($(this).val().trim() !== '') {
+                        isEmpty = false;
+                        return false; // Exit the loop if any field has a value
+                    }
+                });
+                if (isEmpty) {
+                    $("#toggleProductColorBtn").removeClass("active").prop('disabled', true);
+                    $('#productCuttingCard').hide();
+                } else {
+                    $("#toggleProductColorBtn").addClass("active").prop('disabled', false);
+                    $('#productCuttingCard').show();
                 }
             });
 
@@ -3890,71 +4014,74 @@
         // });
 
         $("#productform").submit(function(event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    var form = $(this)[0]; // raw DOM element
-    var formData = new FormData(form);
+            var form = $(this)[0]; // raw DOM element
+            var formData = new FormData(form);
 
-    $("button[type=submit]").prop('disabled', true);
+            $("button[type=submit]").prop('disabled', true);
 
-    $.ajax({
-        url: '{{ route('products.update', $product->id) }}',
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'X-HTTP-Method-Override': 'PUT'
-        },
-        success: function(response) {
-            $("button[type=submit]").prop('disabled', false);
-            if (response.status === true) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Product has been updated successfully!',
-                    timer: 3000,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = "{{ route('products.index') }}";
-                });
-            } else {
-                $('input, select, textarea').removeClass('is-invalid');
-                $('.invalid-feedback').remove();
-                let errorMessage = '';
+            $.ajax({
+                url: '{{ route('products.update', $product->id) }}',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                success: function(response) {
+                    $("button[type=submit]").prop('disabled', false);
+                    if (response.status === true) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Product has been updated successfully!',
+                            timer: 3000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = "{{ route('products.index') }}";
+                        });
+                    } else {
+                        $('input, select, textarea').removeClass('is-invalid');
+                        $('.invalid-feedback').remove();
+                        let errorMessage = '';
 
-                $.each(response.errors, function(key, messages) {
-                    const el = $(`#${key}`);
-                    el.addClass('is-invalid');
-                    if (el.next('.invalid-feedback').length === 0) {
-                        el.after(`<div class="invalid-feedback">${messages.join('<br>')}</div>`);
+                        $.each(response.errors, function(key, messages) {
+                            const el = $(`#${key}`);
+                            el.addClass('is-invalid');
+                            if (el.next('.invalid-feedback').length === 0) {
+                                el.after(
+                                    `<div class="invalid-feedback">${messages.join('<br>')}</div>`
+                                );
+                            }
+                            errorMessage += messages.join('<br>') + '<br>';
+                        });
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            html: errorMessage,
+                            timer: 4000,
+                            showConfirmButton: false
+                        });
                     }
-                    errorMessage += messages.join('<br>') + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validation Error',
-                    html: errorMessage,
-                    timer: 4000,
-                    showConfirmButton: false
-                });
-            }
-        },
-        error: function(jqXHR) {
-            $("button[type=submit]").prop('disabled', false);
-            Swal.fire({
-                icon: 'error',
-                title: 'Server Error',
-                text: jqXHR.responseJSON?.message || 'Something went wrong. Please try again later.',
-                timer: 3000,
-                showConfirmButton: false
+                },
+                error: function(jqXHR) {
+                    $("button[type=submit]").prop('disabled', false);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Server Error',
+                        text: jqXHR.responseJSON?.message ||
+                            'Something went wrong. Please try again later.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                }
             });
-        }
-    });
-});
+        });
 
 
 
@@ -4200,7 +4327,7 @@
             // Function to validate a dimension input field
             function validateDimension(input) {
                 const errorElement = input.parentElement.querySelector(
-                '.dimension-error'); // Find error message within the same container
+                    '.dimension-error'); // Find error message within the same container
 
                 if (input.value === "") {
                     input.classList.remove('is-invalid');

@@ -419,6 +419,7 @@
                                 $pagesinbooks = []; // 15
                                 $copiesrequireds = []; // 16
                                 $pagesinnotepads = []; // 17
+                                $cuttings = []; // 18
                                 
                                 // Loop through all attributes and sort them into the correct arrays
                                 foreach ($product->product_attribute as $attribute) {
@@ -471,6 +472,7 @@
                                         case 'pagesinnotepad':
                                             $pagesinnotepads[] = $attribute->attribute_value;
                                             break;
+                                        // add more cases as needed for different attribute types
                                     }
                                 }
                                 ?>
@@ -519,110 +521,116 @@
                                                             }
                                                         }
 
-                                                        if (!empty($product->fixed_price_options)) {
-                                                            foreach ($product->fixed_price_options as $fixedPrice) {
-                                                                if ($fixedPrice->product_id == $product->id) {
-                                                                    $size = [
-                                                                        'width' => $fixedPrice->width,
-                                                                        'height' => $fixedPrice->height,
-                                                                    ];
-                                                                    if (!in_array($size, $uniqueSizes)) {
-                                                                        $uniqueSizes[] = $size;
-                                                                    }
+                                                    // Gather unique sizes from fixed_price_options
+                                                    if (!empty($product->fixed_price_options)) {
+                                                        foreach ($product->fixed_price_options as $fixedPrice) {
+                                                            if ($fixedPrice->product_id == $product->id) {
+                                                                $size = [
+                                                                    'width' => $fixedPrice->width,
+                                                                    'height' => $fixedPrice->height,
+                                                                ];
+                                                                if (!in_array($size, $uniqueSizes)) {
+                                                                    $uniqueSizes[] = $size;
                                                                 }
                                                             }
                                                         }
-                                                        
-                                                        function formatSize($value)
-                                                        {
-                                                            return fmod($value, 1) == 0 ? intval($value) : $value;
-                                                        }
-                                                    @endphp
-                                                    @foreach ($uniqueSizes as $size)
-                                                        <option
-                                                            value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
-                                                            {{ formatSize($size['width']) }}mm W x
-                                                            {{ formatSize($size['height']) }}mm H
-                                                        </option>
-                                                    @endforeach
-                                                    @if ($product->product_allows_custom_size == 1)
-                                                        <option value="Custom Size">Custom Size</option>
-                                                    @endif
-                                                </select>
-                                                <p id="sizeError" style="color: red; display: none;">Please select a Size.</p>
-                                            </div>
-                                            <div id="customSizeFields" class="col-md-12" style="display: none;">
-                                                <div class="row">
-                                                    <div class="col-md-6 input-holder">
-                                                        <label for="width">Width (mm):</label>
-                                                        <input type="text" class="form-control" id="width"
-                                                            name="width">
-                                                        <p id="widthError" style="display: none; color: red;">Width must be at
-                                                            least 30mm.</p>
-                                                    </div>
-                                                    <div class="col-md-6 input-holder">
-                                                        <label for="height">Height (mm):</label>
-                                                        <input type="text" class="form-control" id="height"
-                                                            name="height">
-                                                        <p id="heightError" style="display: none; color: red;">Height must be at
-                                                            least 30mm.</p>
-                                                    </div>
-                                                </div>
-                                                <p id="customSizeError" style="color: red; display: none;">Both Width and Height
-                                                    are required and must be at least 30mm.</p>
-                                            </div>
-                                        @endif
-
-                                        @if (!empty($product->cutting))
-                                            <div class="form-group col-md-6 input-holder">
-                                                <label for="cuttingDropdown">Cutting Options:</label>
-                                                @php
-                                                    $cuttingOptions = explode('|', $product->cutting);
+                                                    }
+                                                    // Format size without commas
+                                                    function formatSize($value)
+                                                    {
+                                                        return fmod($value, 1) == 0 ? intval($value) : $value;
+                                                    }
                                                 @endphp
-                                                <select class="form-control" id="cuttingDropdown" name="cutting" required>
-                                                    @foreach ($cuttingOptions as $cuttingOption)
-                                                        <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
-                                                    @endforeach
-                                                </select>
+                                                @foreach ($uniqueSizes as $size)
+                                                    <option
+                                                        value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
+                                                        {{ formatSize($size['width']) }}mm W x
+                                                        {{ formatSize($size['height']) }}mm H
+                                                    </option>
+                                                @endforeach
+                                                <!-- Other size options -->
+                                                @if ($product->product_allows_custom_size == 1)
+                                                    <option value="Custom Size">Custom Size</option>
+                                                @endif
+                                            </select>
+                                            <p id="sizeError" style="color: red; display: none;">Please select a Size.</p>
+                                        </div>
+                                        <div id="customSizeFields" class="col-md-12" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6 input-holder">
+                                                    <label for="width">Width (mm):</label>
+                                                    <input type="text" class="form-control" id="width"
+                                                        name="width">
+                                                    <p id="widthError" style="display: none; color: red;">Width must be at
+                                                        least 30mm.</p>
+                                                </div>
+                                                <div class="col-md-6 input-holder">
+                                                    <label for="height">Height (mm):</label>
+                                                    <input type="text" class="form-control" id="height"
+                                                        name="height">
+                                                    <p id="heightError" style="display: none; color: red;">Height must be at
+                                                        least 30mm.</p>
+                                                </div>
                                             </div>
-                                        @endif
+                                            <p id="customSizeError" style="color: red; display: none;">Both Width and Height
+                                                are required and must be at least 30mm.</p>
+                                        </div>
+                                    @endif
+                                    @if (!empty($product->cutting))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="sizeDropdown">Cutting Options:</label>
+                                            @php
+                                                $cuttingOptions = explode('|', $product->cutting);
+                                            @endphp
+                                            <select class="form-control" id="sizeDropdown" name="size" required>
+                                                @foreach ($cuttingOptions as $cuttingOption)
+                                                    <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
-                                        @if (
-                                            !empty($product->rigidMedia) &&
-                                                collect($product->rigidMedia)->contains(function ($media) {
-                                                    return in_array($media['media_type'], ['single side', 'double side']);
-                                                }))
-                                            <div class="form-group col-md-6 input-holder">
-                                                <label for="printSidesDropdown">Print Sides</label>
-                                                <select class="form-control" id="printSidesDropdown" name="printSides" required>
-                                                    @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
-                                                        @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
-                                                            <option value="{{ $media['media_type'] }}"
-                                                                @if ($media['media_type'] === 'single side') selected @endif>
-                                                                {{ ucfirst($media['media_type']) }}
-                                                            </option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                                <p id="media_typeError" style="color: red; display: none;">Please select a Print
-                                                    Side.</p>
-                                            </div>
-                                        @endif
+                                    @if (
+                                        !empty($product->rigidMedia) &&
+                                            collect($product->rigidMedia)->contains(function ($media) {
+                                                return in_array($media['media_type'], ['single side', 'double side']);
+                                            }))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="printSidesDropdown">Print Sides</label>
+                                            <select class="form-control" id="printSidesDropdown" name="printSides" required>
 
-                                        @if (!empty($colors))
-                                            <div class="form-group col-md-6 input-holder">
-                                                <label for="colorsDropdown">Base Color</label>
-                                                <select class="form-control" id="colorsDropdown" name="baseColor" required>
-                                                    <option value="">Select colors</option>
-                                                    @foreach ($colors as $color)
-                                                        <option value="{{ $color }}">{{ $color }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <p id="colorsError" style="color: red; display: none;">Please select a Base
-                                                    Color.
-                                                </p>
-                                            </div>
-                                        @endif
+                                                @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
+                                                    @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
+                                                        <option value="{{ $media['media_type'] }}"
+                                                            @if ($media['media_type'] === 'single side') selected @endif>
+                                                            {{ ucfirst($media['media_type']) }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            <p id="media_typeError" style="color: red; display: none;">Please select a Print
+                                                Side.</p>
+                                        </div>
+                                    @endif
+
+
+
+
+
+                                    @if (!empty($colors))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="colorsDropdown">Base Color</label>
+                                            <select class="form-control" id="colorsDropdown" name="baseColor" required>
+                                                <option value="">Select colors</option>
+                                                @foreach ($colors as $color)
+                                                    <option value="{{ $color }}">{{ $color }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p id="colorsError" style="color: red; display: none;">Please select a Base
+                                                Color.
+                                            </p>
+                                        </div>
+                                    @endif
 
                                         @if (!empty($printSides))
                                             <div class="form-group col-md-6 input-holder">
@@ -838,22 +846,41 @@
                                             </div>
                                         @endif
 
-                                        @if (!empty($pagesinnotepads))
-                                            <div class="form-group col-md-6 input-holder">
-                                                <label for="pagesinnotepadsDropdown">Pages</label>
-                                                <select class="form-control" id="pagesinnotepadsDropdown"
-                                                    name="pagesinnotepads" required>
-                                                    <option value="">Select Pages Requireds</option>
-                                                    @foreach ($pagesinnotepads as $pagesinnotepad)
-                                                        <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <p id="pagesinnotepadsError" style="color: red; display: none;">Please select
-                                                    Pages Requireds.
-                                                </p>
-                                            </div>
-                                        @endif
+                                    @if (!empty($pagesinnotepads))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="pagesinnotepadsDropdown">Pages</label>
+                                            <select class="form-control" id="pagesinnotepadsDropdown"
+                                                name="pagesinnotepads" required>
+                                                <option value="">Select Pages Requireds</option>
+                                                @foreach ($pagesinnotepads as $pagesinnotepad)
+                                                    <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p id="pagesinnotepadsError" style="color: red; display: none;">Please select
+                                                Pages Requireds.
+                                            </p>
+                                        </div>
+                                    @endif
+                                </div>
+                                {{-- <div class="row">
+
+                                </div> --}}
+
+
+                                {{-- @foreach ($product->product_attribute as $attribute)
+                                    <div>
+                                        <strong>Type:</strong> {{ $attribute->attribute_type }} <br>
+                                        <strong>Value:</strong> {{ $attribute->attribute_value }} <br>
+                                        <strong>Price:</strong> {{ $attribute->attribute_price }}
                                     </div>
+                                @endforeach --}}
+
+
+                                {{-- @php
+
+                                    die();
+                                @endphp --}}
+
 
                                     <div class="row">
                                         <div class="form-group col-md-12 input-holder">
