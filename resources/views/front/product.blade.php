@@ -25,7 +25,6 @@
         }
 
         .price-container {
-
             padding: 15px;
         }
 
@@ -66,6 +65,134 @@
             margin: 0;
             padding: 0;
         }
+
+        /* New styles for price calculation section */
+        .price-calculation-section {
+            display: none;
+            background: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-breakdown {
+            margin: 15px 0;
+        }
+
+        .price-breakdown h4 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .price-item:last-child {
+            border-bottom: 2px solid #007bff;
+            font-weight: bold;
+            font-size: 20px;
+            color: #FF5722;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+
+        .price-item span:first-child {
+            font-weight: 500;
+        }
+
+        .price-item span:last-child {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .price-item:last-child span:last-child {
+            color: #FF5722;
+        }
+
+        /* Product details section that will be hidden */
+        .product-details-section {
+            display: block;
+        }
+
+        .product-details-section.hidden {
+            display: none;
+        }
+
+        /* File upload section that will be hidden */
+        .file-upload-section {
+            display: block;
+        }
+
+        .file-upload-section.hidden {
+            display: none;
+        }
+
+        /* Button styling to match */
+        .calculate-price-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .calculate-price-btn:hover {
+            background: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .add-to-cart-section {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Make recalculate button same as add to cart button */
+        .recalculate-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            margin-left: 15px;
+        }
+
+        .recalculate-btn:hover {
+            background: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Ensure both buttons are aligned properly */
+        .add-to-cart-section .btn,
+        .add-to-cart-section .recalculate-btn {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
     </style>
 @endsection
 
@@ -97,31 +224,15 @@
                                     </button>
                                 @endforeach
                             @endif
-
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
                     <div class="details-content pl-20">
-                        <!--<h1 class="post-type mb-15 text-lg">Premium</h1>-->
                         <h2 class="item-title mb-15">{{ $product->product_name }}</h2>
                         <div class="rating-star ul-li mb-30 clearfix">
-                            {{-- <ul class="float-left col-md-6 input-holder">
-                                <li class="active"><i class="las la-star"></i></li>
-                                <li class="active"><i class="las la-star"></i></li>
-                                <li class="active"><i class="las la-star"></i></li>
-                                <li class="active"><i class="las la-star"></i></li>
-                                <li><i class="las la-star"></i></li>
-                            </ul> --}}
-
-                            <!--<span-->
-                            <!--    class="review-text">({{ $product->product_ratings_count > 1 ? $product->product_ratings_count . ' Reviews' : $product->product_ratings_count . ' Review' }})</span>-->
                         </div>
-                        {{-- <input type="text" readonly class="item-price mb-30" id="priceDisplay" > --}}
-                        {{-- <span class="item-price mb-30" id="priceDisplay"></span> --}}
-                        <!--<p class="mb-40">-->
-                        <!--	Best Electronic Digital Thermometer adipiscing elit, sed do eiusmod teincididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse us ultrices gravidaes. Risus commodo viverra maecenas images accumsan lacus vel facilisis. -->
-                        <!--</p> -->
+
                         <div class="container mt-5">
                             <form>
                                 @csrf
@@ -148,9 +259,6 @@
                                 // Loop through all attributes and sort them into the correct arrays
                                 foreach ($product->product_attribute as $attribute) {
                                     switch ($attribute->attribute_type) {
-                                        // case 'size':
-                                        //     $sizes[] = $attribute->attribute_value;
-                                        //     break;
                                         case 'color':
                                             $colors[] = $attribute->attribute_value;
                                             break;
@@ -161,7 +269,7 @@
                                             $finishings[] = $attribute->attribute_value;
                                             break;
                                         case 'thickness':
-                                            $thickness[] = $attribute->attribute_value; // Corrected variable name
+                                            $thickness[] = $attribute->attribute_value;
                                             break;
                                         case 'wirestakesqty':
                                             $wirestakesqtys[] = $attribute->attribute_value;
@@ -199,528 +307,470 @@
                                         case 'pagesinnotepad':
                                             $pagesinnotepads[] = $attribute->attribute_value;
                                             break;
-                                        // add more cases as needed for different attribute types
                                     }
                                 }
-                                // foreach ($product->product_prices as $price) {
-                                
-                                //     print_r($price); die;
-                                // }
                                 ?>
 
-                                <div class="price-container">
-                                    <div class="price-row">
-                                        <span class="item-price">
-                                            <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span
-                                                class="gst-info">* Excluding GST</span>
-                                        </span>
-
-                                    </div>
-                                    <span class="item-price" id="priceDisplay" hidden>${{ $product->product_price }}</span>
-                                </div>
-
-                                <!--<span class="item-price mb-30" id="priceDisplay">${{ $product->product_price }}</span>-->
-
-                                <div class="row mt-2">
-                                    <div class="form-group col-md-6 input-holder">
-                                        <label for="quantity">Quantity:</label>
-                                        <div class="">
-                                            <form id="product-form-template--14606459338821__main" action="#">
-                                                <input type="number" name="quantity" id="quantityInput"
-                                                    class="quantity__input form-control" min="1" value="1">
-                                            </form>
+                                <!-- Product Details Section (will be hidden after calculation) -->
+                                <div class="product-details-section" id="productDetailsSection">
+                                    <div class="price-container">
+                                        <div class="price-row">
+                                            <span class="item-price">
+                                                <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span
+                                                    class="gst-info">* Excluding GST</span>
+                                            </span>
                                         </div>
+                                        <span class="item-price" id="priceDisplay" hidden>${{ $product->product_price }}</span>
                                     </div>
 
-                                    @if (!empty($product->product_prices))
+                                    <div class="row mt-2">
                                         <div class="form-group col-md-6 input-holder">
-                                            <label for="sizeDropdown">Size Options:</label>
-                                            <select class="form-control" id="sizeDropdown" name="size" required>
-                                                <option value="">Select Size</option>
-                                                @php
-                                                    $uniqueSizes = [];
-                                                    if (!empty($product->product_prices)) {
-                                                        foreach ($product->product_prices as $price) {
-                                                            if ($price->product_id == $product->id) {
-                                                                $size = [
-                                                                    'width' => $price->product_width,
-                                                                    'height' => $price->product_height,
-                                                                ];
-                                                                if (!in_array($size, $uniqueSizes)) {
-                                                                    $uniqueSizes[] = $size;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    // Gather unique sizes from fixed_price_options
-                                                    if (!empty($product->fixed_price_options)) {
-                                                        foreach ($product->fixed_price_options as $fixedPrice) {
-                                                            if ($fixedPrice->product_id == $product->id) {
-                                                                $size = [
-                                                                    'width' => $fixedPrice->width,
-                                                                    'height' => $fixedPrice->height,
-                                                                ];
-                                                                if (!in_array($size, $uniqueSizes)) {
-                                                                    $uniqueSizes[] = $size;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    // Format size without commas
-                                                    function formatSize($value)
-                                                    {
-                                                        return fmod($value, 1) == 0 ? intval($value) : $value;
-                                                    }
-                                                @endphp
-                                                @foreach ($uniqueSizes as $size)
-                                                    <option
-                                                        value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
-                                                        {{ formatSize($size['width']) }}mm W x
-                                                        {{ formatSize($size['height']) }}mm H
-                                                    </option>
-                                                @endforeach
-                                                <!-- Other size options -->
-                                                @if ($product->product_allows_custom_size == 1)
-                                                    <option value="Custom Size">Custom Size</option>
-                                                @endif
-                                            </select>
-                                            <p id="sizeError" style="color: red; display: none;">Please select a Size.</p>
-                                        </div>
-                                        <div id="customSizeFields" class="col-md-12" style="display: none;">
-                                            <div class="row">
-                                                <div class="col-md-6 input-holder">
-                                                    <label for="width">Width (mm):</label>
-                                                    <input type="text" class="form-control" id="width"
-                                                        name="width">
-                                                    <p id="widthError" style="display: none; color: red;">Width must be at
-                                                        least 30mm.</p>
-                                                </div>
-                                                <div class="col-md-6 input-holder">
-                                                    <label for="height">Height (mm):</label>
-                                                    <input type="text" class="form-control" id="height"
-                                                        name="height">
-                                                    <p id="heightError" style="display: none; color: red;">Height must be at
-                                                        least 30mm.</p>
-                                                </div>
+                                            <label for="quantity">Quantity:</label>
+                                            <div class="">
+                                                <form id="product-form-template--14606459338821__main" action="#">
+                                                    <input type="number" name="quantity" id="quantityInput"
+                                                        class="quantity__input form-control" min="1" value="1">
+                                                </form>
                                             </div>
-                                            <p id="customSizeError" style="color: red; display: none;">Both Width and Height
-                                                are required and must be at least 30mm.</p>
                                         </div>
-                                    @endif
-                                    @if (!empty($product->cutting))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="sizeDropdown">Cutting Options:</label>
-                                            @php
-                                                $cuttingOptions = explode('|', $product->cutting);
-                                            @endphp
-                                            <select class="form-control" id="sizeDropdown" name="size" required>
-                                                @foreach ($cuttingOptions as $cuttingOption)
-                                                    <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
 
-                                    @if (
-                                        !empty($product->rigidMedia) &&
-                                            collect($product->rigidMedia)->contains(function ($media) {
-                                                return in_array($media['media_type'], ['single side', 'double side']);
-                                            }))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="printSidesDropdown">Print Sides</label>
-                                            <select class="form-control" id="printSidesDropdown" name="printSides" required>
+                                        @if (!empty($product->product_prices))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="sizeDropdown">Size Options:</label>
+                                                <select class="form-control" id="sizeDropdown" name="size" required>
+                                                    <option value="">Select Size</option>
+                                                    @php
+                                                        $uniqueSizes = [];
+                                                        if (!empty($product->product_prices)) {
+                                                            foreach ($product->product_prices as $price) {
+                                                                if ($price->product_id == $product->id) {
+                                                                    $size = [
+                                                                        'width' => $price->product_width,
+                                                                        'height' => $price->product_height,
+                                                                    ];
+                                                                    if (!in_array($size, $uniqueSizes)) {
+                                                                        $uniqueSizes[] = $size;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
 
-                                                @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
-                                                    @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
-                                                        <option value="{{ $media['media_type'] }}"
-                                                            @if ($media['media_type'] === 'single side') selected @endif>
-                                                            {{ ucfirst($media['media_type']) }}
+                                                        if (!empty($product->fixed_price_options)) {
+                                                            foreach ($product->fixed_price_options as $fixedPrice) {
+                                                                if ($fixedPrice->product_id == $product->id) {
+                                                                    $size = [
+                                                                        'width' => $fixedPrice->width,
+                                                                        'height' => $fixedPrice->height,
+                                                                    ];
+                                                                    if (!in_array($size, $uniqueSizes)) {
+                                                                        $uniqueSizes[] = $size;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        
+                                                        function formatSize($value)
+                                                        {
+                                                            return fmod($value, 1) == 0 ? intval($value) : $value;
+                                                        }
+                                                    @endphp
+                                                    @foreach ($uniqueSizes as $size)
+                                                        <option
+                                                            value="{{ formatSize($size['width']) }} x {{ formatSize($size['height']) }}">
+                                                            {{ formatSize($size['width']) }}mm W x
+                                                            {{ formatSize($size['height']) }}mm H
                                                         </option>
+                                                    @endforeach
+                                                    @if ($product->product_allows_custom_size == 1)
+                                                        <option value="Custom Size">Custom Size</option>
                                                     @endif
-                                                @endforeach
-                                            </select>
-                                            <p id="media_typeError" style="color: red; display: none;">Please select a Print
-                                                Side.</p>
-                                        </div>
-                                    @endif
+                                                </select>
+                                                <p id="sizeError" style="color: red; display: none;">Please select a Size.</p>
+                                            </div>
+                                            <div id="customSizeFields" class="col-md-12" style="display: none;">
+                                                <div class="row">
+                                                    <div class="col-md-6 input-holder">
+                                                        <label for="width">Width (mm):</label>
+                                                        <input type="text" class="form-control" id="width"
+                                                            name="width">
+                                                        <p id="widthError" style="display: none; color: red;">Width must be at
+                                                            least 30mm.</p>
+                                                    </div>
+                                                    <div class="col-md-6 input-holder">
+                                                        <label for="height">Height (mm):</label>
+                                                        <input type="text" class="form-control" id="height"
+                                                            name="height">
+                                                        <p id="heightError" style="display: none; color: red;">Height must be at
+                                                            least 30mm.</p>
+                                                    </div>
+                                                </div>
+                                                <p id="customSizeError" style="color: red; display: none;">Both Width and Height
+                                                    are required and must be at least 30mm.</p>
+                                            </div>
+                                        @endif
 
+                                        @if (!empty($product->cutting))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="cuttingDropdown">Cutting Options:</label>
+                                                @php
+                                                    $cuttingOptions = explode('|', $product->cutting);
+                                                @endphp
+                                                <select class="form-control" id="cuttingDropdown" name="cutting" required>
+                                                    @foreach ($cuttingOptions as $cuttingOption)
+                                                        <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
 
+                                        @if (
+                                            !empty($product->rigidMedia) &&
+                                                collect($product->rigidMedia)->contains(function ($media) {
+                                                    return in_array($media['media_type'], ['single side', 'double side']);
+                                                }))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="printSidesDropdown">Print Sides</label>
+                                                <select class="form-control" id="printSidesDropdown" name="printSides" required>
+                                                    @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
+                                                        @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
+                                                            <option value="{{ $media['media_type'] }}"
+                                                                @if ($media['media_type'] === 'single side') selected @endif>
+                                                                {{ ucfirst($media['media_type']) }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <p id="media_typeError" style="color: red; display: none;">Please select a Print
+                                                    Side.</p>
+                                            </div>
+                                        @endif
 
+                                        @if (!empty($colors))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="colorsDropdown">Base Color</label>
+                                                <select class="form-control" id="colorsDropdown" name="baseColor" required>
+                                                    <option value="">Select colors</option>
+                                                    @foreach ($colors as $color)
+                                                        <option value="{{ $color }}">{{ $color }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="colorsError" style="color: red; display: none;">Please select a Base
+                                                    Color.
+                                                </p>
+                                            </div>
+                                        @endif
 
+                                        @if (!empty($printSides))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="printSidesDropdown2">Print Sides</label>
+                                                <select class="form-control" id="printSidesDropdown2" name="printSides2"
+                                                    required>
+                                                    <option value="">Select Size</option>
+                                                    @foreach ($printSides as $printSide)
+                                                        <option value="{{ $printSide }}">{{ $printSide }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="printSidesError" style="color: red; display: none;">Please select a
+                                                    Print
+                                                    Sides.</p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($colors))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="colorsDropdown">Base Color</label>
-                                            <select class="form-control" id="colorsDropdown" name="baseColor" required>
-                                                <option value="">Select colors</option>
-                                                @foreach ($colors as $color)
-                                                    <option value="{{ $color }}">{{ $color }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="colorsError" style="color: red; display: none;">Please select a Base
-                                                Color.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($finishings))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="finishingsDropdown">Finishings</label>
+                                                <select class="form-control" id="finishingsDropdown" name="finishings"
+                                                    required>
+                                                    @foreach ($finishings as $finishing)
+                                                        <option value="{{ $finishing }}">{{ $finishing }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="finishingsError" style="color: red; display: none;">Please select a
+                                                    Finishings.
+                                                </p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($printSides))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="printSidesDropdown">Print Sides</label>
-                                            <select class="form-control" id="printSidesDropdown" name="printSides"
-                                                required>
-                                                <option value="">Select Size</option>
-                                                @foreach ($printSides as $printSide)
-                                                    <option value="{{ $printSide }}">{{ $printSide }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="printSidesError" style="color: red; display: none;">Please select a
-                                                Print
-                                                Sides.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($finishings))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="finishingsDropdown">Finishings</label>
-                                            <select class="form-control" id="finishingsDropdown" name="finishings"
-                                                required>
-                                                @foreach ($finishings as $finishing)
-                                                    <option value="{{ $finishing }}">{{ $finishing }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="finishingsError" style="color: red; display: none;">Please select a
-                                                Finishings.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($thickness))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="thicknessDropdown">Thickness</label>
+                                                <select class="form-control" id="thicknessDropdown" name="Thickness"
+                                                    required>
+                                                    <option value="">Select Thickness</option>
+                                                    @foreach ($thickness as $thicknes)
+                                                        <option value="{{ $thicknes }}">{{ $thicknes }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="thicknessError" style="color: red; display: none;">Please select a
+                                                    Thicknes.</p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($thickness))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="thicknessDropdown">Thickness</label>
-                                            <select class="form-control" id="thicknessDropdown" name="Thickness"
-                                                required>
-                                                <option value="">Select Thickness</option>
-                                                @foreach ($thickness as $thicknes)
-                                                    <option value="{{ $thicknes }}">{{ $thicknes }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="thicknessError" style="color: red; display: none;">Please select a
-                                                Thicknes.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($wirestakesqtys))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="wirestakesqtysDropdown">Wire Stakes QTY</label>
-                                            <select class="form-control" id="wirestakesqtysDropdown"
-                                                name="wirestakesqtys" required>
-                                                <option value="">Select Wire Stakes</option>
-                                                @foreach ($wirestakesqtys as $wirestakesqty)
-                                                    <option value="{{ $wirestakesqty }}">{{ $wirestakesqty }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="wirestakesqtysError" style="color: red; display: none;">Please select
-                                                Wire Stakes
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($wirestakesqtys))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="wirestakesqtysDropdown">Wire Stakes QTY</label>
+                                                <select class="form-control" id="wirestakesqtysDropdown"
+                                                    name="wirestakesqtys" required>
+                                                    <option value="">Select Wire Stakes</option>
+                                                    @foreach ($wirestakesqtys as $wirestakesqty)
+                                                        <option value="{{ $wirestakesqty }}">{{ $wirestakesqty }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="wirestakesqtysError" style="color: red; display: none;">Please select
+                                                    Wire Stakes
+                                                </p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($framesizes))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="framesizesDropdown">Framesizes</label>
-                                            <select class="form-control" id="framesizesDropdown" name="framesizes"
-                                                required>
-                                                <option value="">Select Frame Sizes</option>
-                                                @foreach ($framesizes as $framesize)
-                                                    <option value="{{ $framesize }}">{{ $framesize }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="framesizesError" style="color: red; display: none;">Please select a
-                                                Frame Sizes.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($displaytypes))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="displaytypesDropdown">Display Types</label>
-                                            <select class="form-control" id="displaytypesDropdown" name="displaytypes"
-                                                required>
-                                                <option value="">Select Display Types</option>
-                                                @foreach ($displaytypes as $displaytype)
-                                                    <option value="{{ $displaytype }}">{{ $displaytype }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="displaytypesError" style="color: red; display: none;">Please select
-                                                Display Types.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($framesizes))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="framesizesDropdown">Framesizes</label>
+                                                <select class="form-control" id="framesizesDropdown" name="framesizes"
+                                                    required>
+                                                    <option value="">Select Frame Sizes</option>
+                                                    @foreach ($framesizes as $framesize)
+                                                        <option value="{{ $framesize }}">{{ $framesize }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="framesizesError" style="color: red; display: none;">Please select a
+                                                    Frame Sizes.</p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($installations))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="installationsDropdown">Installations</label>
-                                            <select class="form-control" id="installationsDropdown" name="installations"
-                                                required>
-                                                <option value="">Select Installation</option>
-                                                @foreach ($installations as $installation)
-                                                    <option value="{{ $installation }}">{{ $installation }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="installationsError" style="color: red; display: none;">Please select a
-                                                Installations.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($materials))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="materialsDropdown">Materials</label>
-                                            <select class="form-control" id="materialsDropdown" name="materialsColor"
-                                                required>
-                                                <option value="">Select Materials</option>
-                                                @foreach ($materials as $material)
-                                                    <option value="{{ $material }}">{{ $material }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="materialsError" style="color: red; display: none;">Please select
-                                                Materials.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($displaytypes))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="displaytypesDropdown">Display Types</label>
+                                                <select class="form-control" id="displaytypesDropdown" name="displaytypes"
+                                                    required>
+                                                    <option value="">Select Display Types</option>
+                                                    @foreach ($displaytypes as $displaytype)
+                                                        <option value="{{ $displaytype }}">{{ $displaytype }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="displaytypesError" style="color: red; display: none;">Please select
+                                                    Display Types.
+                                                </p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($corners))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="cornersDropdown">Corners</label>
-                                            <select class="form-control" id="cornersDropdown" name="corners" required>
-                                                <option value="">Select Corners</option>
-                                                @foreach ($corners as $corner)
-                                                    <option value="{{ $corner }}">{{ $corner }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="cornersError" style="color: red; display: none;">Please select Corners.
-                                            </p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($applications))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="applicationsDropdown">Applications</label>
-                                            <select class="form-control" id="applicationsDropdown" name="applications"
-                                                required>
-                                                <option value="">Select Applications</option>
-                                                @foreach ($applications as $application)
-                                                    <option value="{{ $application }}">{{ $application }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="applicationsError" style="color: red; display: none;">Please select
-                                                Applications.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($installations))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="installationsDropdown">Installations</label>
+                                                <select class="form-control" id="installationsDropdown" name="installations"
+                                                    required>
+                                                    <option value="">Select Installation</option>
+                                                    @foreach ($installations as $installation)
+                                                        <option value="{{ $installation }}">{{ $installation }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="installationsError" style="color: red; display: none;">Please select a
+                                                    Installations.</p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($paperthickness))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="paperthicknessDropdown">Paper Thicknes</label>
-                                            <select class="form-control" id="paperthicknessDropdown" name="paperthicknes"
-                                                required>
-                                                <option value="">Select Paper Thickness</option>
-                                                @foreach ($paperthickness as $paperthicknes)
-                                                    <option value="{{ $paperthicknes }}">{{ $paperthicknes }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="paperthicknessError" style="color: red; display: none;">Please select
-                                                Paper Thickness.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($qtys))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="qtysDropdown">QTYs</label>
-                                            <select class="form-control" id="qtysDropdown" name="qtys" required>
-                                                <option value="">Select QTYs</option>
-                                                @foreach ($qtys as $qtys)
-                                                    <option value="{{ $qtys }}">{{ $qtys }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="qtysError" style="color: red; display: none;">Please select QTYs.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($materials))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="materialsDropdown">Materials</label>
+                                                <select class="form-control" id="materialsDropdown" name="materialsColor"
+                                                    required>
+                                                    <option value="">Select Materials</option>
+                                                    @foreach ($materials as $material)
+                                                        <option value="{{ $material }}">{{ $material }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="materialsError" style="color: red; display: none;">Please select
+                                                    Materials.
+                                                </p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($pagesinbooks))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="pagesinbooksDropdown">Pages in Book</label>
-                                            <select class="form-control" id="pagesinbooksDropdown" name="pagesinbook"
-                                                required>
-                                                <option value="">Select Paper In Books</option>
-                                                @foreach ($pagesinbooks as $pagesinbook)
-                                                    <option value="{{ $pagesinbook }}">{{ $pagesinbook }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="pagesinbooksError" style="color: red; display: none;">Please select
-                                                Pages In Book.</p>
-                                        </div>
-                                    @endif
-                                    @if (!empty($copiesrequireds))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="copiesrequiredsDropdown">Copies Requireds</label>
-                                            <select class="form-control" id="copiesrequiredsDropdown"
-                                                name="copiesrequireds" required>
-                                                <option value="">Select Copies Requireds</option>
-                                                @foreach ($copiesrequireds as $copiesrequired)
-                                                    <option value="{{ $copiesrequired }}">{{ $copiesrequired }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="copiesrequiredsError" style="color: red; display: none;">Please select
-                                                Copies Requireds.
-                                            </p>
-                                        </div>
-                                    @endif
+                                        @if (!empty($corners))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="cornersDropdown">Corners</label>
+                                                <select class="form-control" id="cornersDropdown" name="corners" required>
+                                                    <option value="">Select Corners</option>
+                                                    @foreach ($corners as $corner)
+                                                        <option value="{{ $corner }}">{{ $corner }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="cornersError" style="color: red; display: none;">Please select Corners.
+                                                </p>
+                                            </div>
+                                        @endif
 
-                                    @if (!empty($pagesinnotepads))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="pagesinnotepadsDropdown">Pages</label>
-                                            <select class="form-control" id="pagesinnotepadsDropdown"
-                                                name="pagesinnotepads" required>
-                                                <option value="">Select Pages Requireds</option>
-                                                @foreach ($pagesinnotepads as $pagesinnotepad)
-                                                    <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
-                                                @endforeach
-                                            </select>
-                                            <p id="pagesinnotepadsError" style="color: red; display: none;">Please select
-                                                Pages Requireds.
-                                            </p>
+                                        @if (!empty($applications))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="applicationsDropdown">Applications</label>
+                                                <select class="form-control" id="applicationsDropdown" name="applications"
+                                                    required>
+                                                    <option value="">Select Applications</option>
+                                                    @foreach ($applications as $application)
+                                                        <option value="{{ $application }}">{{ $application }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="applicationsError" style="color: red; display: none;">Please select
+                                                    Applications.
+                                                </p>
+                                            </div>
+                                        @endif
+
+                                        @if (!empty($paperthickness))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="paperthicknessDropdown">Paper Thicknes</label>
+                                                <select class="form-control" id="paperthicknessDropdown" name="paperthicknes"
+                                                    required>
+                                                    <option value="">Select Paper Thickness</option>
+                                                    @foreach ($paperthickness as $paperthicknes)
+                                                        <option value="{{ $paperthicknes }}">{{ $paperthicknes }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="paperthicknessError" style="color: red; display: none;">Please select
+                                                    Paper Thickness.</p>
+                                            </div>
+                                        @endif
+
+                                        @if (!empty($qtys))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="qtysDropdown">QTYs</label>
+                                                <select class="form-control" id="qtysDropdown" name="qtys" required>
+                                                    <option value="">Select QTYs</option>
+                                                    @foreach ($qtys as $qtys)
+                                                        <option value="{{ $qtys }}">{{ $qtys }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="qtysError" style="color: red; display: none;">Please select QTYs.
+                                                </p>
+                                            </div>
+                                        @endif
+
+                                        @if (!empty($pagesinbooks))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="pagesinbooksDropdown">Pages in Book</label>
+                                                <select class="form-control" id="pagesinbooksDropdown" name="pagesinbook"
+                                                    required>
+                                                    <option value="">Select Paper In Books</option>
+                                                    @foreach ($pagesinbooks as $pagesinbook)
+                                                        <option value="{{ $pagesinbook }}">{{ $pagesinbook }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="pagesinbooksError" style="color: red; display: none;">Please select
+                                                    Pages In Book.</p>
+                                            </div>
+                                        @endif
+
+                                        @if (!empty($copiesrequireds))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="copiesrequiredsDropdown">Copies Requireds</label>
+                                                <select class="form-control" id="copiesrequiredsDropdown"
+                                                    name="copiesrequireds" required>
+                                                    <option value="">Select Copies Requireds</option>
+                                                    @foreach ($copiesrequireds as $copiesrequired)
+                                                        <option value="{{ $copiesrequired }}">{{ $copiesrequired }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="copiesrequiredsError" style="color: red; display: none;">Please select
+                                                    Copies Requireds.
+                                                </p>
+                                            </div>
+                                        @endif
+
+                                        @if (!empty($pagesinnotepads))
+                                            <div class="form-group col-md-6 input-holder">
+                                                <label for="pagesinnotepadsDropdown">Pages</label>
+                                                <select class="form-control" id="pagesinnotepadsDropdown"
+                                                    name="pagesinnotepads" required>
+                                                    <option value="">Select Pages Requireds</option>
+                                                    @foreach ($pagesinnotepads as $pagesinnotepad)
+                                                        <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <p id="pagesinnotepadsError" style="color: red; display: none;">Please select
+                                                    Pages Requireds.
+                                                </p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12 input-holder">
+                                            <div style="display: flex; align-items: center;">
+                                                <input style="margin-left: 20px;" type="checkbox" id="pickup_option"
+                                                    name="pickup_option" value="Kings Park, NSW">
+                                                <label for="pickup_option"
+                                                    style="margin-left: 6px; margin-top: 5px; font-family: poppins; font-size: 15px; font-weight: 500;">Pickup
+                                                    (Kings Park, NSW)</label>
+                                            </div>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
-                                {{-- <div class="row">
 
-                                </div> --}}
-
-
-                                {{-- @foreach ($product->product_attribute as $attribute)
-                                    <div>
-                                        <strong>Type:</strong> {{ $attribute->attribute_type }} <br>
-                                        <strong>Value:</strong> {{ $attribute->attribute_value }} <br>
-                                        <strong>Price:</strong> {{ $attribute->attribute_price }}
+                                <!-- File Upload Section (will be hidden after calculation) -->
+                                <div class="file-upload-section" id="fileUploadSection">
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>How would you like to submit your design file?</label>
+                                        </div>
                                     </div>
-                                @endforeach --}}
 
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <button id="checkAuthButton" class="btn bg-royal-blue">
+                                                Upload Finished Artwork<br>Print-Ready Files
+                                            </button>
+                                            <input type="file" id="fileInput" name="uploadedFiles[]" class="hidden" multiple
+                                                onchange="handleFileUpload()">
+                                            <input type="hidden" id="uploadTokenFile" name="uploadTokenFile"
+                                                value="{{ $token }}">
+                                            <p id="uploadMessage"></p>
+                                            <div id="uploadedFileNames"></div>
+                                            <input type="hidden" id="uploadedFileName" name="uploadedFileName">
+                                        </div>
 
-                                {{-- @php
-
-                                    die();
-                                @endphp --}}
-
-
-                                <div class="row">
-                                    <div class="form-group col-md-12 input-holder">
-                                        {{-- <label style="margin-left: 20px;" for="sizeDropdown">Pickup Option:</label> --}}
-                                        <div style="display: flex; align-items: center;">
-                                            <input style="margin-left: 20px;" type="checkbox" id="pickup_option"
-                                                name="pickup_option" value="Kings Park, NSW">
-                                            <label for="pickup_option"
-                                                style="margin-left: 6px; margin-top: 5px; font-family: poppins; font-size: 15px; font-weight: 500;">Pickup
-                                                (Kings Park, NSW)</label>
+                                        <div class="form-group col-md-6 ">
+                                            <a href="{{ route('front.design-for-you') }}" style="line-height: 1.5;"
+                                                class="btn bg-royal-blue">Let us design one for
+                                                you <br>*Charges Apply</a>
                                         </div>
                                     </div>
                                 </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label>How would you like to submit your design file?</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            {{-- <div class="form-group col-md-6 input-holder">
-                                        <label style="line-height: 1.5; margin-right: 25px;" for="fileInput"
-                                            class="btn bg-royal-blue">Upload Finished Artwork<br>Print-Ready Files</label>
-                                        <input type="file" id="fileInput" class="hidden"
-                                            onchange="handleFileUpload()">
-                                    </div> 
-                            <div class="form-group col-md-6">
-                                        <label style="line-height: 1.5; margin-right: 25px;" for="fileInput" class="btn bg-royal-blue">
-                                            Upload Finished Artwork<br>Print-Ready Files
-                                        </label>
-                                        <input type="file" id="fileInput" name="uploadedFiles[]" class="hidden" multiple onchange="handleFileUpload()">
-                                        <input type="hidden" id="uploadTokenFile" name="uploadTokenFile" value="{{ $token }}">
-                                        <p id="uploadMessage"></p> <!-- Display upload status message here -->
-                                        <div id="uploadedFileNames"></div> <!-- Display uploaded file names here -->
-                                        <input type="hidden" id="uploadedFileName" name="uploadedFileName">
-                            </div> --}}
-                            <div class="form-group col-md-6">
-                                <button id="checkAuthButton" class="btn bg-royal-blue">
-                                    Upload Finished Artwork<br>Print-Ready Files
-                                </button>
-                                <input type="file" id="fileInput" name="uploadedFiles[]" class="hidden" multiple
-                                    onchange="handleFileUpload()">
-                                <input type="hidden" id="uploadTokenFile" name="uploadTokenFile"
-                                    value="{{ $token }}">
-                                <p id="uploadMessage"></p> <!-- Display upload status message here -->
-                                <div id="uploadedFileNames"></div> <!-- Display uploaded file names here -->
-                                <input type="hidden" id="uploadedFileName" name="uploadedFileName">
-                            </div>
 
-                            <div class="form-group col-md-6 ">
-                                <a href="{{ route('front.design-for-you') }}" style="line-height: 1.5;"
-                                    class="btn bg-royal-blue">Let us design one for
-                                    you <br>*Charges Apply</a>
-                            </div>
-
-                        </div>
-                        {{-- <div class="quantity-form mb-30 clearfix">
-                                    <strong class="list-title">Quantity:</strong>
-                                    <div class="quantity-input">
-                                        <form action="#">
-                                            <span class="input-number-decrement">-</span>
-                                            <input class="input-number-1" type="text" value="1">
-                                            <span class="input-number-increment">+</span>
-                                        </form>
+                                <!-- Price Calculation Section (hidden initially) -->
+                                <div class="price-calculation-section" id="priceCalculationSection">
+                                    <div class="price-breakdown">
+                                        <h4>Your Price Calculation</h4>
+                                        <div id="priceBreakdownContent">
+                                            <!-- Price breakdown will be populated here -->
+                                        </div>
                                     </div>
-                                </div> --}}
-                        {{-- <div class="quantity-form mb-30 clearfix">
-                            <strong class="list-title">Quantity:</strong>
-                            <div class="quantity-input">
-                                <form action="#">
-                                    <span class="input-number-decrement">-</span>
-                                    <input type="number" name="quantity" id="quantityInput" class="input-number-1" type="text" value="1">
-                                    <span class="input-number-increment">+</span>
-                                </form>
-                            </div>
+                                    
+                                    <!-- Add to Cart and Recalculate buttons -->
+                                    <div class="add-to-cart-section" id="addToCartSection">
+                                        <a href="javascript:void(0);" onclick="addToCart('{{ $product->id }}');"
+                                            class="btn bg-royal-blue">Add to Cart</a>
+                                        <a href="javascript:void(0);" onclick="recalculatePrice()" class="btn bg-royal-blue">
+                                            Recalculate
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Calculate Price Button (shown initially) -->
+                                <div class="btns-group ul-li mb-30" id="calculatePriceSection">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="calculatePrice()" class="btn bg-royal-blue">
+                                                Calculate My Price
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </form>
                         </div>
-
-                        <input class="quantity__input" type="number" name="quantity" id="Quantity-template" min="1" value="1" form="product-form-template--14606459338821__main" tp-min-qty="0" tp-max-qty="0" tp-qty-increments="0"> --}}
-                        {{-- <div class="quantity-form mb-30 clearfix">
-                            <strong class="list-title">Quantity:</strong>
-                            <div class="quantity-input">
-                                <form id="product-form-template--14606459338821__main" action="#">
-                                    <input type="number" name="quantity" id="quantityInput" class="quantity__input"
-                                        min="1"  value="1">
-                                </form>
-                            </div>
-                        </div> --}}
-
-
-                        <div class="btns-group ul-li mb-30">
-                            <ul class="clearfix">
-                                <!--<li><a href="javascript:void(0);" id="buyNowButton" onclick="buyNowWithValidation()"-->
-                                <!--        class="btn bg-royal-blue">Buy Now</a>-->
-                                <!--</li>-->
-                                <li><a href="javascript:void(0);" onclick="addToCart('{{ $product->id }}');"
-                                        class="btn bg-royal-blue">Add to Cart</a></li>
-                                {{-- <li>
-                                    <a href="javascript:void(0);" onclick="addToCartWithValidation()"
-                                        class="btn bg-royal-blue">Add to Cart</a>
-                                </li> --}}
-                                <!--<li><a href="#!" data-toggle="tooltip" data-placement="top"-->
-                                <!--        title="Compare Product"><i class="las la-sync"></i></a></li>-->
-                                <!--<li><a onclick="addToWishList({{ $product->id }})" href="javascript:void(0);"-->
-                                <!--        data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i-->
-                                <!--            class="lar la-heart"></i></a></li>-->
-                            </ul>
-                        </div>
-
-                        <!-- <button type="submit" class="btn bg-royal-blue">Submit</button> -->
-                        </form>
                     </div>
                 </div>
             </div>
 
-
+            <!-- Rest of your existing content (tabs, related products, etc.) -->
             <div class="information-area">
                 <div class="tabs-nav ul-li mb-40">
                     <ul class="nav" role="tablist">
@@ -755,49 +805,15 @@
                         </div>
                     </div>
 
-                    <div id="Key-tab" class="tab-pane fade">
-                        <h3 class="title-text mb-30">Key Features</h3>
-                        <div class="table-wrap">
-                            <table class="table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Category</strong></td>
-                                        <td>Medical Equipment</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Color</strong></td>
-                                        <td>Red, Gree, Blue, Black, White</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Quantity</strong></td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Type Of Packing</strong></td>
-                                        <td>Paper Box</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Warranty</strong></td>
-                                        <td>1.5 Year</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                     <div id="information-tab" class="tab-pane fade">
-                        <!-- <h3 class="title-text mb-30">FAQ's</h3> -->
                         <div class="table-wrap">
                             <div class="container mt-5">
                                 <div class="accordion" id="myAccordion">
-
                                     @if ($product)
-                                        <!-- Question 1 -->
                                         <div class="card">
                                             <?php
                                             $questions = explode('~', $product->product_question);
                                             $answers = explode('~', $product->product_answer);
-
-                                            // Iterate through each question and answer pair
                                             foreach ($questions as $index => $question) {
                                             ?>
                                             <div class="card-header" id="heading-<?php echo $product->id; ?>">
@@ -820,14 +836,8 @@
                                             }
                                             ?>
                                         </div>
-
+                                    @endif
                                 </div>
-                                @endif
-
-
-
-                                <!-- Add more Q&A items as needed -->
-
                             </div>
                         </div>
                     </div>
@@ -841,30 +851,20 @@
                                     <p>No templates available for this product.</p>
                                 @endif
                             </div>
-
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
-        </div>
-
-        </div>
     </section>
-    <!-- details-section - end
-                            ================================================== -->
 
-<hr>
-    <!-- shop-section - start
-                            ================================================== -->
+    <hr>
+
+    <!-- Related Products Section -->
     <section id="shop-section" class="shop-section sec-ptb-100 decoration-wrap clearfix">
         <div class="container">
-
             <div class="section-title text-center mb-70">
                 <h2 class="title-text mb-3">Related Products</h2>
-                <!--<p class="mb-0">Shopping Over $59 or first purchase you will get 100% free shipping</p>-->
             </div>
 
             <div id="column-4-carousel" class="column-4-carousel arrow-right-left owl-carousel owl-theme">
@@ -886,31 +886,6 @@
                                                 class="card-img-top rounded" />
                                         @endif
                                     </a>
-                                    <div class="post-label ul-li-right clearfix">
-                                        {{-- <ul class="clearfix">
-                                    <li class="bg-skyblue">-19%</li>
-                                    <li class="bg-skyblue">TOP</li>
-                                </ul> --}}
-                                    </div>
-                                    <!--<div class="btns-group ul-li-center clearfix">-->
-                                    <!--    <ul class="clearfix">-->
-                                    <!--        <li><a href="javascript:void(0);" onclick="addToCart({{ $product->id }});"-->
-                                    <!--                data-toggle="tooltip" data-placement="top" title="Add To Cart"><i-->
-                                    <!--                    class="las la-shopping-basket"></i></a></li>-->
-                                    <!--        <li>-->
-                                    <!--            <a class="tooltipes" href="#!" data-placement="top"-->
-                                    <!--                title="Quick View" data-toggle="modal"-->
-                                    <!--                data-target="#quickview-modal">-->
-                                    <!--                <i class="las la-dot-circle"></i>-->
-                                    <!--            </a>-->
-                                    <!--        </li>-->
-                                    <!--        {{-- <li><a href="#!" data-toggle="tooltip" data-placement="top"-->
-                                    <!--        title="Compare Product"><i class="las la-sync"></i></a></li> --}}-->
-                                    <!--        <li><a onclick="addToWishList({{ $product->id }})"-->
-                                    <!--                href="javascript:void(0);" data-toggle="tooltip" data-placement="top"-->
-                                    <!--                title="Add To Wishlist"><i class="lar la-heart"></i></a></li>-->
-                                    <!--    </ul>-->
-                                    <!--</div>-->
                                 </div>
                                 <div class="item-content">
                                     <h3 class="item-title">
@@ -931,13 +906,11 @@
                         </div>
                     @endforeach
                 @endif
-
             </div>
-
         </div>
     </section>
 
-    <!-- product quick view - start -->
+    <!-- Quick View Modal -->
     <div class="quickview-modal modal fade" id="quickview-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content clearfix">
@@ -977,13 +950,8 @@
                     </div>
                     <div class="btns-group ul-li mb-30">
                         <ul class="clearfix">
-                            <!--<li><a href="#!" class="btn bg-royal-blue">Buy Now</a></li>-->
                             <li><a href="javascript:void(0);" onclick="addToCart({{ $product->id }});"
                                     class="btn bg-royal-blue">Add to Cart</a></li>
-                            <!--<li><a href="#!" data-toggle="tooltip" data-placement="top" title=""-->
-                            <!--        data-original-title="Compare Product"><i class="las la-sync"></i></a></li>-->
-                            <!--<li><a href="#!" data-toggle="tooltip" data-placement="top" title=""-->
-                            <!--        data-original-title="Add To Wishlist"><i class="lar la-heart"></i></a></li>-->
                         </ul>
                     </div>
                     <div class="info-list ul-li-block">
@@ -1008,8 +976,9 @@
 @endsection
 
 @section('javascript.js')
-    {{-- inputquantity  --}}
     <script>
+        var loginUrl = '{{ route('account.login') }}';
+        
         // Ensure quantity input field value is not negative or zero
         $('#quantityInput').on('change', function() {
             var quantity = $(this).val();
@@ -1017,13 +986,7 @@
                 $(this).val(1);
             }
         });
-    </script>
-    {{-- inputquantity Value --}}
 
-    <script>
-        var loginUrl = '{{ route('account.login') }}';
-    </script>
-    <script>
         $(document).ready(function() {
             // Ensure quantity input field value is not negative or zero
             $('#quantityInput').on('change', function() {
@@ -1036,40 +999,7 @@
             // Log updated quantity value
             $('#quantityInput').on('input', function() {
                 var updatedValue = $(this).val();
-                console.log(updatedValue); // Use this value as needed
-            });
-
-            // Validate form and add to cart
-            $('#buyNowButton').on('click', function() {
-                var size = $('#sizeDropdown').val();
-                var baseColor = $('#baseColorDropdown').val();
-                var printedSides = $('#sideDropdown').val();
-                var quantity = $('#quantityInput').val();
-
-                var sizeErrorElement = $('#sizeError');
-                var colorErrorElement = $('#colorError');
-                var sideErrorElement = $('#sideError');
-
-                sizeErrorElement.hide();
-                colorErrorElement.hide();
-                sideErrorElement.hide();
-
-                if (!size) {
-                    sizeErrorElement.show();
-                    return;
-                }
-
-                if (!baseColor) {
-                    colorErrorElement.show();
-                    return;
-                }
-
-                if (!printedSides) {
-                    sideErrorElement.show();
-                    return;
-                }
-
-                addToCart('{{ $product->id }}', baseColor, size, printedSides, quantity);
+                console.log(updatedValue);
             });
 
             // Handle product rating form submission
@@ -1106,7 +1036,6 @@
 
             // Fetch range prices and calculate price
             let rangePrices = [];
-            const initialPrice = "0"; // Initial price
 
             $.getJSON('/range-prices', function(data) {
                 rangePrices = data;
@@ -1146,122 +1075,10 @@
                     $('#price').text(`The price for the given dimensions is: $${price}`);
                     $('#priceDisplay').text(`$${price}`);
                 }
-
-                updatePrice();
             }
-
-            function updatePrice() {
-                const selectedDropdowns = {
-                    size: $("#sizeDropdown").val(),
-                    colors: $("#colorsDropdown").val(),
-                    print_sides: $("#printSidesDropdown").val(),
-                    finishings: $("#finishingsDropdown").val(),
-                    thickness: $("#thicknessDropdown").val(),
-                    wirestakesqtys: $("#wirestakesqtysDropdown").val(),
-                    framesizes: $("#framesizesDropdown").val(),
-                    displaytypes: $("#displaytypesDropdown").val(),
-                    installations: $("#installationsDropdown").val(),
-                    materials: $("#materialsDropdown").val(),
-                    corners: $("#cornersDropdown").val(),
-                    applications: $("#applicationsDropdown").val(),
-                    paperthickness: $("#paperthicknessDropdown").val(),
-                    qtys: $("#qtysDropdown").val(),
-                    pagesinbooks: $("#pagesinbooksDropdown").val(),
-                    copiesrequireds: $("#copiesrequiredsDropdown").val(),
-                    pagesinnotepads: $("#pagesinnotepadsDropdown").val()
-                };
-
-                $.ajax({
-                    url: '{{ route('front.getPrice') }}',
-                    type: 'GET',
-                    data: {
-                        height: $('#height').val().trim(),
-                        width: $('#width').val().trim(),
-                        quantity: $('#quantityInput').val().trim(),
-                        ...selectedDropdowns,
-                        product_id: "{{ $product->id }}",
-                        price_option: "{{ $product->price_option }}",
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.price) {
-                            $("#priceDisplay")
-                                .text('$' + data.price)
-                                .removeClass('price-error') // Remove error class if price is valid
-                                .addClass('price-valid'); // Add valid class
-                        } else {
-                            $("#priceDisplay")
-                                .text('The product is not in the price/quantity range.')
-                                .removeClass('price-valid') // Remove valid class if price is invalid
-                                .addClass('price-error'); // Add error class
-                        }
-                    },
-                    error: function() {
-                        console.log("Something Went Wrong");
-                        $("#priceDisplay")
-                            .text('The product is not in the price/quantity range')
-                            .removeClass('price-valid')
-                            .addClass('price-error'); // Apply error class
-
-                        $(".gst-info").css("display", "none");
-                    }
-                });
-
-            }
-
 
             // Event listeners for form fields
             $('#width, #height, #quantityInput').on('keyup change', validateAndCalculate);
-
-            $("#sizeDropdown, #colorsDropdown, #printSidesDropdown, #finishingsDropdown, #thicknessDropdown, #wirestakesqtysDropdown, #framesizesDropdown, #displaytypesDropdown, #installationsDropdown, #materialsDropdown, #cornersDropdown, #applicationsDropdown, #paperthicknessDropdown, #qtysDropdown, #pagesinbooksDropdown, #copiesrequiredsDropdown, #pagesinnotepadsDropdown")
-                .on('change', updatePrice);
-
-            // Handle file upload
-            // $('#fileInput').on('change', function() {
-            //     var fileInput = document.getElementById('fileInput');
-            //     var uploadMessage = document.getElementById('uploadMessage');
-            //     var uploadedFileNamesDiv = document.getElementById('uploadedFileNames');
-            //     var hiddenInput = document.getElementById('uploadedFileName');
-            //     var files = fileInput.files;
-
-            //     if (files.length > 0) {
-            //         var formData = new FormData();
-            //         Array.from(files).forEach(file => {
-            //             formData.append('uploadedFiles[]', file);
-            //         });
-
-            //         $.ajax({
-            //             url: '{{ route('upload.files') }}',
-            //             type: 'POST',
-            //             data: formData,
-            //             processData: false,
-            //             contentType: false,
-            //             success: function(response) {
-            //                 uploadMessage.innerHTML = 'Files uploaded successfully!';
-            //                 uploadedFileNamesDiv.innerHTML = '';
-            //                 var fileNames = [];
-            //                 response.files.forEach(file => {
-            //                     const para = document.createElement("p");
-            //                     para.innerText = 'Uploaded File: ' + file.name;
-            //                     uploadedFileNamesDiv.appendChild(para);
-            //                     fileNames.push(file.name);
-            //                 });
-            //                 hiddenInput.value = fileNames.join(', ');
-            //                 uploadedFileNamesDiv.style.display = 'block';
-            //             },
-            //             error: function(xhr) {
-            //                 if (xhr.status === 401) {
-            //                     window.location.href = loginUrl;
-            //                 } else {
-            //                     uploadMessage.innerHTML = 'Error in uploading files: ' + xhr.responseText;
-            //                 }
-            //             }
-            //         });
-            //     } else {
-            //         uploadMessage.innerHTML = 'Please select files to upload.';
-            //     }
-            // });
-
 
             // Show/hide custom size fields based on dropdown value
             $('#sizeDropdown').on('change', function() {
@@ -1288,22 +1105,224 @@
                 }
             });
         });
-    </script>
 
-    <script>
+        // New function to calculate price and show breakdown
+        function calculatePrice() {
+            const selectedDropdowns = {
+                size: $("#sizeDropdown").val(),
+                colors: $("#colorsDropdown").val(),
+                print_sides: $("#printSidesDropdown").val(),
+                finishings: $("#finishingsDropdown").val(),
+                thickness: $("#thicknessDropdown").val(),
+                wirestakesqtys: $("#wirestakesqtysDropdown").val(),
+                framesizes: $("#framesizesDropdown").val(),
+                displaytypes: $("#displaytypesDropdown").val(),
+                installations: $("#installationsDropdown").val(),
+                materials: $("#materialsDropdown").val(),
+                corners: $("#cornersDropdown").val(),
+                applications: $("#applicationsDropdown").val(),
+                paperthickness: $("#paperthicknessDropdown").val(),
+                qtys: $("#qtysDropdown").val(),
+                pagesinbooks: $("#pagesinbooksDropdown").val(),
+                copiesrequireds: $("#copiesrequiredsDropdown").val(),
+                pagesinnotepads: $("#pagesinnotepadsDropdown").val()
+            };
+
+            // Validate required fields
+            let hasErrors = false;
+            let errorMessage = '';
+
+            // Check if size is selected
+            if (!selectedDropdowns.size) {
+                $('#sizeError').show();
+                hasErrors = true;
+                errorMessage += 'Please select a size. ';
+            } else {
+                $('#sizeError').hide();
+            }
+
+            // Add more validation as needed for other required fields
+
+            if (hasErrors) {
+                alert(errorMessage);
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route('front.getPrice') }}',
+                type: 'GET',
+                data: {
+                    height: $('#height').val().trim(),
+                    width: $('#width').val().trim(),
+                    quantity: $('#quantityInput').val().trim(),
+                    ...selectedDropdowns,
+                    product_id: "{{ $product->id }}",
+                    price_option: "{{ $product->price_option }}",
+                    calculate_breakdown: true // Add this to get detailed breakdown
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.price) {
+                        // Show price breakdown
+                        displayPriceBreakdown(data);
+                        
+                        // Hide product details and file upload sections
+                        $('#productDetailsSection').hide();
+                        $('#fileUploadSection').hide();
+                        $('#calculatePriceSection').hide();
+                        
+                        // Show price calculation section and add to cart
+                        $('#priceCalculationSection').show();
+                        $('#addToCartSection').show();
+                        
+                        // Update main price display
+                        $("#priceDisplay")
+                            .text('$' + data.price)
+                            .removeClass('price-error')
+                            .addClass('price-valid')
+                            .show();
+                    } else {
+                        alert('Unable to calculate price. Please check your selections.');
+                    }
+                },
+                error: function() {
+                    console.log("Something Went Wrong");
+                    alert('Error calculating price. Please try again.');
+                }
+            });
+        }
+
+        // Function to recalculate (show form again)
+        function recalculatePrice() {
+            // Hide price calculation section
+            $('#priceCalculationSection').hide();
+            $('#addToCartSection').hide();
+            
+            // Show product details and file upload sections again
+            $('#productDetailsSection').show();
+            $('#fileUploadSection').show();
+            $('#calculatePriceSection').show();
+        }
+
+        function displayPriceBreakdown(data) {
+            let breakdownHtml = '';
+            
+            // Selected Options Summary
+            breakdownHtml += `<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <h5 style="margin-bottom: 15px; color: #495057;">Selected Options:</h5>`;
+            
+            // Quantity
+            breakdownHtml += `<div class="price-item">
+                <span>Quantity:</span>
+                <span>${$('#quantityInput').val()}</span>
+            </div>`;
+            
+            // Size
+            if ($('#sizeDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Size:</span>
+                    <span>${$('#sizeDropdown').val()}</span>
+                </div>`;
+            }
+            
+            // Custom dimensions if applicable
+            if ($('#sizeDropdown').val() === 'Custom Size') {
+                breakdownHtml += `<div class="price-item">
+                    <span>Custom Width:</span>
+                    <span>${$('#width').val()}mm</span>
+                </div>`;
+                breakdownHtml += `<div class="price-item">
+                    <span>Custom Height:</span>
+                    <span>${$('#height').val()}mm</span>
+                </div>`;
+            }
+            
+            // Add other selected options
+            if ($('#colorsDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Color:</span>
+                    <span>${$('#colorsDropdown').val()}</span>
+                </div>`;
+            }
+            
+            if ($('#finishingsDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Finishing:</span>
+                    <span>${$('#finishingsDropdown').val()}</span>
+                </div>`;
+            }
+
+            if ($('#printSidesDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Print Sides:</span>
+                    <span>${$('#printSidesDropdown').val()}</span>
+                </div>`;
+            }
+
+            if ($('#thicknessDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Thickness:</span>
+                    <span>${$('#thicknessDropdown').val()}</span>
+                </div>`;
+            }
+
+            if ($('#materialsDropdown').val()) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Material:</span>
+                    <span>${$('#materialsDropdown').val()}</span>
+                </div>`;
+            }
+
+            // Pickup option
+            if ($('#pickup_option').is(':checked')) {
+                breakdownHtml += `<div class="price-item">
+                    <span>Pickup Option:</span>
+                    <span>Kings Park, NSW</span>
+                </div>`;
+            }
+            
+            breakdownHtml += `</div>`;
+            
+            // Price Breakdown
+            breakdownHtml += `<div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px;">
+                <h5 style="margin-bottom: 15px; color: #495057;">Price Breakdown:</h5>`;
+            
+            // Base price
+            breakdownHtml += `<div class="price-item">
+                <span>Subtotal (Excl. GST):</span>
+                <span>$${data.price}</span>
+            </div>`;
+            
+            // GST
+            const gstAmount = (parseFloat(data.price) * 0.1).toFixed(2);
+            breakdownHtml += `<div class="price-item">
+                <span>GST (10%):</span>
+                <span>$${gstAmount}</span>
+            </div>`;
+            
+            // Total
+            const totalWithGst = (parseFloat(data.price) + parseFloat(gstAmount)).toFixed(2);
+            breakdownHtml += `<div class="price-item">
+                <span><strong>Total (Inc. GST):</strong></span>
+                <span><strong>$${totalWithGst}</strong></span>
+            </div>`;
+            
+            breakdownHtml += `</div>`;
+            
+            $('#priceBreakdownContent').html(breakdownHtml);
+        }
+
+        // File upload functionality
         const checkAuthUrl = '{{ route('check.auth') }}';
         document.getElementById('checkAuthButton').addEventListener('click', function() {
             fetch(checkAuthUrl)
                 .then(response => response.json())
                 .then(data => {
                     if (data.authenticated) {
-                        // Show the file input and enable file selection
                         document.getElementById('fileInput').classList.remove('hidden');
-                        document.getElementById('fileInput')
-                    .click(); // Optional: Automatically open file dialog
+                        document.getElementById('fileInput').click();
                     } else {
                         document.getElementById('uploadMessage').innerText = 'Please log in to upload files.';
-                        // Optionally redirect to login page
                         window.location.href = loginUrl;
                     }
                 })
@@ -1320,7 +1339,6 @@
             const uploadMessage = document.getElementById('uploadMessage');
             const files = fileInput.files;
 
-            // Clear previous messages and file names
             uploadedFileNames.innerHTML = '';
             uploadMessage.innerText = '';
 
@@ -1330,12 +1348,9 @@
             }
 
             const fileNames = Array.from(files).map(file => file.name);
-
-            // Display selected file names
             uploadedFileNames.innerHTML = fileNames.join('<br>');
             uploadMessage.innerText = 'Files selected for upload.';
 
-            // Optional: Implement file upload logic here
             const formData = new FormData();
             Array.from(files).forEach(file => {
                 formData.append('uploadedFiles[]', file);
