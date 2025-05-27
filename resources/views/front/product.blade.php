@@ -193,6 +193,170 @@
             vertical-align: middle;
             margin: 0 5px;
         }
+
+        /* Enhanced FAQ Styling */
+        .faq-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .faq-accordion {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .faq-card {
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 0;
+        }
+
+        .faq-card:last-child {
+            border-bottom: none;
+        }
+
+        .faq-card-header {
+            /* background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); */
+            background: #543B8C;
+            border: none;
+            padding: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .faq-card-header:hover {
+            background: #543B8C;
+            /* background: linear-gradient(135deg, #0056b3 0%, #004085 100%); */
+        }
+
+        .faq-question-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 20px 25px;
+            text-align: left;
+            width: 100%;
+            position: relative;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question-btn:hover,
+        .faq-question-btn:focus {
+            color: white;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .faq-arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .faq-question-btn[aria-expanded="true"] .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-collapse {
+            border-top: 3px solid #543B8C;
+            /* border-top: 3px solid #007bff; */
+        }
+
+        .faq-card-body {
+            background: #f8f9fa;
+            padding: 25px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #495057;
+            border-left: 4px solid #543B8C;
+            /* border-left: 4px solid #007bff; */
+            margin: 0;
+        }
+
+        .faq-card-body p {
+            margin-bottom: 15px;
+        }
+
+        .faq-card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* FAQ Icon */
+        .faq-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        /* FAQ Section Title */
+        .faq-section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .faq-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 2px;
+        }
+
+        /* Clean FAQ content styling */
+        .faq-question-text {
+            line-height: 1.4;
+        }
+
+        .faq-answer-content {
+            line-height: 1.6;
+        }
+
+        .faq-answer-content p {
+            margin-bottom: 10px;
+        }
+
+        .faq-answer-content p:empty {
+            display: none;
+        }
+
+        /* Responsive FAQ */
+        @media (max-width: 768px) {
+            .faq-question-btn {
+                font-size: 14px;
+                padding: 15px 20px;
+            }
+            
+            .faq-card-body {
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .faq-section-title {
+                font-size: 24px;
+            }
+        }
     </style>
 @endsection
 
@@ -806,38 +970,66 @@
                     </div>
 
                     <div id="information-tab" class="tab-pane fade">
-                        <div class="table-wrap">
-                            <div class="container mt-5">
-                                <div class="accordion" id="myAccordion">
-                                    @if ($product)
-                                        <div class="card">
-                                            <?php
-                                            $questions = explode('~', $product->product_question);
-                                            $answers = explode('~', $product->product_answer);
-                                            foreach ($questions as $index => $question) {
-                                            ?>
-                                            <div class="card-header" id="heading-<?php echo $product->id; ?>">
-                                                <h2 class="mb-0">
-                                                    <button class="btn bg-royal-blue btn-link" type="button"
-                                                        data-toggle="collapse" data-target="#collapse-<?php echo $product->id . '-' . $index; ?>"
-                                                        aria-expanded="true" aria-controls="collapse-<?php echo $product->id . '-' . $index; ?>">
-                                                        <?php echo $question; ?>
-                                                        <span class="arrow">&#9660;</span>
+                        <div class="faq-container">
+                            <h3 class="faq-section-title">Frequently Asked Questions</h3>
+                            <div class="faq-accordion" id="faqAccordion">
+                                @if ($product && $product->product_question && $product->product_answer)
+                                    @php
+                                        $questions = explode('~', $product->product_question);
+                                        $answers = explode('~', $product->product_answer);
+                                        
+                                        // Function to clean HTML content
+                                        function cleanFaqContent($content) {
+                                            // Remove HTML entities
+                                            $content = html_entity_decode($content);
+                                            // Remove empty paragraph tags and break tags
+                                            $content = preg_replace('/<p[^>]*>(\s|&nbsp;)*<\/p>/', '', $content);
+                                            $content = preg_replace('/<br[^>]*>/', '', $content);
+                                            // Clean up extra whitespace
+                                            $content = trim($content);
+                                            return $content;
+                                        }
+                                    @endphp
+                                    
+                                    @foreach ($questions as $index => $question)
+                                        @if (!empty(trim($question)))
+                                            @php
+                                                $cleanQuestion = cleanFaqContent($question);
+                                                $cleanAnswer = isset($answers[$index]) ? cleanFaqContent($answers[$index]) : 'Answer not available.';
+                                            @endphp
+                                            <div class="faq-card">
+                                                <div class="faq-card-header" id="faqHeading{{ $index }}">
+                                                    <button class="faq-question-btn" type="button"
+                                                        data-toggle="collapse" data-target="#faqCollapse{{ $index }}"
+                                                        aria-expanded="{{ $index === 0 ? 'true' : 'false' }}" 
+                                                        aria-controls="faqCollapse{{ $index }}">
+                                                        <span class="faq-question-text">
+                                                            <!-- <span class="faq-icon">Q</span> -->
+                                                            {!! $cleanQuestion !!}
+                                                        </span>
+                                                        <span class="faq-arrow">▼</span>
                                                     </button>
-                                                </h2>
-                                            </div>
-                                            <div id="collapse-<?php echo $product->id . '-' . $index; ?>" class="collapse"
-                                                aria-labelledby="heading-<?php echo $product->id; ?>" data-parent="#myAccordion">
-                                                <div class="card-body">
-                                                    <?php echo $answers[$index]; ?>
+                                                </div>
+                                                <div id="faqCollapse{{ $index }}" 
+                                                     class="collapse faq-collapse {{ $index === 0 ? 'show' : '' }}"
+                                                     aria-labelledby="faqHeading{{ $index }}" 
+                                                     data-parent="#faqAccordion">
+                                                    <div class="faq-card-body">
+                                                        <div class="faq-answer-content">
+                                                            {!! $cleanAnswer !!}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <?php
-                                            }
-                                            ?>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <div class="faq-card">
+                                        <div class="faq-card-body">
+                                            <p>No FAQs available for this product.</p>
                                         </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -1192,18 +1384,6 @@
             });
         }
 
-        // Function to recalculate (show form again)
-        function recalculatePrice() {
-            // Hide price calculation section
-            $('#priceCalculationSection').hide();
-            $('#addToCartSection').hide();
-            
-            // Show product details and file upload sections again
-            $('#productDetailsSection').show();
-            $('#fileUploadSection').show();
-            $('#calculatePriceSection').show();
-        }
-
         function displayPriceBreakdown(data) {
             let breakdownHtml = '';
             
@@ -1310,6 +1490,18 @@
             breakdownHtml += `</div>`;
             
             $('#priceBreakdownContent').html(breakdownHtml);
+        }
+
+        // Function to recalculate (show form again)
+        function recalculatePrice() {
+            // Hide price calculation section
+            $('#priceCalculationSection').hide();
+            $('#addToCartSection').hide();
+            
+            // Show product details and file upload sections again
+            $('#productDetailsSection').show();
+            $('#fileUploadSection').show();
+            $('#calculatePriceSection').show();
         }
 
         // File upload functionality
