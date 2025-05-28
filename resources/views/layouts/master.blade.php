@@ -244,9 +244,11 @@
                                                         <span class="item-qty">price:-${{ $item->price }}</span>
                                                     </div>
                                                     <button type="button" class="remove-btn"
-                                            onclick="deleteItem('{{ $item->rowId }}');"><i
-                                                class="las la-times"></i></button>
+                                            onclick="deleteItem('{{ $item->rowId }}');">
+                                            {{-- <i class="las la-times"></i> --}}
+                                        </button>
                                                 </li>
+                                                <hr>
                                                 @endforeach
                                             </ul>
                                         </div>

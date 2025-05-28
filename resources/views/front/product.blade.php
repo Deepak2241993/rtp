@@ -1412,112 +1412,115 @@
         }
 
         function displayPriceBreakdown(data) {
-            let breakdownHtml = '';
-            
-            // Selected Options Summary
-            breakdownHtml += `<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h5 style="margin-bottom: 15px; color: #495057;">Selected Options:</h5>`;
-            
-            // Quantity
-            breakdownHtml += `<div class="price-item">
-                <span>Quantity:</span>
-                <span>${$('#quantityInput').val()}</span>
-            </div>`;
-            
-            // Size
-            if ($('#sizeDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Size:</span>
-                    <span>${$('#sizeDropdown').val()}</span>
-                </div>`;
-            }
-            
-            // Custom dimensions if applicable
-            if ($('#sizeDropdown').val() === 'Custom Size') {
-                breakdownHtml += `<div class="price-item">
-                    <span>Custom Width:</span>
-                    <span>${$('#width').val()}mm</span>
-                </div>`;
-                breakdownHtml += `<div class="price-item">
-                    <span>Custom Height:</span>
-                    <span>${$('#height').val()}mm</span>
-                </div>`;
-            }
-            
-            // Add other selected options
-            if ($('#colorsDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Color:</span>
-                    <span>${$('#colorsDropdown').val()}</span>
-                </div>`;
-            }
-            
-            if ($('#finishingsDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Finishing:</span>
-                    <span>${$('#finishingsDropdown').val()}</span>
-                </div>`;
-            }
+    let breakdownHtml = '';
+    
+    // Selected Options Summary
+    breakdownHtml += `<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h5 style="margin-bottom: 15px; color: #495057;">Selected Options:</h5>`;
 
-            if ($('#printSidesDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Print Sides:</span>
-                    <span>${$('#printSidesDropdown').val()}</span>
-                </div>`;
-            }
+    // Quantity
+    breakdownHtml += `<div class="price-item">
+        <span>Quantity:</span>
+        <span>${$('#quantityInput').val()}</span>
+    </div>`;
 
-            if ($('#thicknessDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Thickness:</span>
-                    <span>${$('#thicknessDropdown').val()}</span>
-                </div>`;
-            }
+    // Size
+    if ($('#sizeDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Size:</span>
+            <span>${$('#sizeDropdown').val()}</span>
+        </div>`;
+    }
 
-            if ($('#materialsDropdown').val()) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Material:</span>
-                    <span>${$('#materialsDropdown').val()}</span>
-                </div>`;
-            }
+    // Custom dimensions if applicable
+    if ($('#sizeDropdown').val() === 'Custom Size') {
+        breakdownHtml += `<div class="price-item">
+            <span>Custom Width:</span>
+            <span>${$('#width').val()}mm</span>
+        </div>`;
+        breakdownHtml += `<div class="price-item">
+            <span>Custom Height:</span>
+            <span>${$('#height').val()}mm</span>
+        </div>`;
+    }
 
-            // Pickup option
-            if ($('#pickup_option').is(':checked')) {
-                breakdownHtml += `<div class="price-item">
-                    <span>Pickup Option:</span>
-                    <span>Kings Park, NSW</span>
-                </div>`;
-            }
-            
-            breakdownHtml += `</div>`;
-            
-            // Price Breakdown
-            breakdownHtml += `<div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px;">
-                <h5 style="margin-bottom: 15px; color: #495057;">Price Breakdown:</h5>`;
-            
-            // Base price
-            breakdownHtml += `<div class="price-item">
-                <span>Subtotal (Excl. GST):</span>
-                <span>$${data.price}</span>
-            </div>`;
-            
-            // GST
-            const gstAmount = (parseFloat(data.price) * 0.1).toFixed(2);
-            breakdownHtml += `<div class="price-item">
-                <span>GST (10%):</span>
-                <span>$${gstAmount}</span>
-            </div>`;
-            
-            // Total
-            const totalWithGst = (parseFloat(data.price) + parseFloat(gstAmount)).toFixed(2);
-            breakdownHtml += `<div class="price-item">
-                <span><strong>Total (Inc. GST):</strong></span>
-                <span><strong>$${totalWithGst}</strong></span>
-            </div>`;
-            
-            breakdownHtml += `</div>`;
-            
-            $('#priceBreakdownContent').html(breakdownHtml);
-        }
+    // Additional options
+    if ($('#colorsDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Color:</span>
+            <span>${$('#colorsDropdown').val()}</span>
+        </div>`;
+    }
+
+    if ($('#finishingsDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Finishing:</span>
+            <span>${$('#finishingsDropdown').val()}</span>
+        </div>`;
+    }
+
+    if ($('#printSidesDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Print Sides:</span>
+            <span>${$('#printSidesDropdown').val()}</span>
+        </div>`;
+    }
+
+    if ($('#thicknessDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Thickness:</span>
+            <span>${$('#thicknessDropdown').val()}</span>
+        </div>`;
+    }
+
+    if ($('#materialsDropdown').val()) {
+        breakdownHtml += `<div class="price-item">
+            <span>Material:</span>
+            <span>${$('#materialsDropdown').val()}</span>
+        </div>`;
+    }
+
+    // Pickup option
+    if ($('#pickup_option').is(':checked')) {
+        breakdownHtml += `<div class="price-item">
+            <span>Pickup Option:</span>
+            <span>Kings Park, NSW</span>
+        </div>`;
+    }
+
+    breakdownHtml += `</div>`;
+
+    // === Price Breakdown ===
+    breakdownHtml += `<div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px;">
+        <h5 style="margin-bottom: 15px; color: #495057;">Price Breakdown:</h5>`;
+
+    const basePrice = parseFloat(data.price);
+    const roundedBasePrice = (Math.round(basePrice * 100) / 100).toFixed(2);
+
+    const gstAmount = (Math.round(basePrice * 0.1 * 100) / 100).toFixed(2);
+
+    const totalWithGst = (Math.round((basePrice + parseFloat(gstAmount)) * 100) / 100).toFixed(2);
+
+    breakdownHtml += `<div class="price-item">
+        <span>Subtotal (Excl. GST):</span>
+        <span>$${roundedBasePrice}</span>
+    </div>`;
+
+    breakdownHtml += `<div class="price-item">
+        <span>GST (10%):</span>
+        <span>$${gstAmount}</span>
+    </div>`;
+
+    breakdownHtml += `<div class="price-item">
+        <span><strong>Total (Inc. GST):</strong></span>
+        <span><strong>$${totalWithGst}</strong></span>
+    </div>`;
+
+    breakdownHtml += `</div>`;
+
+    $('#priceBreakdownContent').html(breakdownHtml);
+}
+
 
         // Function to recalculate (show form again)
         function recalculatePrice() {
