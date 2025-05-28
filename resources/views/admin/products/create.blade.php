@@ -114,9 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="product-image">
-
-                        </div>
+                        <div class="row" id="product-image"></div>
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>
@@ -443,8 +441,6 @@
                             </div>
 
                         </div>
-
-
 
                         <!-- Product Size Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productSizeCard" style="display: none;">
@@ -932,56 +928,43 @@
                                     More</button>
                             </div>
                         </div>
-                        <!-- Product Pages in Cuttings Option Card (Initially Hidden) -->   
-                       <div class="card mb-3" id="productCuttingCard" style="display: none;">
-    <div class="card-body">
-        <h2 class="h4 mb-3">Pages Cutting Option</h2>
-        @php
-            $cutting = array(
-                'Trim to Size','Custom Shape'
-            );
-        @endphp
-        <div id="CuttingFieldsContainer">
-            <div class="row Cutting_class">
-                <!-- Color Input -->
-                <div class="col-md-5">
-                    <div class="mb-3">
-                        <label for="product_color">Cutting</label>
-                        @foreach ($cutting as $cuttingOption)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="product_cutting[]" id="cutting_{{ $loop->index }}" value="{{ $cuttingOption }}">
-                                <label class="form-check
--label" for="cutting_{{ $loop->index }}">
-                                    {{ $cuttingOption }}
-                                </label>
-                            </div>
-                        @endforeach
+                        <!-- Product Pages in Cuttings Option Card (Initially Hidden) -->
                         
-                    </div>
-                </div>
+                        <!-- Product Cutting -->
+                        <div class="card mb-3" id="productcuttingCard" style="display: none;">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Product Cutting Option</h2>
+                                <div id="CuttingFieldsContainer">
+                                    <div class="row Cutting_class">
+                                        <div class="col-md-5">
+                                                <div class="mb-3">
+                                                   <label for="product_cutting">Cutting Type</label>
+                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                            <option value="Trim to Size">Trim to Size</option>
+                                                            <option value="Custom Shape">Custom Shape</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="mb-3">
+                                                    <label for="cutting_price">Price</label>
+                                                    <input type="text" name="product_cutting_price[]"
+                                                        class="form-control" placeholder="Cutting Price">
+                                                </div>
+                                            </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" id="addCuttingBtn" class="btn btn-success">Add
+                                    More</button>
+                            </div>
+                        </div>
+                        <!-- Product Cutting -->
 
-                <!-- Color Price Input -->
-                <div class="col-md-5">
-                    <div class="mb-3">
-                        <label for="color_price">Cutting Price</label>
-                        <input type="text" name="product_cutting_price[]" class="form-control" placeholder="Color Price">
-                    </div>
-                </div>
 
-                <!-- Remove Button -->
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger removeBtn w-100">Remove</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add More Button -->
-        <button type="button" id="addCuttingBtn" class="btn btn-success mt-3">Add More</button>
-    </div>
-</div>
-
-
-
+                        {{-- For FAQ --}}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product FAQs</h2>
@@ -1012,9 +995,7 @@
                                 <button type="button" id="addFaqsBtn" class="btn btn-success">Add More FAQs</button>
                             </div>
                         </div>
-
-
-
+                        {{-- Related Product --}}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Related Products</h2>
@@ -1033,6 +1014,7 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Right Side Bar --}}
                     <div class="col-md-3">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -1223,13 +1205,14 @@
                     '#togglePagesinNotepadBtn');
             });
 
-            // Toggle Pages in Cuttings Options
+             // Toggle Cutting Options
             $("#toggleCuttingBtn").click(function() {
                 $(this).toggleClass("active");
-                disableCheckButton('#productCuttingCard input[type="text"]',
+                disableCheckButton('#productcuttingCard input[type="text"]',
                     '#toggleCuttingBtn');
             });
 
+           
             // Function to toggle the visibility of a card section
             function toggleCardVisibility(buttonId, cardId) {
                 $(buttonId).click(function() {
@@ -1287,8 +1270,10 @@
 
             // Toggle Pages in Notepad Options
             toggleCardVisibility('#togglePagesinNotepadBtn', '#productPagesinNotepadCard');
-            // Toggle Pages in Cuttings Options
-            toggleCardVisibility('#toggleCuttingBtn', '#productCuttingCard');
+
+             // Toggle Cutting Options
+            toggleCardVisibility('#toggleCuttingBtn', '#productcuttingCard');
+          
 
 
             // Function to update the visibility of remove buttons for any group
@@ -1404,7 +1389,7 @@
             disableCheckButton('#productPagesinBookCard input[type="text"]', '#togglePagesinBookBtn');
             disableCheckButton('#productCopiesRequiredCard input[type="text"]', '#toggleCopiesRequiredBtn');
             disableCheckButton('#productPagesinNotepadCard input[type="text"]', '#togglePagesinNotepadBtn');
-            disableCheckButton('#productCuttingCard input[type="text"]', '#toggleCuttingBtn');
+            disableCheckButton('#productcuttingCard input[type="text"]', '#toggleCuttingBtn');
 
 
             // Initial update calls
@@ -1425,7 +1410,7 @@
             updateRemoveButtons('#productPagesinBookCard', '.removeBtn');
             updateRemoveButtons('#productCopiesRequiredCard', '.removeBtn');
             updateRemoveButtons('#productPagesinNotepadCard', '.removeBtn');
-            updateRemoveButtons('#productCuttingCard', '.removeBtn');
+            updateRemoveButtons('#productcuttingCard', '.removeBtn');
         });
     </script>
 
@@ -1948,6 +1933,7 @@
             }
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dimensionInput = document.querySelector('#dimension_0');
@@ -2004,6 +1990,7 @@
             }
         });
     </script>
+
     <script>
         $(document).ready(function() {
             // Clone single-price-template on Add More button click for single
@@ -2031,6 +2018,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             // Initialize counters for single and double side fields

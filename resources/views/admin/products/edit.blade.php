@@ -127,6 +127,7 @@
                                 @endforeach
                             @endif
                         </div>
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>
@@ -307,7 +308,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        {{-- productPriceCard Section --}}
                         <div class="card mb-3" id="productPriceCard">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Price Option</h2>
@@ -645,7 +646,6 @@
                             </div>
                         </div>
 
-
                         <!-- Product Size Option Card -->
                         <div class="card mb-3" id="productSizeCard" style="display: none;">
                             <div class="card-body">
@@ -751,6 +751,7 @@
                                 <button type="button" id="addFieldsBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Color Option Card -->
                         <div class="card mb-3" id="productColorCard" style="display: none;">
                             <div class="card-body">
@@ -809,82 +810,6 @@
                             </div>
                         </div>
                         {{-- Color END --}}
-
-                        {{-- For Cutting Option --}}
-                        <div class="card mb-3" id="productCuttingCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Cutting Option</h2>
-                                <div id="colorFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'product_cutting')
-                                            <div class="row Cutting_class">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_cutting">Cutting</label>
-                                                        <input type="text" name="product_cutting[]"
-                                                            class="form-control"
-                                                            value="{{ $attribute->attribute_value }}"
-                                                            placeholder="Cutting">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_cutting_price">Cutting Price</label>
-                                                        <input type="text" name="product_cutting_price[]"
-                                                            class="form-control"
-                                                            value="{{ $attribute->attribute_price }}"
-                                                            placeholder="Cutting Price">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'product_cutting')->isEmpty())
-                                        @php
-                                            $cutting = ['Trim to Size', 'Custom Shape'];
-                                        @endphp
-                                        <div class="row color">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_color">Cutting</label>
-                                                    @foreach ($cutting as $cuttingOption)
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                name="product_cutting[]" id="cutting_{{ $loop->index }}"
-                                                                value="{{ $cuttingOption }}">
-                                                            <label class="form-check
--label"
-                                                                for="cutting_{{ $loop->index }}">
-                                                                {{ $cuttingOption }}
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-
-                                                </div>
-                                            </div>
-                                            <!-- Color Price Input -->
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="color_price">Cutting Price</label>
-                                                    <input type="text" name="product_cutting_price[]"
-                                                        class="form-control" placeholder="Cutting Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                </div>
-                                <button type="button" id="addColorFieldsBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-                        {{-- Cutting Option Off --}}
 
                         <!-- Product Print Side Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productPrintSideCard" style="display: none;">
@@ -1000,6 +925,7 @@
                                 <button type="button" id="addFinishingBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Thickness Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productThicknessCard" style="display: none;">
                             <div class="card-body">
@@ -1056,6 +982,7 @@
                                 <button type="button" id="addThicknessBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Wire Stakes QTY Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productWireStakesQtyCard" style="display: none;">
                             <div class="card-body">
@@ -1112,6 +1039,7 @@
                                 <button type="button" id="addWireStakesQtyBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Frame Size Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productFrameSizeCard" style="display: none;">
                             <div class="card-body">
@@ -1224,6 +1152,7 @@
                                 <button type="button" id="addDisplayTypeBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Installation Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productInstallationCard" style="display: none;">
                             <div class="card-body">
@@ -1280,6 +1209,7 @@
                                 <button type="button" id="addInstallationBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Material Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productMaterialCard" style="display: none;">
                             <div class="card-body">
@@ -1316,8 +1246,8 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                     <label for="product_material">Material</label>
-                                                    <input type="text" name="product_material[]"
-                                                        class="form-control" placeholder="Material">
+                                                    <input type="text" name="product_material[]" class="form-control"
+                                                        placeholder="Material">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -1336,6 +1266,7 @@
                                 <button type="button" id="addMaterialBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Corners Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productCornersCard" style="display: none;">
                             <div class="card-body">
@@ -1392,6 +1323,7 @@
                                 <button type="button" id="addCornersBtn" class="btn btn-success">Add More</button>
                             </div>
                         </div>
+
                         <!-- Product Application Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productApplicationCard" style="display: none;">
                             <div class="card-body">
@@ -1449,6 +1381,7 @@
                                     More</button>
                             </div>
                         </div>
+
                         <!-- Product Paper Thickness Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productPaperThicknessCard" style="display: none;">
                             <div class="card-body">
@@ -1734,9 +1667,69 @@
                                     More</button>
                             </div>
                         </div>
-
-
-
+                        <!-- Product Cutting Option Card (Initially Hidden) -->
+                        <div class="card mb-3" id="productcuttingCard" style="display: none;">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Product Cutting Option</h2>
+                                <div id="cuttingFieldsContainer">
+                                    @foreach ($product->product_attribute as $attribute)
+                                        @if ($attribute->attribute_type == 'cutting')
+                                            <div class="row cutting">
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label for="product_cutting">Cutting Type</label>
+                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                            <option value="Trim to Size"{{ $attribute->attribute_value =='Trim to Size' ?'selected':'' }}>Trim to Size</option>
+                                                            <option value="Custom Shape" {{ $attribute->attribute_value =='Custom Shape' ?'selected':'' }}>Custom Shape</option>
+                                                        </select>
+                                                      
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label for="cutting_price">Price</label>
+                                                        <input type="text" name="product_cutting_price[]"
+                                                            class="form-control" placeholder="Cutting Price"
+                                                            value="{{ $attribute->attribute_price }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button"
+                                                        class="btn btn-danger removeBtn">Remove</button>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    @if ($product->product_attribute->where('attribute_type', 'cutting')->isEmpty())
+                                        <div class="row cutting">
+                                            <div class="col-md-5">
+                                                <div class="mb-3">
+                                                   <label for="product_cutting">Cutting Type</label>
+                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                            <option value="Trim to Size">Trim to Size</option>
+                                                            <option value="Custom Shape">Custom Shape</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="mb-3">
+                                                    <label for="cutting_price">Price</label>
+                                                    <input type="text" name="product_cutting_price[]"
+                                                        class="form-control" placeholder="Cutting Price">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <button type="button" id="addcuttingBtn" class="btn btn-success">Add
+                                    More</button>
+                            </div>
+                        </div>
+                        
+                        {{-- Product FAQ --}}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product FAQs</h2>
@@ -1771,7 +1764,7 @@
                                 <button type="button" id="addFaqsBtn" class="btn btn-success">Add More FAQs</button>
                             </div>
                         </div>
-
+                        {{-- Related Products --}}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Related Products</h2>
@@ -1790,6 +1783,7 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Right Side Bar --}}
                     <div class="col-md-4">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -1903,6 +1897,7 @@
                         </div>
 
                     </div>
+                    {{-- Right Side Bar End --}}
                 </div>
 
 
@@ -1920,6 +1915,7 @@
 @endsection
 
 @section('customjs')
+    {{-- Product Price --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const priceOptions = document.querySelectorAll('input[name="priceOption"]');
@@ -2145,6 +2141,7 @@
             }
         });
     </script>
+    {{-- Product Price END --}}
 
 
     {{-- product size  --}}
@@ -2262,6 +2259,7 @@
             });
         }
     </script>
+    {{-- product size END --}}
 
     {{-- // color product  --}}
     <script>
@@ -2287,17 +2285,6 @@
                 toggleCardVisibility($('#productColorCard'), $(this));
             });
 
-            // If data is present, activate the card and button
-            if (isDataPresent) {
-                $("#toggleCuttingBtn").addClass("active").prop('disabled', false);
-                $('#productCuttingCard').show();
-            }
-
-            $("#toggleCuttingBtn").click(function() {
-                $(this).toggleClass("active");
-                toggleCardVisibility($('#productCuttingCard'), $(this));
-            });
-
             // Add Color Fields
             function addColorFields(buttonSelector, containerSelector, classSelector) {
                 $(buttonSelector).click(function() {
@@ -2310,21 +2297,6 @@
                         "active"); // Ensure button is active when a new field is added
                     toggleCardVisibility($('#productColorCard'), $(
                         "#toggleProductColorBtn")); // Show the card when a new field is added
-                });
-            }
-
-            // Add cuttings Fields
-            function addCuttingFields(buttonSelector, containerSelector, classSelector) {
-                $(buttonSelector).click(function() {
-                    var clone = $(classSelector).first().clone();
-                    clone.find('input[type="text"]').val(""); // Clear the input values
-                    $(containerSelector).append(clone);
-                    updateRemoveButtons(containerSelector,
-                        '.removeBtn'); // Update visibility of remove buttons
-                    $("#toggleCuttingBtn").addClass(
-                        "active"); // Ensure button is active when a new field is added
-                    toggleCardVisibility($('#productCuttingCard'), $(
-                        "#toggleCuttingBtn")); // Show the card when a new field is added
                 });
             }
 
@@ -2383,26 +2355,11 @@
                 }
             });
 
-            // Listen for input changes to enable/disable the button and show/hide the data
-            $('#productCuttingCard input[type="text"]').on('input', function() {
-                var isEmpty = true;
-                $('#productCuttingCard input[type="text"]').each(function() {
-                    if ($(this).val().trim() !== '') {
-                        isEmpty = false;
-                        return false; // Exit the loop if any field has a value
-                    }
-                });
-                if (isEmpty) {
-                    $("#toggleProductColorBtn").removeClass("active").prop('disabled', true);
-                    $('#productCuttingCard').hide();
-                } else {
-                    $("#toggleProductColorBtn").addClass("active").prop('disabled', false);
-                    $('#productCuttingCard').show();
-                }
-            });
+
 
         });
     </script>
+    {{-- // color product END  --}}
 
     {{-- Print Side size  --}}
 
@@ -2502,6 +2459,7 @@
             });
         });
     </script>
+    {{-- Print Side size END  --}}
 
 
     {{-- finnishing  --}}
@@ -2600,6 +2558,7 @@
 
         });
     </script>
+    {{-- finnishing END  --}}
 
     {{-- thickness  --}}
     <script>
@@ -2697,7 +2656,9 @@
 
         });
     </script>
+    {{-- thickness END  --}}
 
+    {{-- Wire Stakes Qty --}}
     <script>
         $(document).ready(function() {
 
@@ -2793,6 +2754,9 @@
 
         });
     </script>
+    {{-- Wire Stakes Qty END --}}
+
+    {{-- Frame Size --}}
     <script>
         $(document).ready(function() {
 
@@ -2888,7 +2852,9 @@
 
         });
     </script>
+    {{-- Frame Size END --}}
 
+    {{-- Display Type --}}
     <script>
         $(document).ready(function() {
 
@@ -2984,6 +2950,9 @@
 
         });
     </script>
+    {{-- Display Type END --}}
+
+    {{-- Product Installation --}}
     <script>
         $(document).ready(function() {
 
@@ -3079,6 +3048,9 @@
 
         });
     </script>
+    {{-- Product Installation END --}}
+
+    {{-- Product Material --}}
     <script>
         $(document).ready(function() {
 
@@ -3174,6 +3146,9 @@
 
         });
     </script>
+    {{-- Product Material END --}}
+
+    {{-- Product Corners --}}
     <script>
         $(document).ready(function() {
 
@@ -3269,6 +3244,9 @@
 
         });
     </script>
+    {{-- Product Corners END --}}
+
+    {{-- Product Application --}}
     <script>
         $(document).ready(function() {
 
@@ -3364,6 +3342,9 @@
 
         });
     </script>
+    {{-- Product Application END --}}
+
+    {{-- Product Paper Thickness --}}
     <script>
         $(document).ready(function() {
 
@@ -3459,6 +3440,9 @@
 
         });
     </script>
+    {{-- Product Paper Thickness END --}}
+
+    {{-- QTY --}}
     <script>
         $(document).ready(function() {
 
@@ -3554,6 +3538,9 @@
 
         });
     </script>
+    {{-- QTY END --}}
+
+    {{-- Product Pages in Book --}}
     <script>
         $(document).ready(function() {
 
@@ -3649,7 +3636,9 @@
 
         });
     </script>
+    {{-- Product Pages in Book END --}}
 
+    {{-- Product Copies Required --}}
     <script>
         $(document).ready(function() {
 
@@ -3745,6 +3734,9 @@
 
         });
     </script>
+    {{-- Product Copies Required END --}}
+
+    {{-- Product Pages in Notepad --}}
     <script>
         $(document).ready(function() {
 
@@ -3840,7 +3832,106 @@
 
         });
     </script>
+    {{-- Product Pages in Notepad END --}}
 
+     {{-- Product cutting --}}
+    <script>
+        $(document).ready(function() {
+
+            // Check if there is existing data in the input fields on page load
+            var isDataPresent = false;
+            $('#productcuttingCard input[type="text"]').each(function() {
+                if ($(this).val().trim() !== '') {
+                    isDataPresent = true;
+                    return false; // Exit the loop if any field has a value
+                }
+            });
+
+            // If data is present, activate the card and button
+            if (isDataPresent) {
+                $("#toggleCuttingBtn").addClass("active").prop('disabled', false);
+                $('#productcuttingCard').show();
+            }
+
+            $("#toggleCuttingBtn").click(function() {
+                $(this).toggleClass("active");
+                toggleCardVisibility($('#productcuttingCard'), $(this));
+            });
+
+            // Add cutting Fields
+            function addCutting(buttonSelector, containerSelector, classSelector) {
+                $(buttonSelector).click(function() {
+                    var clone = $(classSelector).first().clone();
+                    clone.find('input[type="text"]').val(""); // Clear the input values
+                    $(containerSelector).append(clone);
+                    updateRemoveButtons(containerSelector,
+                        '.removeBtn'); // Update visibility of remove buttons
+                    $("#toggleCuttingBtn").addClass(
+                        "active"); // Ensure button is active when a new field is added
+                    toggleCardVisibility($('#productcuttingCard'), $(
+                        "#toggleCuttingBtn")); // Show the card when a new field is added
+                });
+            }
+
+            // Function to update the visibility of remove buttons
+            function updateRemoveButtons(containerSelector, buttonSelector) {
+                if ($(containerSelector).children().length === 1) {
+                    $(containerSelector).find(buttonSelector).hide();
+                } else {
+                    $(containerSelector).find(buttonSelector).show();
+                }
+            }
+
+            // Remove Pages in Notepad Fields
+            function setupRemoveButtons(containerSelector) {
+                $(containerSelector).on('click', '.removeBtn', function() {
+                    var inputField = $(this).closest('.row').find('input[type="text"]');
+                    if (inputField.val().trim() === '') {
+                        $(this).closest('.row').remove();
+                        updateRemoveButtons(containerSelector,
+                            '.removeBtn'); // Update visibility of remove buttons
+                    } else {
+                        inputField.val(''); // Clear the input field value if it's not empty
+                    }
+                });
+            }
+
+            // Initialize functionality for different fields
+            addCutting('#addcuttingBtn', '#cuttingFieldsContainer', '.cutting');
+
+            setupRemoveButtons('#cuttingFieldsContainer');
+
+            // Define a function to handle toggling card visibility and button active state
+            function toggleCardVisibility(card, button) {
+                if (card.find(".row").length > 0 && button.hasClass("active")) {
+                    card.show();
+                } else {
+                    card.hide();
+                }
+            }
+
+            // Listen for input changes to enable/disable the button and show/hide the data
+            $('#productcuttingCard input[type="text"]').on('input', function() {
+                var isEmpty = true;
+                $('#productcuttingCard input[type="text"]').each(function() {
+                    if ($(this).val().trim() !== '') {
+                        isEmpty = false;
+                        return false; // Exit the loop if any field has a value
+                    }
+                });
+                if (isEmpty) {
+                    $("#toggleCuttingBtn").removeClass("active").prop('disabled', true);
+                    $('#productcuttingCard').hide();
+                } else {
+                    $("#toggleCuttingBtn").addClass("active").prop('disabled', false);
+                    $('#productcuttingCard').show();
+                }
+            });
+
+        });
+    </script>
+    {{-- Product cutting END --}}
+   
 
     <script>
         $(document).ready(function() {
@@ -3909,6 +4000,7 @@
             updateRemoveButtons(); // Initial call to set correct visibility of remove buttons
         });
     </script>
+
     <script>
         $('.related_products').select2({
             ajax: {
@@ -3925,6 +4017,7 @@
             }
         });
     </script>
+
     <script>
         $('#category_id').change(function() {
             var category_id = $(this).val();
@@ -4186,6 +4279,7 @@
             });
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let fixedDimensionsIndex =
@@ -4292,6 +4386,7 @@
             updateRemoveButtons();
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var priceOptions = document.querySelectorAll('.priceOption');
@@ -4320,6 +4415,7 @@
             });
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dimensionRegex = /^\d+(\.\d+)?\s*[x*]\s*\d+(\.\d+)?$/i;
@@ -4384,6 +4480,7 @@
             }
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const priceOptionRadioButtons = document.querySelectorAll('input[name="priceOption"]');
@@ -4411,6 +4508,7 @@
             toggleRigidMediaVisibility();
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Handle Single Side Checkbox
