@@ -472,6 +472,9 @@
                                         case 'pagesinnotepad':
                                             $pagesinnotepads[] = $attribute->attribute_value;
                                             break;
+                                        case 'product_cutting':
+                                            $product_cuttings[] = $attribute->attribute_value;
+                                            break;
                                         // add more cases as needed for different attribute types
                                     }
                                 }
@@ -576,19 +579,7 @@
                                                 are required and must be at least 30mm.</p>
                                         </div>
                                     @endif
-                                    @if (!empty($product->cutting))
-                                        <div class="form-group col-md-6 input-holder">
-                                            <label for="sizeDropdown">Cutting Options:</label>
-                                            @php
-                                                $cuttingOptions = explode('|', $product->cutting);
-                                            @endphp
-                                            <select class="form-control" id="sizeDropdown" name="size" required>
-                                                @foreach ($cuttingOptions as $cuttingOption)
-                                                    <option value="{{ $cuttingOption }}">{{ $cuttingOption }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
+                                   
 
                                     @if (
                                         !empty($product->rigidMedia) &&
@@ -857,6 +848,22 @@
                                                 @endforeach
                                             </select>
                                             <p id="pagesinnotepadsError" style="color: red; display: none;">Please select
+                                                Pages Requireds.
+                                            </p>
+                                        </div>
+                                    @endif
+
+                                     @if (!empty($product_cuttings))
+                                        <div class="form-group col-md-6 input-holder">
+                                            <label for="product_cuttingDropdown">Cutting</label>
+                                            <select class="form-control" id="product_cuttingDropdown"
+                                                name="product_cutting" required>
+                                                <option value="">Select Pages Requireds</option>
+                                                @foreach ($product_cuttings as $pagesinnotepad)
+                                                    <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p id="product_cuttingError" style="color: red; display: none;">Please select
                                                 Pages Requireds.
                                             </p>
                                         </div>
