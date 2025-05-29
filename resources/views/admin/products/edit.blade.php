@@ -1678,7 +1678,7 @@
                                                 <div class="col-md-5">
                                                     <div class="mb-3">
                                                         <label for="product_cutting">Cutting Type</label>
-                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                        <select name="product_cutting[]"  class="form-control">
                                                             <option value="Trim to Size"{{ $attribute->attribute_value =='Trim to Size' ?'selected':'' }}>Trim to Size</option>
                                                             <option value="Custom Shape" {{ $attribute->attribute_value =='Custom Shape' ?'selected':'' }}>Custom Shape</option>
                                                         </select>
@@ -1688,7 +1688,7 @@
                                                 <div class="col-md-5">
                                                     <div class="mb-3">
                                                         <label for="cutting_price">Price</label>
-                                                        <input type="text" name="product_cutting_price[]"
+                                                        <input type="text" name="cutting_price[]"
                                                             class="form-control" placeholder="Cutting Price"
                                                             value="{{ $attribute->attribute_price }}">
                                                     </div>
@@ -1705,7 +1705,8 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                    <label for="product_cutting">Cutting Type</label>
-                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                  
+                                                        <select name="product_cutting[]" class="form-control">
                                                             <option value="Trim to Size">Trim to Size</option>
                                                             <option value="Custom Shape">Custom Shape</option>
                                                         </select>
@@ -1714,7 +1715,7 @@
                                             <div class="col-md-5">
                                                 <div class="mb-3">
                                                     <label for="cutting_price">Price</label>
-                                                    <input type="text" name="product_cutting_price[]"
+                                                    <input type="text" name="cutting_price[]"
                                                         class="form-control" placeholder="Cutting Price">
                                                 </div>
                                             </div>
@@ -1790,10 +1791,10 @@
                                 <h2 class="h4 mb-3">Product status</h2>
                                 <div class="mb-3">
                                     <select name="product_status" id="product_status" class="form-control">
-                                        <option {{ $product->product_status == 'active' ? 'selected' : '' }}
-                                            value="active">Active</option>
                                         <option {{ $product->product_status == 'inactive' ? 'selected' : '' }}
                                             value="inactive">Block</option>
+                                        <option {{ $product->product_status == 'active' ? 'selected' : '' }}
+                                            value="active">Active</option>
                                     </select>
                                 </div>
                             </div>
@@ -3839,13 +3840,14 @@
         $(document).ready(function() {
 
             // Check if there is existing data in the input fields on page load
-            var isDataPresent = false;
-            $('#productcuttingCard input[type="text"]').each(function() {
-                if ($(this).val().trim() !== '') {
+           var isDataPresent = false;
+            $('#productcuttingCard select').each(function() {
+                if ($(this).val() && $(this).val().trim() !== '') {
                     isDataPresent = true;
                     return false; // Exit the loop if any field has a value
                 }
             });
+
 
             // If data is present, activate the card and button
             if (isDataPresent) {
@@ -3859,19 +3861,17 @@
             });
 
             // Add cutting Fields
-            function addCutting(buttonSelector, containerSelector, classSelector) {
+           function addCutting(buttonSelector, containerSelector, classSelector) {
                 $(buttonSelector).click(function() {
                     var clone = $(classSelector).first().clone();
-                    clone.find('input[type="text"]').val(""); // Clear the input values
+                    clone.find('select').val(""); // Clear the <select> values
                     $(containerSelector).append(clone);
-                    updateRemoveButtons(containerSelector,
-                        '.removeBtn'); // Update visibility of remove buttons
-                    $("#toggleCuttingBtn").addClass(
-                        "active"); // Ensure button is active when a new field is added
-                    toggleCardVisibility($('#productcuttingCard'), $(
-                        "#toggleCuttingBtn")); // Show the card when a new field is added
+                    updateRemoveButtons(containerSelector, '.removeBtn'); // Update visibility of remove buttons
+                    $("#toggleCuttingBtn").addClass("active"); // Ensure button is active when a new field is added
+                    toggleCardVisibility($('#productcuttingCard'), $("#toggleCuttingBtn")); // Show the card when a new field is added
                 });
             }
+
 
             // Function to update the visibility of remove buttons
             function updateRemoveButtons(containerSelector, buttonSelector) {

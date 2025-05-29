@@ -472,8 +472,8 @@
                                         case 'pagesinnotepad':
                                             $pagesinnotepads[] = $attribute->attribute_value;
                                             break;
-                                        case 'product_cutting':
-                                            $product_cuttings[] = $attribute->attribute_value;
+                                        case 'cutting':
+                                            $cuttings[] = $attribute->attribute_value;
                                             break;
                                         // add more cases as needed for different attribute types
                                     }
@@ -853,14 +853,14 @@
                                         </div>
                                     @endif
 
-                                     @if (!empty($product_cuttings))
+                                     @if (!empty($cuttings))
                                         <div class="form-group col-md-6 input-holder">
                                             <label for="product_cuttingDropdown">Cutting</label>
                                             <select class="form-control" id="product_cuttingDropdown"
                                                 name="product_cutting" required>
                                                 <option value="">Select Pages Requireds</option>
-                                                @foreach ($product_cuttings as $pagesinnotepad)
-                                                    <option value="{{ $pagesinnotepad }}">{{ $pagesinnotepad }}</option>
+                                                @foreach ($cuttings as $value)
+                                                    <option value="{{ $value }}">{{ $value }}</option>
                                                 @endforeach
                                             </select>
                                             <p id="product_cuttingError" style="color: red; display: none;">Please select

@@ -112,7 +112,7 @@ class ProductController extends Controller
                 $product->guidlines = implode('|', $guidlines);
             }
 
-
+            $product->save();
             // Image Uploads
             if (!empty($request->image_array)) {
                 foreach ($request->image_array as $temp_image_id) {
@@ -280,9 +280,9 @@ class ProductController extends Controller
             'pagesinbook' => $request->product_pagesinbook,
             'copiesrequired' => $request->product_copiesrequired,
             'pagesinnotepad' => $request->product_pagesinnotepad,
-            'product_cutting' => $request->product_cutting,
+            'cutting' => $request->product_cutting,
         ];
-
+// dd($attributeArrays);
         // Iterate over each attribute array and its corresponding price array
         foreach ($attributeArrays as $attributeName => $attributeArray) {
             // Check if the attribute array is not empty and has the same length as its corresponding price array

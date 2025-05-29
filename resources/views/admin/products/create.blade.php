@@ -915,7 +915,7 @@
                                         <div class="col-md-5">
                                             <div class="mb-3">
                                                 <label for="pagesinnotepad_price">Pages in Notepad Price</label>
-                                                <input type="text" name="pagesinnotepad_price[]" class="form-control"
+                                                <input type="text" name="cutting_price[]" class="form-control"
                                                     placeholder="Pages in Notepad Price">
                                             </div>
                                         </div>
@@ -939,7 +939,7 @@
                                         <div class="col-md-5">
                                                 <div class="mb-3">
                                                    <label for="product_cutting">Cutting Type</label>
-                                                        <select name="product_cutting" id="product_cutting" class="form-control">
+                                                        <select name="product_cutting[]" id="product_cutting" class="form-control">
                                                             <option value="Trim to Size">Trim to Size</option>
                                                             <option value="Custom Shape">Custom Shape</option>
                                                         </select>
@@ -947,7 +947,7 @@
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="mb-3">
-                                                    <label for="cutting_price">Price</label>
+                                                    <label for="product_cutting_price">Price</label>
                                                     <input type="text" name="product_cutting_price[]"
                                                         class="form-control" placeholder="Cutting Price">
                                                 </div>
@@ -1206,11 +1206,11 @@
             });
 
              // Toggle Cutting Options
-            $("#toggleCuttingBtn").click(function() {
-                $(this).toggleClass("active");
-                disableCheckButton('#productcuttingCard input[type="text"]',
-                    '#toggleCuttingBtn');
-            });
+         $("#toggleCuttingBtn").click(function() {
+            $(this).toggleClass("active");
+            disableCheckButton('#productcuttingCard select', '#toggleCuttingBtn');
+        });
+
 
            
             // Function to toggle the visibility of a card section
@@ -1389,7 +1389,8 @@
             disableCheckButton('#productPagesinBookCard input[type="text"]', '#togglePagesinBookBtn');
             disableCheckButton('#productCopiesRequiredCard input[type="text"]', '#toggleCopiesRequiredBtn');
             disableCheckButton('#productPagesinNotepadCard input[type="text"]', '#togglePagesinNotepadBtn');
-            disableCheckButton('#productcuttingCard input[type="text"]', '#toggleCuttingBtn');
+            disableCheckButton('#productcuttingCard select', '#toggleCuttingBtn');
+
 
 
             // Initial update calls
