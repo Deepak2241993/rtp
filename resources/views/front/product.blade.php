@@ -69,54 +69,141 @@
         /* New styles for price calculation section */
         .price-calculation-section {
             display: none;
-            background: #f8f9fa;
-            border: 2px solid #007bff;
-            border-radius: 10px;
-            padding: 30px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0;
             margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
         }
 
-        .price-breakdown {
-            margin: 15px 0;
+        .instant-quote-container {
+            background: #ffffff;
+            padding: 30px;
         }
 
-        .price-breakdown h4 {
-            color: #333;
-            margin-bottom: 20px;
+        .quote-header {
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quote-subtitle {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .quote-title {
             font-size: 24px;
             font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .price-item {
+        .quote-accent-line {
+            width: 100%;
+            height: 3px;
+            background: #6B46C1;
+            margin: 0 auto;
+        }
+
+        .quote-details {
+            margin: 30px 0;
+        }
+
+        .quote-row {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px dotted #ccc;
+            font-size: 14px;
+        }
+
+        .quote-row:last-child {
+            border-bottom: none;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+
+        .quote-label {
+            color: #999;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .quote-value {
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .quote-total {
             font-size: 16px;
         }
 
-        .price-item:last-child {
-            border-bottom: 2px solid #007bff;
-            font-weight: bold;
-            font-size: 20px;
-            color: #FF5722;
-            margin-top: 10px;
-            padding-top: 15px;
-        }
-
-        .price-item span:first-child {
-            font-weight: 500;
-        }
-
-        .price-item span:last-child {
-            font-weight: bold;
+        .quote-total .quote-label {
             color: #333;
+            font-weight: bold;
+            font-size: 14px;
         }
 
-        .price-item:last-child span:last-child {
-            color: #FF5722;
+        .quote-total .quote-value {
+            color: #333;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .quote-inc-gst {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .quote-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px 30px 30px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .quote-btn {
+            background: #6B46C1;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quote-btn:hover {
+            background: #553C9A;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Hide the old add-to-cart-section when using new quote design */
+        .add-to-cart-section {
+            display: none !important;
         }
 
         /* Product details section that will be hidden */
@@ -156,12 +243,6 @@
             background: #0056b3;
             color: white;
             text-decoration: none;
-        }
-
-        .add-to-cart-section {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
         }
 
         /* Make recalculate button same as add to cart button */
@@ -935,7 +1016,6 @@
                                 <!-- Price Calculation Section (hidden initially) -->
                                 <div class="price-calculation-section" id="priceCalculationSection">
                                     <div class="price-breakdown">
-                                        <h4>Your Price Calculation</h4>
                                         <div id="priceBreakdownContent">
                                             <!-- Price breakdown will be populated here -->
                                         </div>
@@ -1418,113 +1498,241 @@
             });
         }
 
-        function displayPriceBreakdown(data) {
-    let breakdownHtml = '';
+function displayPriceBreakdown(data) {
+    const quantity = $('#quantityInput').val();
+    const size = $('#sizeDropdown').val();
+    const thickness = $('#thicknessDropdown').val();
+    const printing = $('#printSidesDropdown').val();
+    const material = $('#materialsDropdown').val();
+    const finishing = $('#finishingsDropdown').val();
+    const cutting = $('#product_cuttingDropdown').val();
+    const color = $('#colorsDropdown').val();
+    const wireStakes = $('#wirestakesqtysDropdown').val();
+    const frameSize = $('#framesizesDropdown').val();
+    const displayType = $('#displaytypesDropdown').val();
+    const installation = $('#installationsDropdown').val();
+    const corners = $('#cornersDropdown').val();
+    const application = $('#applicationsDropdown').val();
+    const paperThickness = $('#paperthicknessDropdown').val();
+    const qtys = $('#qtysDropdown').val();
+    const pagesInBook = $('#pagesinbooksDropdown').val();
+    const copiesRequired = $('#copiesrequiredsDropdown').val();
+    const pagesInNotepad = $('#pagesinnotepadsDropdown').val();
     
-    // Selected Options Summary
-    breakdownHtml += `<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-        <h5 style="margin-bottom: 15px; color: #495057;">Selected Options:</h5>`;
-
-    // Quantity
-    breakdownHtml += `<div class="price-item">
-        <span>Quantity:</span>
-        <span>${$('#quantityInput').val()}</span>
-    </div>`;
-
-    // Size
-    if ($('#sizeDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Size:</span>
-            <span>${$('#sizeDropdown').val()}</span>
-        </div>`;
-    }
-
-    // Custom dimensions if applicable
-    if ($('#sizeDropdown').val() === 'Custom Size') {
-        breakdownHtml += `<div class="price-item">
-            <span>Custom Width:</span>
-            <span>${$('#width').val()}mm</span>
-        </div>`;
-        breakdownHtml += `<div class="price-item">
-            <span>Custom Height:</span>
-            <span>${$('#height').val()}mm</span>
-        </div>`;
-    }
-
-    // Additional options
-    if ($('#colorsDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Color:</span>
-            <span>${$('#colorsDropdown').val()}</span>
-        </div>`;
-    }
-
-    if ($('#finishingsDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Finishing:</span>
-            <span>${$('#finishingsDropdown').val()}</span>
-        </div>`;
-    }
-
-    if ($('#printSidesDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Print Sides:</span>
-            <span>${$('#printSidesDropdown').val()}</span>
-        </div>`;
-    }
-
-    if ($('#thicknessDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Thickness:</span>
-            <span>${$('#thicknessDropdown').val()}</span>
-        </div>`;
-    }
-
-    if ($('#materialsDropdown').val()) {
-        breakdownHtml += `<div class="price-item">
-            <span>Material:</span>
-            <span>${$('#materialsDropdown').val()}</span>
-        </div>`;
-    }
-
-    // Pickup option
-    if ($('#pickup_option').is(':checked')) {
-        breakdownHtml += `<div class="price-item">
-            <span>Pickup Option:</span>
-            <span>Kings Park, NSW</span>
-        </div>`;
-    }
-
-    breakdownHtml += `</div>`;
-
-    // === Price Breakdown ===
-    breakdownHtml += `<div style="background: #fff; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px;">
-        <h5 style="margin-bottom: 15px; color: #495057;">Price Breakdown:</h5>`;
-
+    // Calculate pricing
     const basePrice = parseFloat(data.price);
-    const roundedBasePrice = (Math.round(basePrice * 100) / 100).toFixed(2);
-
-    const gstAmount = (Math.round(basePrice * 0.1 * 100) / 100).toFixed(2);
-
-    const totalWithGst = (Math.round((basePrice + parseFloat(gstAmount)) * 100) / 100).toFixed(2);
-
-    breakdownHtml += `<div class="price-item">
-        <span>Subtotal (Excl. GST):</span>
-        <span>$${roundedBasePrice}</span>
-    </div>`;
-
-    breakdownHtml += `<div class="price-item">
-        <span>GST (10%):</span>
-        <span>$${gstAmount}</span>
-    </div>`;
-
-    breakdownHtml += `<div class="price-item">
-        <span><strong>Total (Inc. GST):</strong></span>
-        <span><strong>$${totalWithGst}</strong></span>
-    </div>`;
-
-    breakdownHtml += `</div>`;
-
+    const subtotal = basePrice * parseInt(quantity);
+    const gstAmount = subtotal * 0.1;
+    const totalWithGst = subtotal + gstAmount;
+    
+    // Custom size handling
+    let displaySize = size;
+    if (size === 'Custom Size') {
+        const width = $('#width').val();
+        const height = $('#height').val();
+        displaySize = `${width} x ${height}`;
+    }
+    
+    let breakdownHtml = `
+        <div class="instant-quote-container">
+            <div class="quote-header">
+                <div class="quote-subtitle">YOUR INSTANT QUOTE</div>
+                <div class="quote-title">
+                    ${$('.item-title').text().includes('Pull Up Banner') ? 
+                      $('.item-title').text().replace('Pull Up Banner', '') : 
+                      $('.item-title').text()}
+                </div>
+                <div class="quote-accent-line"></div>
+            </div>
+            
+            <div class="quote-details">
+                <div class="quote-row">
+                    <span class="quote-label">QUANTITY</span>
+                    <span class="quote-value">${quantity}</span>
+                </div>
+                
+                <div class="quote-row">
+                    <span class="quote-label">NUMBER OF DESIGNS</span>
+                    <span class="quote-value">1</span>
+                </div>`;
+    
+    if (displaySize) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">SIZE</span>
+                    <span class="quote-value">${displaySize}</span>
+                </div>`;
+    }
+    
+    if (thickness) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">THICKNESS</span>
+                    <span class="quote-value">${thickness}</span>
+                </div>`;
+    }
+    
+    if (printing) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">PRINTING</span>
+                    <span class="quote-value">${printing}</span>
+                </div>`;
+    }
+    
+    if (material) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">MATERIAL</span>
+                    <span class="quote-value">${material}</span>
+                </div>`;
+    }
+    
+    if (finishing) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">FINISHING</span>
+                    <span class="quote-value">${finishing}</span>
+                </div>`;
+    }
+    
+    if (cutting) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">CUTTING</span>
+                    <span class="quote-value">${cutting}</span>
+                </div>`;
+    }
+    
+    if (color) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">COLOR</span>
+                    <span class="quote-value">${color}</span>
+                </div>`;
+    }
+    
+    if (wireStakes) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">WIRE STAKES QTY</span>
+                    <span class="quote-value">${wireStakes}</span>
+                </div>`;
+    }
+    
+    if (frameSize) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">FRAME SIZE</span>
+                    <span class="quote-value">${frameSize}</span>
+                </div>`;
+    }
+    
+    if (displayType) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">DISPLAY TYPE</span>
+                    <span class="quote-value">${displayType}</span>
+                </div>`;
+    }
+    
+    if (installation) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">INSTALLATION</span>
+                    <span class="quote-value">${installation}</span>
+                </div>`;
+    }
+    
+    if (corners) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">CORNERS</span>
+                    <span class="quote-value">${corners}</span>
+                </div>`;
+    }
+    
+    if (application) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">APPLICATION</span>
+                    <span class="quote-value">${application}</span>
+                </div>`;
+    }
+    
+    if (paperThickness) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">PAPER THICKNESS</span>
+                    <span class="quote-value">${paperThickness}</span>
+                </div>`;
+    }
+    
+    if (qtys) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">QTY OPTIONS</span>
+                    <span class="quote-value">${qtys}</span>
+                </div>`;
+    }
+    
+    if (pagesInBook) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">PAGES IN BOOK</span>
+                    <span class="quote-value">${pagesInBook}</span>
+                </div>`;
+    }
+    
+    if (copiesRequired) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">COPIES REQUIRED</span>
+                    <span class="quote-value">${copiesRequired}</span>
+                </div>`;
+    }
+    
+    if (pagesInNotepad) {
+        breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">PAGES</span>
+                    <span class="quote-value">${pagesInNotepad}</span>
+                </div>`;
+    }
+    
+    breakdownHtml += `
+                <div class="quote-row">
+                    <span class="quote-label">PRICE PER ITEM</span>
+                    <span class="quote-value">$${basePrice.toFixed(2)}</span>
+                </div>
+                
+                <div class="quote-row">
+                    <span class="quote-label">DELIVERY</span>
+                    <span class="quote-value">$0.00</span>
+                </div>
+                
+                <div class="quote-row">
+                    <span class="quote-label">SUBTOTAL</span>
+                    <span class="quote-value">$${subtotal.toFixed(2)}</span>
+                </div>
+                
+                <div class="quote-row">
+                    <span class="quote-label">GST</span>
+                    <span class="quote-value">$${gstAmount.toFixed(2)}</span>
+                </div>
+                
+                <div class="quote-row quote-total">
+                    <span class="quote-label">TOTAL</span>
+                    <span class="quote-value">$${totalWithGst.toFixed(2)}<span class="quote-inc-gst">inc GST</span></span>
+                </div>
+            </div>
+            
+            <div class="quote-buttons">
+                <a href="javascript:void(0);" onclick="addToCart('{{ $product->id }}');" class="quote-btn">Add to Cart</a>
+                <a href="javascript:void(0);" onclick="recalculatePrice()" class="quote-btn">Recalculate</a>
+            </div>
+        </div>`;
+    
     $('#priceBreakdownContent').html(breakdownHtml);
 }
 
