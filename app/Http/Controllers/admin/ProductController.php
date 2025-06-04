@@ -143,6 +143,7 @@ class ProductController extends Controller
     // Additional Product Related Tables
                 $this->createAttributes($request, $product);
                 $this->createProductPriceDetail($request, $product);
+                
                 $this->createProductPriceRange($request, $product);
                 $this->createFixedPrices($request, $product);
                 $this->createRigidMediasPrices($request, $product);

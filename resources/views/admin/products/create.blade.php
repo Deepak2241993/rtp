@@ -1054,8 +1054,8 @@
                                 <h2 class="h4 mb-3">Product status</h2>
                                 <div class="mb-3">
                                     <select name="product_status" id="product_status" class="form-control">
-                                        <option value="1">Active</option>
-                                        <option value="0">Block</option>
+                                        <option value="inactive">Inactive</option>
+                                        <option value="active">Active</option>
                                     </select>
                                 </div>
                             </div>

@@ -1610,6 +1610,7 @@
                                     More</button>
                             </div>
                         </div>
+                        
                         <!-- Product Pages in Notepad Option Card (Initially Hidden) -->
                         <div class="card mb-3" id="productPagesinNotepadCard" style="display: none;">
                             <div class="card-body">
