@@ -876,13 +876,13 @@ strong, span, small, label, i {
   height: 100%;
   display: block;
   font-size: 20px;
-  top: -176%;
+  top: -110%;
   line-height: 55px;
-  color: #334eff;
+  color: #ffffff;
   text-align: center;
   position: relative;
   border-radius: 100%;
-  background-color: #ffffff;
+  background-color: #543b8c;
   box-shadow: 0px 10px 33.25px 1.75px rgba(0, 27, 103, 0.15);
 }
 

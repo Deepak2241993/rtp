@@ -474,6 +474,12 @@ cursor: pointer;
   color: #ffffff; /* White color for icons */
 }
 
+/* Youtube style */
+.side-ribbon a.youtube {
+  background-color: #FF0000; /* Youtube standard color */
+  color: #ffffff; /* White color for icons */
+}
+
 /* WhatsApp style */
 .side-ribbon a.whatsapp {
   background-color: #8ABC39; /* Green background color */
