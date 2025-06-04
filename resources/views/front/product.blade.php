@@ -781,7 +781,7 @@
     }
 
     .tabs-nav ul li a:hover {
-        background-color: #553C9A;
+        /* background-color: #553C9A; */
         color: white;
         text-decoration: none;
     }
