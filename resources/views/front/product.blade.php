@@ -869,6 +869,13 @@
         background: #f8f9fa;
         padding: 0;
     }
+    .details-section .information-area .tabs-nav > ul > li > a {
+    
+    border: 1px solid #6B46C1;
+    
+    padding : 15px;
+    }
+    
 </style>
 @endsection
 
