@@ -3846,8 +3846,7 @@ button {
   border: none;
   font-size: 21px;
   font-weight: 500;
-  padding: 15px;
-  /* padding-bottom: 25px; */
+  padding-bottom: 25px;
 }
 .details-section .information-area .tabs-nav > ul > li > a:hover, .details-section .information-area .tabs-nav > ul > li > a.active {
   color: #36415a;
