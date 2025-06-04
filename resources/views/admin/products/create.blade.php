@@ -934,7 +934,76 @@
                         <div class="card mb-3" id="productcuttingCard" style="display: none;">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Product Cutting Option</h2>
-                                <div id="CuttingFieldsContainer">
+                                <div class="row">
+                                    <!-- Single Side Section -->
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
+                                                    id="singleOption" value="single">
+                                                <label class="form-check-label" for="singleOption">Single Side</label>
+                                            </div>
+                                            <div id="singlePriceFieldsContainer" class="mt-3" style="display: none;">
+                                                <div class="row single-price-fields">
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[single][0][min_range]"
+                                                            class="form-control" placeholder="Min Qty" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[single][0][max_range]"
+                                                            class="form-control" placeholder="Max Qty" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[single][0][price]"
+                                                            class="form-control" placeholder="Price" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-12 text-end mt-2">
+                                                        <button type="button" class="btn btn-danger remove-single"
+                                                            style="display: none;"><i class="fas fa-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-primary addTrimToSizeBtn mt-2"><i
+                                                        class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Double Side Section -->
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
+                                                    id="doubleOption" value="double">
+                                                <label class="form-check-label" for="doubleOption">Double Side</label>
+                                            </div>
+                                            <div id="doublePriceFieldsContainer" class="mt-3" style="display: none;">
+                                                <div class="row double-price-fields">
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[double][0][min_range]"
+                                                            class="form-control" placeholder="Min Qty" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[double][0][max_range]"
+                                                            class="form-control" placeholder="Max Qty" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="number" name="rigidMedia[double][0][price]"
+                                                            class="form-control" placeholder="Price" step="0.01"
+                                                            min="0">
+                                                    </div>
+                                                    <div class="col-md-12 text-end mt-2">
+                                                        <button type="button" class="btn btn-danger remove-double"
+                                                            style="display: none;"><i class="fas fa-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-primary add-more-double mt-2"><i
+                                                        class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                </div>
+                                {{-- <div id="CuttingFieldsContainer">
                                     <div class="row Cutting_class">
                                         <div class="col-md-5">
                                                 <div class="mb-3">
@@ -958,7 +1027,7 @@
                                     </div>
                                 </div>
                                 <button type="button" id="addCuttingBtn" class="btn btn-success">Add
-                                    More</button>
+                                    More</button> --}}
                             </div>
                         </div>
                         <!-- Product Cutting -->
@@ -1992,6 +2061,7 @@
         });
     </script>
 
+
     <script>
         $(document).ready(function() {
             // Clone single-price-template on Add More button click for single
@@ -2028,6 +2098,110 @@
 
             // Add More for Single Side
             $('.add-more-single').click(function() {
+                addFields('#singlePriceFieldsContainer', 'single', rigidMediaIndexSingle++);
+            });
+
+            // Add More for Double Side
+            $('.add-more-double').click(function() {
+                addFields('#doublePriceFieldsContainer', 'double', rigidMediaIndexDouble++);
+            });
+
+            // Function to dynamically add fields
+            function addFields(containerId, type, index) {
+                const clone = $(`${containerId} .${type}-price-fields:first`).clone();
+
+                // Update name attributes
+                clone.find('input').each(function() {
+                    let name = $(this).attr('name');
+                    name = name.replace(/\[\d+\]/, `[${index}]`);
+                    $(this).attr('name', name).val(''); // Clear values
+                });
+
+                clone.find('.remove-single, .remove-double').show(); // Show remove button
+
+                // Add the new fields above the "Add More" button
+                $(`${containerId} .add-more-${type}`).before(clone);
+
+                toggleRemoveButtons(containerId, `.remove-${type}`);
+            }
+
+            // Function to toggle remove buttons
+            function toggleRemoveButtons(containerId, removeButtonClass) {
+                const rows = $(`${containerId} .row`);
+                rows.length > 1 ? $(removeButtonClass).show() : $(removeButtonClass).hide();
+            }
+
+            // Remove field dynamically
+            $(document).on('click', '.remove-single, .remove-double', function() {
+                $(this).closest('.row').remove();
+                toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
+                toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
+            });
+
+            // Initialize remove buttons
+            toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
+            toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
+        });
+    </script>
+{{--  For Cutting Option New  --}}
+<!-- JavaScript to Toggle Containers -->
+    <script>
+        document.getElementById('singleOption').addEventListener('change', function() {
+            var singlePriceFields = document.getElementById('singlePriceFieldsContainer');
+            if (this.checked) {
+                singlePriceFields.style.display = 'block'; // Show the single price fields
+            } else {
+                singlePriceFields.style.display = 'none'; // Hide the single price fields
+            }
+        });
+
+        document.getElementById('doubleOption').addEventListener('change', function() {
+            var doublePriceFields = document.getElementById('doublePriceFieldsContainer');
+            if (this.checked) {
+                doublePriceFields.style.display = 'block'; // Show the double price fields
+            } else {
+                doublePriceFields.style.display = 'none'; // Hide the double price fields
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Clone single-price-template on Add More button click for single
+            $('.addTrimToSizeBtn').click(function() {
+                var singleTemplate = $('.single-price-template').clone();
+                singleTemplate.removeClass('single-price-template').addClass('single-price-fields').show();
+                $('#singlePriceFieldsContainer').append(singleTemplate);
+            });
+
+            // Clone double-price-template on Add More button click for double
+            $('.add-more-double').click(function() {
+                var doubleTemplate = $('.double-price-template').clone();
+                doubleTemplate.removeClass('double-price-template').addClass('double-price-fields').show();
+                $('#doublePriceFieldsContainer').append(doubleTemplate);
+            });
+
+            // Remove button functionality for single price fields
+            $(document).on('click', '.remove-single', function() {
+                $(this).closest('.single-price-fields').remove();
+            });
+
+            // Remove button functionality for double price fields
+            $(document).on('click', '.remove-double', function() {
+                $(this).closest('.double-price-fields').remove();
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize counters for single and double side fields
+            let rigidMediaIndexSingle = 1;
+            let rigidMediaIndexDouble = 1;
+
+            // Add More for Single Side
+            $('.addTrimToSizeBtn').click(function() {
                 addFields('#singlePriceFieldsContainer', 'single', rigidMediaIndexSingle++);
             });
 
