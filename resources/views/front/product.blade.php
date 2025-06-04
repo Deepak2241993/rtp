@@ -800,7 +800,7 @@
         top: 0;
         left: 0;
         right: 0;
-        /* height: 0px; */
+        height: 1px;
         background-color: #6B46C1;
     }
 
@@ -869,6 +869,13 @@
         background: #f8f9fa;
         padding: 0;
     }
+    .details-section .information-area .tabs-nav > ul > li > a {
+    
+    border: 1px solid #6B46C1;
+    
+    padding : 15px;
+    }
+    
 </style>
 @endsection
 
@@ -996,18 +1003,7 @@
 
                             <!-- Product Details Section (will be hidden after calculation) -->
                             <div class="product-details-section" id="productDetailsSection">
-                                <!-- Product Form Container -->
-                                <div class="product-form-container">
-                                    <!-- <div class="form-header">
-                                        <h3 class="form-title">Get An Instant Quote</h3>
-                                        <p class="form-subtitle">Configure your product options below</p>
-                                        <div class="form-accent-line"></div>
-                                    </div> -->
-                                    
-                                    <div class="form-content">
-                                        <!-- Price Display Section -->
-                                        <div class="form-section">
-                                            <div class="price-container">
+                                <div class="price-container">
                                                 <div class="price-row">
                                                     <span class="item-price">
                                                         <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span
@@ -1016,6 +1012,26 @@
                                                 </div>
                                                 <span class="item-price" id="priceDisplay" hidden>${{ $product->product_price }}</span>
                                             </div>
+                                <!-- Product Form Container -->
+                                <div class="product-form-container">
+                                    <div class="form-header">
+                                        <h3 class="form-title">Get An Instant Quote</h3>
+                                        <p class="form-subtitle">Configure your product options below</p>
+                                        <div class="form-accent-line"></div>
+                                    </div>
+                                    
+                                    <div class="form-content">
+                                        <!-- Price Display Section -->
+                                        <div class="form-section">
+                                            <!-- <div class="price-container">
+                                                <div class="price-row">
+                                                    <span class="item-price">
+                                                        <span class="as-low">As <br> low as </span> ${{ $product->product_price }}<span
+                                                            class="gst-info">* Excluding GST</span>
+                                                    </span>
+                                                </div>
+                                                <span class="item-price" id="priceDisplay" hidden>${{ $product->product_price }}</span>
+                                            </div> -->
                                         </div>
 
                                         <!-- Basic Options Section -->
