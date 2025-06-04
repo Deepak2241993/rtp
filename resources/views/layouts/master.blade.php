@@ -522,6 +522,8 @@
 					class="lab la-facebook"></i></a>
 			<a href="{{$web->linkedin}}" target="_blank" class="linkedin" title="LinkedIn"><i
 					class="lab la-linkedin"></i></a>
+            <a href="{{$web->youtube}}" target="_blank" class="youtube" title="youtube"><i
+					class="lab la-youtube"></i></a>
 		</div>
 
 
@@ -626,18 +628,11 @@
                                     </li>
 
 
-									<!-- <li>
-										<a href="#!" class="store-btn bg-default-black">
-											<span class="icon-wrap">
-												<i class="lab la-apple"></i>
-											</span>
-											<span class="content-wrap">
-												<small>available on</small>
-												<strong>Apple Store</strong>
-											</span>
-										</a>
+									<li style="color: #ffffff;">
+                                        <i class="fas fa-location-arrow"></i> 
+                                        Location: <span style="color: #ffffff;">{{$web->address}}</span>
 									</li>
-									<li>
+									{{-- <li>
 										<a href="#!" class="store-btn bg-default-black">
 											<span class="icon-wrap">
 												<i class="lab la-google-play"></i>
@@ -647,7 +642,7 @@
 												<strong>Google Play</strong>
 											</span>
 										</a>
-									</li> -->
+									</li>  --}}
 								</ul>
 							</div>
 							<br>
