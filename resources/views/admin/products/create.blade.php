@@ -26,6 +26,12 @@
             align-items: baseline;
             margin-top: 15px;
         }
+
+          .row.trimtosize-price-fields,
+        .customeshape-price-fields {
+            align-items: baseline;
+            margin-top: 15px;
+        }
     </style>
     <style>
         .hidden {
@@ -232,8 +238,7 @@
                                                     class="btn btn-info btnchange">Copies Required</button>
                                                 <button type="button" id="togglePagesinNotepadBtn"
                                                     class="btn btn-info btnchange">Pages in Notepad</button>
-                                                <button type="button" id="toggleCuttingBtn"
-                                                    class="btn btn-info btnchange">Cutting</button>
+                                                <button type="button" id="toggleCuttingBtn" class="btn btn-info btnchange">Cutting</button>
                                             </div>
                                         </div>
                                     </div>
@@ -269,6 +274,8 @@
                                     </div>
                                 </div>
                                 <hr style="border: 2px solid #543B8C;">
+
+
                                 <!-- Container for Roll Media Fields -->
                                 <div id="rollMediaContainer" class="hidden">
                                     <div class="rollMediaFieldSet row">
@@ -930,107 +937,64 @@
                         </div>
                         <!-- Product Pages in Cuttings Option Card (Initially Hidden) -->
                         
-                        <!-- Product Cutting -->
-                        <div class="card mb-3" id="productcuttingCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Cutting Option</h2>
-                                <div class="row">
-                                    <!-- Single Side Section -->
+                       <!-- Product Cutting Card -->
+                            <div class="card mb-3" id="productcuttingCard" style="display: none;">
+                                <div class="card-body">
+                                    <h2 class="h4 mb-3">Product Cutting Option</h2>
+                                    <div class="row">
+                                        <!-- Trim to Size Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
-                                                    id="singleOption" value="single">
-                                                <label class="form-check-label" for="singleOption">Single Side</label>
+                                                <input class="form-check-input" type="checkbox" id="trimtosizeption" value="Trim to Size">
+                                                <label class="form-check-label" for="trimtosizeption">Trim to Size</label>
                                             </div>
-                                            <div id="singlePriceFieldsContainer" class="mt-3" style="display: none;">
-                                                <div class="row single-price-fields">
+                                            <div id="trimToSizeFieldsContainer" class="mt-3" style="display: none;">
+                                                <div class="row trimtosize-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][min_range]"
-                                                            class="form-control" placeholder="Min Qty" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[trimtosize][0][min_range]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][max_range]"
-                                                            class="form-control" placeholder="Max Qty" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[trimtosize][0][max_range]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[single][0][price]"
-                                                            class="form-control" placeholder="Price" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[trimtosize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-single"
-                                                            style="display: none;"><i class="fas fa-minus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove-trimtosize" style="display: none;"><i class="fas fa-minus"></i></button>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-primary addTrimToSizeBtn mt-2"><i
-                                                        class="fas fa-plus"></i></button>
+                                                <button type="button" class="btn btn-primary addTrimToSizeBtn mt-2"><i class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
 
-                                        <!-- Double Side Section -->
+                                        <!-- Custom Shape Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" name="rigidMediaOption[]"
-                                                    id="doubleOption" value="double">
-                                                <label class="form-check-label" for="doubleOption">Double Side</label>
+                                                <input class="form-check-input" type="checkbox" id="customeshapeOption" value="Custom Shape">
+                                                <label class="form-check-label" for="customeshapeOption">Custom Shape</label>
                                             </div>
-                                            <div id="doublePriceFieldsContainer" class="mt-3" style="display: none;">
-                                                <div class="row double-price-fields">
+                                            <div id="customeshapeFieldsContainer" class="mt-3" style="display: none;">
+                                                <div class="row customeshape-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][min_range]"
-                                                            class="form-control" placeholder="Min Qty" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[customesize][0][min_range]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][max_range]"
-                                                            class="form-control" placeholder="Max Qty" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[customesize][0][max_range]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="rigidMedia[double][0][price]"
-                                                            class="form-control" placeholder="Price" step="0.01"
-                                                            min="0">
+                                                        <input type="number" name="cutting[customesize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-double"
-                                                            style="display: none;"><i class="fas fa-minus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove-customeshape" style="display: none;"><i class="fas fa-minus"></i></button>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-primary add-more-double mt-2"><i
-                                                        class="fas fa-plus"></i></button>
+                                                <button type="button" class="btn btn-primary add-more-custome mt-2"><i class="fas fa-plus"></i></button>
                                             </div>
-                                        </div>
-                                </div>
-                                {{-- <div id="CuttingFieldsContainer">
-                                    <div class="row Cutting_class">
-                                        <div class="col-md-5">
-                                                <div class="mb-3">
-                                                   <label for="product_cutting">Cutting Type</label>
-                                                        <select name="product_cutting[]" id="product_cutting" class="form-control">
-                                                            <option value="Trim to Size">Trim to Size</option>
-                                                            <option value="Custom Shape">Custom Shape</option>
-                                                        </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_cutting_price">Price</label>
-                                                    <input type="text" name="product_cutting_price[]"
-                                                        class="form-control" placeholder="Cutting Price">
-                                                </div>
-                                            </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" id="addCuttingBtn" class="btn btn-success">Add
-                                    More</button> --}}
                             </div>
-                        </div>
-                        <!-- Product Cutting -->
+
 
 
                         {{-- For FAQ --}}
@@ -1419,7 +1383,7 @@
             addFields('#addPagesinBookBtn', '#pagesinbookFieldsContainer', '.pagesinbook');
             addFields('#addCopiesRequiredBtn', '#copiesrequiredFieldsContainer', '.copiesrequired');
             addFields('#addPagesinNotepadBtn', '#pagesinnotepadFieldsContainer', '.pagesinnotepad');
-            addFields('#addCuttingBtn', '#CuttingFieldsContainer', '.Cutting_class');
+            
 
             setupRemoveButtons('#sizeFieldsContainer');
             setupRemoveButtons('#colorFieldsContainer');
@@ -1438,7 +1402,7 @@
             setupRemoveButtons('#pagesinbookFieldsContainer');
             setupRemoveButtons('#copiesrequiredFieldsContainer');
             setupRemoveButtons('#pagesinnotepadFieldsContainer');
-            setupRemoveButtons('#CuttingFieldsContainer');
+            
 
             // Initialize disable check button functionality for input fields
             disableCheckButton('#productSizeCard input[type="number"]', '#toggleProductSizeBtn');
@@ -1458,7 +1422,7 @@
             disableCheckButton('#productPagesinBookCard input[type="text"]', '#togglePagesinBookBtn');
             disableCheckButton('#productCopiesRequiredCard input[type="text"]', '#toggleCopiesRequiredBtn');
             disableCheckButton('#productPagesinNotepadCard input[type="text"]', '#togglePagesinNotepadBtn');
-            disableCheckButton('#productcuttingCard select', '#toggleCuttingBtn');
+
 
 
 
@@ -1480,7 +1444,6 @@
             updateRemoveButtons('#productPagesinBookCard', '.removeBtn');
             updateRemoveButtons('#productCopiesRequiredCard', '.removeBtn');
             updateRemoveButtons('#productPagesinNotepadCard', '.removeBtn');
-            updateRemoveButtons('#productcuttingCard', '.removeBtn');
         });
     </script>
 
@@ -1747,7 +1710,7 @@
 
 
     <script>
-        fixedMediaContainer$(document).ready(function() {
+        fixedMediaContainer $(document).ready(function() {
             // Function to update button visibility
             function updateButtonVisibility() {
                 $('#fixedMediaContainer .fixedFieldSet').each(function(index) {
@@ -2166,85 +2129,127 @@
     </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         $(document).ready(function() {
-            // Clone single-price-template on Add More button click for single
+            // Clone trim-to-size-template on Add More button click for single
             $('.addTrimToSizeBtn').click(function() {
-                var singleTemplate = $('.single-price-template').clone();
-                singleTemplate.removeClass('single-price-template').addClass('single-price-fields').show();
-                $('#singlePriceFieldsContainer').append(singleTemplate);
+                var singleTemplate = $('.trim-to-size-template').clone();
+                singleTemplate.removeClass('trim-to-size-template').addClass('trimtosize-price-fields').show();
+                $('#trimToSizeFieldsContainer').append(singleTemplate);
             });
 
             // Clone double-price-template on Add More button click for double
-            $('.add-more-double').click(function() {
-                var doubleTemplate = $('.double-price-template').clone();
-                doubleTemplate.removeClass('double-price-template').addClass('double-price-fields').show();
+            $('.add-more-custome').click(function() {
+                var doubleTemplate = $('.custome-size-template').clone();
+                doubleTemplate.removeClass('custome-size-template').addClass('customeshape-price-fields').show();
                 $('#doublePriceFieldsContainer').append(doubleTemplate);
             });
 
             // Remove button functionality for single price fields
-            $(document).on('click', '.remove-single', function() {
-                $(this).closest('.single-price-fields').remove();
+            $(document).on('click', '.remove-trimtosize', function() {
+                $(this).closest('.trimtosize-price-fields').remove();
             });
 
             // Remove button functionality for double price fields
-            $(document).on('click', '.remove-double', function() {
-                $(this).closest('.double-price-fields').remove();
+            $(document).on('click', '.remove-customeshape', function() {
+                $(this).closest('.customeshape-price-fields').remove();
             });
         });
     </script>
 
     <script>
-        $(document).ready(function() {
-            // Initialize counters for single and double side fields
-            let rigidMediaIndexSingle = 1;
-            let rigidMediaIndexDouble = 1;
+    $(document).ready(function () {
+        let trimtosize = 1;
+        let customeshape = 1;
 
-            // Add More for Single Side
-            $('.addTrimToSizeBtn').click(function() {
-                addFields('#singlePriceFieldsContainer', 'single', rigidMediaIndexSingle++);
+        // Add Trim To Size
+        $('.addTrimToSizeBtn').click(function () {
+            addFields('#trimToSizeFieldsContainer', 'trimtosize', trimtosize++, 'trimtosize-price-fields', 'remove-trimtosize', 'addTrimToSizeBtn');
+        });
+
+        // Add Custom Shape
+        $('.add-more-custome').click(function () {
+            addFields('#customeshapeFieldsContainer', 'customesize', customeshape++, 'customeshape-price-fields', 'remove-customeshape', 'add-more-custome');
+        });
+
+        // Function to dynamically add fields
+        function addFields(containerId, type, index, rowClass, removeBtnClass, addBtnClass) {
+            const clone = $(`${containerId} .${rowClass}:first`).clone();
+
+            // Update name attributes
+            clone.find('input').each(function () {
+                let name = $(this).attr('name');
+                name = name.replace(/\[\d+\]/, `[${index}]`);
+                $(this).attr('name', name).val('');
             });
 
-            // Add More for Double Side
-            $('.add-more-double').click(function() {
-                addFields('#doublePriceFieldsContainer', 'double', rigidMediaIndexDouble++);
-            });
+            clone.find(`.${removeBtnClass}`).show(); // Show remove button
 
-            // Function to dynamically add fields
-            function addFields(containerId, type, index) {
-                const clone = $(`${containerId} .${type}-price-fields:first`).clone();
+            // Insert clone before Add More button
+            $(`${containerId} .${addBtnClass}`).before(clone);
 
-                // Update name attributes
-                clone.find('input').each(function() {
-                    let name = $(this).attr('name');
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    $(this).attr('name', name).val(''); // Clear values
-                });
+            toggleRemoveButtons(containerId, `.${removeBtnClass}`, rowClass);
+        }
 
-                clone.find('.remove-single, .remove-double').show(); // Show remove button
+        // Remove field
+        $(document).on('click', '.remove-trimtosize', function () {
+            $(this).closest('.trimtosize-price-fields').remove();
+            toggleRemoveButtons('#trimToSizeFieldsContainer', '.remove-trimtosize', 'trimtosize-price-fields');
+        });
 
-                // Add the new fields above the "Add More" button
-                $(`${containerId} .add-more-${type}`).before(clone);
+        $(document).on('click', '.remove-customeshape', function () {
+            $(this).closest('.customeshape-price-fields').remove();
+            toggleRemoveButtons('#customeshapeFieldsContainer', '.remove-customeshape', 'customeshape-price-fields');
+        });
 
-                toggleRemoveButtons(containerId, `.remove-${type}`);
+        // Toggle remove button visibility
+        function toggleRemoveButtons(containerId, removeButtonClass, rowClass) {
+            const rows = $(`${containerId} .${rowClass}`);
+            rows.length > 1 ? $(removeButtonClass).show() : $(removeButtonClass).hide();
+        }
+
+        // Initialize remove buttons
+        toggleRemoveButtons('#trimToSizeFieldsContainer', '.remove-trimtosize', 'trimtosize-price-fields');
+        toggleRemoveButtons('#customeshapeFieldsContainer', '.remove-customeshape', 'customeshape-price-fields');
+    });
+</script>
+
+
+{{-- Working Section --}}
+    <script>
+        document.getElementById('trimtosizeption').addEventListener('change', function() {
+            var TrimToSizeFields = document.getElementById('trimToSizeFieldsContainer');
+            if (this.checked) {
+                TrimToSizeFields.style.display = 'block'; // Show the single price fields
+            } else {
+                TrimToSizeFields.style.display = 'none'; // Hide the single price fields
             }
+        });
 
-            // Function to toggle remove buttons
-            function toggleRemoveButtons(containerId, removeButtonClass) {
-                const rows = $(`${containerId} .row`);
-                rows.length > 1 ? $(removeButtonClass).show() : $(removeButtonClass).hide();
+        document.getElementById('customeshapeOption').addEventListener('change', function() {
+            var CustomeSizeFields = document.getElementById('customeshapeFieldsContainer');
+            if (this.checked) {
+                CustomeSizeFields.style.display = 'block'; // Show the double price fields
+            } else {
+                CustomeSizeFields.style.display = 'none'; // Hide the double price fields
             }
-
-            // Remove field dynamically
-            $(document).on('click', '.remove-single, .remove-double', function() {
-                $(this).closest('.row').remove();
-                toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
-                toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
-            });
-
-            // Initialize remove buttons
-            toggleRemoveButtons('#singlePriceFieldsContainer', '.remove-single');
-            toggleRemoveButtons('#doublePriceFieldsContainer', '.remove-double');
         });
     </script>
+
+
+
 @endsection
