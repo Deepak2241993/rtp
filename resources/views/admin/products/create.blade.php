@@ -939,59 +939,86 @@
                         
                        <!-- Product Cutting Card -->
                             <div class="card mb-3" id="productcuttingCard" style="display: none;">
+                                <div class="card-header bg-primary text-white">
+                       <h5 class="mb-0"><i class="fas fa-cut me-2"></i> Cutting Options</h5>
+                   </div>
                                 <div class="card-body">
-                                    <h2 class="h4 mb-3">Product Cutting Option</h2>
-                                    <div class="row">
-                                        <!-- Trim to Size Section -->
-                                        <div class="col-md-6">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="trimtosizeption" name="cuttingOption[]" value="trimtosize">
-                                                <label class="form-check-label" for="trimtosizeption">Trim to Size</label>
-                                            </div>
-                                            <div id="trimToSizeFieldsContainer" class="mt-3" style="display: none;">
-                                                <div class="row trimtosize-price-fields">
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[trimtosize][0][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[trimtosize][0][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[trimtosize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-trimtosize" style="display: none;"><i class="fas fa-minus"></i></button>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn btn-primary addTrimToSizeBtn mt-2"><i class="fas fa-plus"></i></button>
-                                            </div>
-                                        </div>
+                                    <div class="row gy-4">
+    <!-- Trim to Size Section -->
+    <div class="col-md-6">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="trimtosizeption" name="cuttingOption[]" value="trimtosize">
+            <label class="form-check-label fw-bold" for="trimtosizeption">
+                <i class="fas fa-ruler-combined me-1"></i> Trim to Size
+            </label>
+        </div>
 
-                                        <!-- Custom Shape Section -->
-                                        <div class="col-md-6">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="customeshapeOption" name="cuttingOption[]" value="customesize">
-                                                <label class="form-check-label" for="customeshapeOption">Custom Shape</label>
-                                            </div>
-                                            <div id="customeshapeFieldsContainer" class="mt-3" style="display: none;">
-                                                <div class="row customeshape-price-fields">
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[customesize][0][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[customesize][0][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input type="number" name="cutting[customesize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
-                                                    </div>
-                                                    <div class="col-md-12 text-end mt-2">
-                                                        <button type="button" class="btn btn-danger remove-customeshape" style="display: none;"><i class="fas fa-minus"></i></button>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn btn-primary add-more-custome mt-2"><i class="fas fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
+        <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border" style="display: none;">
+            <div class="row trimtosize-price-fields g-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Min Qty</label>
+                    <input type="number" name="cutting[trimtosize][0][min_qty]" class="form-control" step="0.01" min="0" placeholder="Min Qty">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Max Qty</label>
+                    <input type="number" name="cutting[trimtosize][0][max_qty]" class="form-control" step="0.01" min="0" placeholder="Max Qty">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Price</label>
+                    <input type="number" name="cutting[trimtosize][0][price]" class="form-control" step="0.01" min="0" placeholder="Price">
+                </div>
+                <div class="col-12 text-end mt-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-trimtosize" style="display: none;">
+                        <i class="fas fa-minus-circle"></i> Remove
+                    </button>
+                </div>
+            </div>
+            <div class="mt-3 text-end">
+                <button type="button" class="btn btn-outline-primary btn-sm addTrimToSizeBtn">
+                    <i class="fas fa-plus-circle"></i> Add More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Shape Section -->
+    <div class="col-md-6">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="customeshapeOption" name="cuttingOption[]" value="customesize">
+            <label class="form-check-label fw-bold" for="customeshapeOption">
+                <i class="fas fa-shapes me-1"></i> Custom Shape
+            </label>
+        </div>
+
+        <div id="customeshapeFieldsContainer" class="bg-light p-3 rounded border" style="display: none;">
+            <div class="row customeshape-price-fields g-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Min Qty</label>
+                    <input type="number" name="cutting[customesize][0][min_qty]" class="form-control" step="0.01" min="0" placeholder="Min Qty">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Max Qty</label>
+                    <input type="number" name="cutting[customesize][0][max_qty]" class="form-control" step="0.01" min="0" placeholder="Max Qty">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Price</label>
+                    <input type="number" name="cutting[customesize][0][price]" class="form-control" step="0.01" min="0" placeholder="Price">
+                </div>
+                <div class="col-12 text-end mt-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm remove-customeshape" style="display: none;">
+                        <i class="fas fa-minus-circle"></i> Remove
+                    </button>
+                </div>
+            </div>
+            <div class="mt-3 text-end">
+                <button type="button" class="btn btn-outline-primary btn-sm add-more-custome">
+                    <i class="fas fa-plus-circle"></i> Add More
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
                                 </div>
                             </div>
 

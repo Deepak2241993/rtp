@@ -1668,68 +1668,104 @@
                                     More</button>
                             </div>
                         </div>
+
                         <!-- Product Cutting Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productcuttingCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Cutting Option</h2>
-                                <div id="cuttingFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'cutting')
-                                            <div class="row cutting">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_cutting">Cutting Type</label>
-                                                        <select name="product_cutting[]"  class="form-control">
-                                                            <option value="Trim to Size"{{ $attribute->attribute_value =='Trim to Size' ?'selected':'' }}>Trim to Size</option>
-                                                            <option value="Custom Shape" {{ $attribute->attribute_value =='Custom Shape' ?'selected':'' }}>Custom Shape</option>
-                                                        </select>
-                                                      
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="cutting_price">Price</label>
-                                                        <input type="text" name="cutting_price[]"
-                                                            class="form-control" placeholder="Cutting Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
+                        @php
+                            $trimToSizeOptions = $cutting_options->where('cutting_type', 'trimtosize')->values();
+                            $customShapeOptions = $cutting_options->where('cutting_type', 'customesize')->values();
+                        @endphp
+
+                    <div class="card shadow-sm border-0 mb-4" id="productcuttingCard" style="display: block;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-cut me-2"></i> Cutting Options</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row gy-4">
+                                <!-- Trim to Size Section -->
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="trimtosizeption" name="cuttingOption[]" value="trimtosize" {{ $trimToSizeOptions->isNotEmpty() ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-bold" for="trimtosizeption">
+                                            <i class="fas fa-ruler-combined me-1"></i> Trim to Size
+                                        </label>
+                                    </div>
+
+                                    <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border" style="{{ $trimToSizeOptions->isNotEmpty() ? '' : 'display: none;' }}">
+                                        @foreach ($trimToSizeOptions as $index => $option)
+                                        <div class="row trimtosize-price-fields g-2 align-items-end mb-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Min Qty</label>
+                                                <input type="number" name="cutting[trimtosize][{{ $index }}][min_qty]" value="{{ $option->min_qty }}" class="form-control" step="0.01" min="0">
                                             </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'cutting')->isEmpty())
-                                        <div class="row cutting">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                   <label for="product_cutting">Cutting Type</label>
-                                                  
-                                                        <select name="product_cutting[]" class="form-control">
-                                                            <option value="Trim to Size">Trim to Size</option>
-                                                            <option value="Custom Shape">Custom Shape</option>
-                                                        </select>
-                                                </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Max Qty</label>
+                                                <input type="number" name="cutting[trimtosize][{{ $index }}][max_qty]" value="{{ $option->max_qty }}" class="form-control" step="0.01" min="0">
                                             </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="cutting_price">Price</label>
-                                                    <input type="text" name="cutting_price[]"
-                                                        class="form-control" placeholder="Cutting Price">
-                                                </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Price</label>
+                                                <input type="number" name="cutting[trimtosize][{{ $index }}][price]" value="{{ $option->price }}" class="form-control" step="0.01" min="0">
                                             </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                            <div class="col-12 text-end mt-2">
+                                                <button type="button" class="btn btn-outline-danger btn-sm remove-trimtosize" style="{{ $index === 0 ? 'display: none;' : '' }}">
+                                                    <i class="fas fa-minus-circle"></i> Remove
+                                                </button>
                                             </div>
                                         </div>
-                                    @endif
+                                        @endforeach
+
+                                        <div class="mt-3 text-end">
+                                            <button type="button" class="btn btn-outline-primary addTrimToSizeBtn btn-sm">
+                                                <i class="fas fa-plus-circle"></i> Add More
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="button" id="addcuttingBtn" class="btn btn-success">Add
-                                    More</button>
+
+                                <!-- Custom Shape Section -->
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="customeshapeOption" name="cuttingOption[]" value="customesize" {{ $customShapeOptions->isNotEmpty() ? 'checked' : '' }}>
+                                        <label class="form-check-label fw-bold" for="customeshapeOption">
+                                            <i class="fas fa-shapes me-1"></i> Custom Shape
+                                        </label>
+                                    </div>
+
+                                    <div id="customeshapeFieldsContainer" class="bg-light p-3 rounded border" style="{{ $customShapeOptions->isNotEmpty() ? '' : 'display: none;' }}">
+                                        @foreach ($customShapeOptions as $index => $option)
+                                        <div class="row customeshape-price-fields g-2 align-items-end mb-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Min Qty</label>
+                                                <input type="number" name="cutting[customesize][{{ $index }}][min_qty]" value="{{ $option->min_qty }}" class="form-control" step="0.01" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Max Qty</label>
+                                                <input type="number" name="cutting[customesize][{{ $index }}][max_qty]" value="{{ $option->max_qty }}" class="form-control" step="0.01" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Price</label>
+                                                <input type="number" name="cutting[customesize][{{ $index }}][price]" value="{{ $option->price }}" class="form-control" step="0.01" min="0">
+                                            </div>
+                                            <div class="col-12 text-end mt-2">
+                                                <button type="button" class="btn btn-outline-danger btn-sm remove-customeshape" style="{{ $index === 0 ? 'display: none;' : '' }}">
+                                                    <i class="fas fa-minus-circle"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                        @endforeach
+
+                                        <div class="mt-3 text-end">
+                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-custome">
+                                                <i class="fas fa-plus-circle"></i> Add More
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+
                         
                         {{-- Product FAQ --}}
                         <div class="card mb-3">
@@ -3840,38 +3876,41 @@
     <script>
         $(document).ready(function() {
 
-            // Check if there is existing data in the input fields on page load
-           var isDataPresent = false;
-            $('#productcuttingCard select').each(function() {
-                if ($(this).val() && $(this).val().trim() !== '') {
-                    isDataPresent = true;
-                    return false; // Exit the loop if any field has a value
-                }
-            });
-
-
-            // If data is present, activate the card and button
-            if (isDataPresent) {
-                $("#toggleCuttingBtn").addClass("active").prop('disabled', false);
+            // Show cutting card if any input has a value
+            if ($('#productcuttingCard input[type="number"]').filter(function () {
+                return $(this).val().trim() !== '';
+            }).length > 0) {
+                $('#toggleCuttingBtn').addClass('active').prop('disabled', false);
                 $('#productcuttingCard').show();
             }
 
-            $("#toggleCuttingBtn").click(function() {
-                $(this).toggleClass("active");
-                toggleCardVisibility($('#productcuttingCard'), $(this));
+            // Toggle cutting card visibility
+            $('#toggleCuttingBtn').click(function () {
+                $(this).toggleClass('active');
+                $('#productcuttingCard').slideToggle();
             });
 
-            // Add cutting Fields
-           function addCutting(buttonSelector, containerSelector, classSelector) {
-                $(buttonSelector).click(function() {
-                    var clone = $(classSelector).first().clone();
-                    clone.find('select').val(""); // Clear the <select> values
+            // Function to add new cutting input group
+            function addCutting(buttonSelector, containerSelector, groupSelector, removeBtnSelector) {
+                $(document).on('click', buttonSelector, function () {
+                    const clone = $(groupSelector).first().clone().find('input').val('').end();
                     $(containerSelector).append(clone);
-                    updateRemoveButtons(containerSelector, '.removeBtn'); // Update visibility of remove buttons
-                    $("#toggleCuttingBtn").addClass("active"); // Ensure button is active when a new field is added
-                    toggleCardVisibility($('#productcuttingCard'), $("#toggleCuttingBtn")); // Show the card when a new field is added
+                    $(removeBtnSelector).show(); // show remove button on new item
+                    $('#toggleCuttingBtn').addClass('active');
+                    $('#productcuttingCard').slideDown();
                 });
             }
+
+            // Initialize add buttons
+            addCutting('.addTrimToSizeBtn', '#trimToSizeFieldsContainer', '.trimtosize-price-fields', '.remove-trimtosize');
+            addCutting('.add-more-custome', '#customeshapeFieldsContainer', '.customeshape-price-fields', '.remove-customeshape');
+
+            // Remove cutting input group
+            $(document).on('click', '.remove-trimtosize, .remove-customeshape', function () {
+                $(this).closest('.row').remove();
+            });
+
+
 
 
             // Function to update the visibility of remove buttons
@@ -4543,4 +4582,84 @@
             });
         });
     </script>
+    {{-- For Cutting --}}
+    <script>
+    $(document).ready(function () {
+        let trimIndex = 1;
+        let customIndex = 1;
+
+        // Toggle Trim to Size container
+        $('#trimtosizeption').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#trimToSizeFieldsContainer').slideDown();
+            } else {
+                $('#trimToSizeFieldsContainer').slideUp();
+            }
+        });
+
+        // Toggle Custom Shape container
+        $('#customeshapeOption').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#customeshapeFieldsContainer').slideDown();
+            } else {
+                $('#customeshapeFieldsContainer').slideUp();
+            }
+        });
+
+        // Add new row for Trim to Size
+        $('.addTrimToSizeBtn').on('click', function () {
+            let newRow = `
+                <div class="row trimtosize-price-fields mt-2">
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[trimtosize][${trimIndex}][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[trimtosize][${trimIndex}][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[trimtosize][${trimIndex}][price]" class="form-control" placeholder="Price" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-12 text-end mt-2">
+                        <button type="button" class="btn btn-danger remove-trimtosize"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+            `;
+            $('#trimToSizeFieldsContainer').append(newRow);
+            trimIndex++;
+        });
+
+        // Add new row for Custom Shape
+        $('.add-more-custome').on('click', function () {
+            let newRow = `
+                <div class="row customeshape-price-fields mt-2">
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[customesize][${customIndex}][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[customesize][${customIndex}][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="cutting[customesize][${customIndex}][price]" class="form-control" placeholder="Price" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-12 text-end mt-2">
+                        <button type="button" class="btn btn-danger remove-customeshape"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+            `;
+            $('#customeshapeFieldsContainer').append(newRow);
+            customIndex++;
+        });
+
+        // Remove row for Trim to Size
+        $(document).on('click', '.remove-trimtosize', function () {
+            $(this).closest('.trimtosize-price-fields').remove();
+        });
+
+        // Remove row for Custom Shape
+        $(document).on('click', '.remove-customeshape', function () {
+            $(this).closest('.customeshape-price-fields').remove();
+        });
+    });
+</script>
+
 @endsection

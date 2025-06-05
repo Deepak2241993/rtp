@@ -499,6 +499,7 @@ public function store(Request $request)
         $categories = Category::orderBy('cat_name', 'ASC')->get();
         $subcategories = SubCategory::orderBy('cat_sub_name', 'ASC')->get();
         $price_range = PriceRange::where('product_id', $product->id)->get();
+        $cutting_options = CuttingOption::where('product_id', $product->id)->get();
 
         // dd($price_range);
         $relatedProducts = [];
@@ -513,7 +514,7 @@ public function store(Request $request)
         }
 
         // Pass the retrieved data to the view
-        return view('admin.products.edit', compact('product', 'categories', 'subcategories', 'price_range', 'productImages', 'relatedProducts'));
+        return view('admin.products.edit', compact('product', 'categories', 'subcategories', 'price_range', 'productImages', 'relatedProducts','cutting_options'));
     }
     public function update($productId, Request $request)
     {
