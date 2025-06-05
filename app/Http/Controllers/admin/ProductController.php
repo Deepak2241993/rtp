@@ -12,10 +12,12 @@ use App\Models\ProductPrice;
 use App\Models\SubCategory;
 use App\Models\TempImage;
 use App\Models\FixedPriceOption;
+use App\Models\CuttingOption;
 use App\Models\FixedPriceRange;
 use App\Models\RigidMedia;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -52,123 +54,125 @@ class ProductController extends Controller
         return view('admin.products.create', $data);
     }
 
-    public function store(Request $request)
-    {
-        // Validation Rules
-        $rules = [
-            'product_name' => 'required|string|max:255',
-            'product_slug' => 'required|unique:product,product_slug',
-            'category_id' => 'required|numeric',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->passes()) {
-            $product = new Product;
-            $product->product_name = $request->product_name;
-            $product->product_slug = $request->product_slug;
-            $product->product_sku = $request->product_sku ?? null;
-            $product->price_option = $request->priceOption ?? null;
-            $product->product_description = $request->product_description ?? null;
-            $product->product_rating_review = $request->product_rating_review ?? null;
-            $product->product_price = $request->product_price ?? 0;
-            $product->product_discounted_price = $request->product_discounted_price ?? 0;
-            $product->category_id = $request->category_id;
-            $product->subcategory_id = $request->subcategory_id ?? null;
-            $product->product_meta_title = $request->product_meta_title ?? null;
-            $product->product_meta_keyword = $request->product_meta_keyword ?? null;
-            $product->product_meta_desp = $request->product_meta_desp ?? null;
-            $product->product_status = $request->product_status ?? 0;
-            $product->product_tag = $request->product_tag ?? null;
-            $product->product_short_description = $request->product_short_description ?? null;
-            $product->product_feature = $request->product_feature ?? null;
-            $product->product_allows_custom_size = $request->product_allows_custom_size ?? 0;
-            $product->product_key_feature = $request->product_key_feature ?? null;
-            $product->product_quantity = $request->product_quantity ?? 0;
-
-            // Handle array to string conversion
-            $product->product_question = is_array($request->product_question) ? implode('~', $request->product_question) : $request->product_question;
-            $product->product_answer = is_array($request->product_answer) ? implode('~', $request->product_answer) : $request->product_answer;
-            $product->related_products = !empty($request->related_products) ? implode(',', $request->related_products) : '';
-
-            // PDF Upload
-            $guidlines = [];
-            if ($request->hasFile('guidlines')) {
-                $folder = "guidlines";
-                $destinationPath = public_path('uploads/' . $folder . '/');
-
-                $files = is_array($request->file('guidlines'))
-                    ? $request->file('guidlines')
-                    : [$request->file('guidlines')];
-
-                foreach ($files as $file) {
-                    if ($file->isValid() && $file->getClientMimeType() === 'application/pdf') {
-                        $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->move($destinationPath, $filename);
-                        $guidlines[] = url('uploads/' . $folder . '/' . $filename);
-                    }
-                }
-
-                $product->guidlines = implode('|', $guidlines);
-            }
-
-            $product->save();
-            // Image Uploads
-            if (!empty($request->image_array)) {
-                foreach ($request->image_array as $temp_image_id) {
-                    $tempImageInfo = TempImage::find($temp_image_id);
-                    if ($tempImageInfo) {
-                        $ext = pathinfo($tempImageInfo->name, PATHINFO_EXTENSION);
-
-                        $productImage = new ProductImage();
-                        $productImage->product_id = $product->id;
-                        $productImage->image = 'NULL'; // placeholder
-                        $productImage->save();
-
-                        $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $ext;
-                        $productImage->image = $imageName;
-                        $productImage->save();
-
-                        File::copy(public_path('temp/' . $tempImageInfo->name), public_path('uploads/product/' . $imageName));
-
-                        // Set product default image
-                        $product->product_image = $imageName;
-                        $product->save();
-                    }
-                }
-            }
-            $product->save();
-
-           try {
-    // Additional Product Related Tables
-                $this->createAttributes($request, $product);
-                $this->createProductPriceDetail($request, $product);
-                
-                $this->createProductPriceRange($request, $product);
-                $this->createFixedPrices($request, $product);
-                $this->createRigidMediasPrices($request, $product);
-
-                $request->session()->flash('success', 'Product added successfully');
-            } catch (\Throwable $e) {
-                // Optional: log the actual error for debugging
-                \Log::error('Product addition error: ' . $e->getMessage());
-
-                // Flash an error message for the user
-                $request->session()->flash('error', 'Something went wrong while adding product details.');
-            }
 
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Product added successfully',
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ]);
-        }
+public function store(Request $request)
+{
+    $rules = [
+        'product_name' => 'required|string|max:255',
+        'product_slug' => 'required|unique:product,product_slug',
+        'category_id' => 'required|numeric',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors(),
+        ]);
     }
+
+    DB::beginTransaction(); // Start the transaction
+
+    try {
+        $product = new Product;
+        $product->product_name = $request->product_name;
+        $product->product_slug = $request->product_slug;
+        $product->product_sku = $request->product_sku ?? null;
+        $product->price_option = $request->priceOption ?? null;
+        $product->product_description = $request->product_description ?? null;
+        $product->product_rating_review = $request->product_rating_review ?? null;
+        $product->product_price = $request->product_price ?? 0;
+        $product->product_discounted_price = $request->product_discounted_price ?? 0;
+        $product->category_id = $request->category_id;
+        $product->subcategory_id = $request->subcategory_id ?? null;
+        $product->product_meta_title = $request->product_meta_title ?? null;
+        $product->product_meta_keyword = $request->product_meta_keyword ?? null;
+        $product->product_meta_desp = $request->product_meta_desp ?? null;
+        $product->product_status = $request->product_status ?? 0;
+        $product->product_tag = $request->product_tag ?? null;
+        $product->product_short_description = $request->product_short_description ?? null;
+        $product->product_feature = $request->product_feature ?? null;
+        $product->product_allows_custom_size = $request->product_allows_custom_size ?? 0;
+        $product->product_key_feature = $request->product_key_feature ?? null;
+        $product->product_quantity = $request->product_quantity ?? 0;
+
+        $product->product_question = is_array($request->product_question) ? implode('~', $request->product_question) : $request->product_question;
+        $product->product_answer = is_array($request->product_answer) ? implode('~', $request->product_answer) : $request->product_answer;
+        $product->related_products = !empty($request->related_products) ? implode(',', $request->related_products) : '';
+
+        // PDF Upload
+        $guidlines = [];
+        if ($request->hasFile('guidlines')) {
+            $folder = "guidlines";
+            $destinationPath = public_path('uploads/' . $folder . '/');
+            $files = is_array($request->file('guidlines')) ? $request->file('guidlines') : [$request->file('guidlines')];
+            foreach ($files as $file) {
+                if ($file->isValid() && $file->getClientMimeType() === 'application/pdf') {
+                    $filename = time() . '_' . $file->getClientOriginalName();
+                    $file->move($destinationPath, $filename);
+                    $guidlines[] = url('uploads/' . $folder . '/' . $filename);
+                }
+            }
+            $product->guidlines = implode('|', $guidlines);
+        }
+
+        $product->save();
+
+        // Image Uploads
+        if (!empty($request->image_array)) {
+            foreach ($request->image_array as $temp_image_id) {
+                $tempImageInfo = TempImage::find($temp_image_id);
+                if ($tempImageInfo) {
+                    $ext = pathinfo($tempImageInfo->name, PATHINFO_EXTENSION);
+
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product->id;
+                    $productImage->image = 'NULL';
+                    $productImage->save();
+
+                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $ext;
+                    $productImage->image = $imageName;
+                    $productImage->save();
+
+                    File::copy(public_path('temp/' . $tempImageInfo->name), public_path('uploads/product/' . $imageName));
+
+                    $product->product_image = $imageName;
+                    $product->save();
+                }
+            }
+        }
+
+        // Related Tables
+        $this->createAttributes($request, $product);
+        $this->createProductPriceDetail($request, $product);
+        $this->createProductPriceRange($request, $product);
+        $this->createFixedPrices($request, $product);
+        $this->createRigidMediasPrices($request, $product);
+        $this->createCuttingOptionPrices($request, $product);
+
+        DB::commit(); // Commit the transaction
+
+        $request->session()->flash('success', 'Product added successfully');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product added successfully',
+        ]);
+
+    } catch (\Throwable $e) {
+        DB::rollBack(); // Rollback all DB changes
+        \Log::error('Product store failed: ' . $e->getMessage());
+
+        $request->session()->flash('error', 'Something went wrong while adding product.');
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong while adding product.',
+        ]);
+    }
+}
 
     protected function createProductPriceDetail(Request $request, $product)
     {
@@ -281,9 +285,8 @@ class ProductController extends Controller
             'pagesinbook' => $request->product_pagesinbook,
             'copiesrequired' => $request->product_copiesrequired,
             'pagesinnotepad' => $request->product_pagesinnotepad,
-            'cutting' => $request->product_cutting,
         ];
-// dd($attributeArrays);
+        // dd($attributeArrays);
         // Iterate over each attribute array and its corresponding price array
         foreach ($attributeArrays as $attributeName => $attributeArray) {
             // Check if the attribute array is not empty and has the same length as its corresponding price array
@@ -375,30 +378,69 @@ class ProductController extends Controller
         }
     }
     protected function createRigidMediasPrices(Request $request, Product $product)
-    {
-        if (!$product) {
-            return response()->json(['message' => 'Product not found.'], 404);
+        {
+            if (!$product || !$product->id) {
+                throw new \Exception('Product not found.');
+            }
+
+            $mediaOptions = $request->input('rigidMediaOption', []);
+            $rigidMedias = $request->input('rigidMedia', []);
+            foreach ($mediaOptions as $mediaType) {
+                // Rigid Media Prices
+                $mediaEntries = $rigidMedias[$mediaType] ?? [];
+                foreach ($mediaEntries as $entry) {
+                    if (!empty($entry['min_range']) && !empty($entry['max_range']) && isset($entry['price'])) {
+                        RigidMedia::create([
+                            'media_type' => $mediaType,
+                            'min_range' => $entry['min_range'],
+                            'max_range' => $entry['max_range'],
+                            'price' => $entry['price'],
+                            'product_id' => $product->id,
+                        ]);
+                    }
+                }
+            }
+
+            return true;
         }
 
-        $rigidMediaOption = $request->input('rigidMediaOption', []);
-        $rigidMedia = $request->input('rigidMedia', []);
+        // For Cuttion Option Prices
+    protected function createCuttingOptionPrices(Request $request, Product $product)
+{
+    if (!$product || !$product->id) {
+        throw new \Exception('Product not found.');
+    }
 
-        foreach ($rigidMediaOption as $media_type) {
-            $entries = $rigidMedia[$media_type] ?? [];
+    $cuttingOptions = $request->input('cuttingOption', []); // e.g., ['Trim to Size', 'Custom Shape']
+    $cutting = $request->input('cutting', []); // e.g., ['trimtosize' => [...], 'customesize' => [...]]
 
-            foreach ($entries as $entry) {
-                RigidMedia::create([
-                    'media_type' => $media_type,
-                    'min_range' => $entry['min_range'] ?? null,
-                    'max_range' => $entry['max_range'] ?? null,
-                    'price' => $entry['price'] ?? null,
-                    'product_id' => $product->id,
+    foreach ($cuttingOptions as $option) {
+        // Normalize the key to match input array key (e.g., 'Trim to Size' -> 'trimtosize')
+        // $normalizedKey = strtolower(str_replace(' ', '', $option));
+        $entries = $cutting[$option] ?? [];
+
+        foreach ($entries as $entry) {
+            if (
+                isset($entry['min_qty'], $entry['max_qty'], $entry['price']) &&
+                is_numeric($entry['min_qty']) &&
+                is_numeric($entry['max_qty']) &&
+                is_numeric($entry['price'])
+            ) {
+                CuttingOption::create([
+                    'product_id'   => $product->id,
+                    'cutting_type' => $option,
+                    'min_qty'      => $entry['min_qty'],
+                    'max_qty'      => $entry['max_qty'],
+                    'price'        => $entry['price'],
                 ]);
+            } else {
+                \Log::warning("Invalid cutting entry skipped for type: $option", ['entry' => $entry]);
             }
         }
-
-        return response()->json(['message' => 'Rigid media prices created successfully.']);
     }
+
+    return true;
+}
 
 
 

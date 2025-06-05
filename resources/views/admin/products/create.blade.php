@@ -128,8 +128,8 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="product_price">Basics Price</label>
-                                            <input type="text" name="product_price" id="product_price"
-                                                class="form-control" placeholder="Price">
+                                            <input type="number" name="product_price" id="product_price"
+       class="form-control" placeholder="Price" step="0.01" min="0">
                                         </div>
                                     </div>
 
@@ -945,16 +945,16 @@
                                         <!-- Trim to Size Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="trimtosizeption" value="Trim to Size">
+                                                <input class="form-check-input" type="checkbox" id="trimtosizeption" name="cuttingOption[]" value="trimtosize">
                                                 <label class="form-check-label" for="trimtosizeption">Trim to Size</label>
                                             </div>
                                             <div id="trimToSizeFieldsContainer" class="mt-3" style="display: none;">
                                                 <div class="row trimtosize-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="cutting[trimtosize][0][min_range]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
+                                                        <input type="number" name="cutting[trimtosize][0][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="cutting[trimtosize][0][max_range]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
+                                                        <input type="number" name="cutting[trimtosize][0][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <input type="number" name="cutting[trimtosize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
@@ -970,16 +970,16 @@
                                         <!-- Custom Shape Section -->
                                         <div class="col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="customeshapeOption" value="Custom Shape">
+                                                <input class="form-check-input" type="checkbox" id="customeshapeOption" name="cuttingOption[]" value="customesize">
                                                 <label class="form-check-label" for="customeshapeOption">Custom Shape</label>
                                             </div>
                                             <div id="customeshapeFieldsContainer" class="mt-3" style="display: none;">
                                                 <div class="row customeshape-price-fields">
                                                     <div class="col-md-4">
-                                                        <input type="number" name="cutting[customesize][0][min_range]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
+                                                        <input type="number" name="cutting[customesize][0][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <input type="number" name="cutting[customesize][0][max_range]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
+                                                        <input type="number" name="cutting[customesize][0][max_qty]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <input type="number" name="cutting[customesize][0][price]" class="form-control" placeholder="Price" step="0.01" min="0">
