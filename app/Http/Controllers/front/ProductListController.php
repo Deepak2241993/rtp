@@ -74,7 +74,7 @@ class ProductListController extends Controller
         $product = Product::where('product_slug', $slug)
             ->withCount('product_ratings')
             ->withSum('product_ratings', 'rating')
-            ->with(['product_images', 'product_ratings', 'product_attribute', 'product_prices', 'fixed_price_options'])->first();
+            ->with(['product_images', 'product_ratings', 'product_attribute', 'product_prices', 'fixed_price_options','cuttingoption'])->first();
 
         if ($product == null) {
             abort(404);

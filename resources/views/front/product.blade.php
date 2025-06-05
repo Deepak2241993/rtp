@@ -1142,6 +1142,28 @@
                                                         <p id="media_typeError" style="color: red; display: none;">Please select a Print Side.</p>
                                                     </div>
                                                 @endif
+                                                
+                                                {{-- @if (!empty($product->cuttingoption) &&
+                                                    collect($product->cuttingoption)->contains(function ($option) {
+                                                        return in_array($option->cutting_type, ['trimtosize', 'customesize']);
+                                                    }))
+                                                    <div class="form-group col-md-6">
+                                                        <label for="printSidesDropdown">Cutting Option</label>
+                                                        <select class="form-control" id="printSidesDropdown" name="printSides" required>
+                                                            @foreach (collect($product->cuttingoption)->unique('cutting_type') as $option)
+                                                                @php $type = $option->cutting_type ?? ''; @endphp
+                                                                @if (in_array($type, ['trimtosize', 'customesize']))
+                                                                    <option value="{{ $type }}" {{ $type === 'trimtosize' ? 'selected' : '' }}>
+                                                                        {{ $type === 'trimtosize' ? 'Trim to Size' : 'Custom Shape' }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                        <p id="media_typeError" style="color: red; display: none;">Please select a Cutting Option.</p>
+                                                    </div>
+                                                @endif --}}
+
+
 
                                                 @if (!empty($colors))
                                                     <div class="form-group col-md-6">

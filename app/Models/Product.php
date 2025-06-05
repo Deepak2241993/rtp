@@ -78,4 +78,8 @@ class Product extends Model
     {
         return $this->hasMany(RigidMedia::class);
     }
+     public function cuttingoption()
+    {
+        return $this->hasMany(CuttingOption::class);
+    }
 }
