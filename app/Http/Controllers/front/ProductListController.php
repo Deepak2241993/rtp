@@ -70,7 +70,7 @@ class ProductListController extends Controller
 
     public function product($slug)
     {
-        // slug
+        // slug 
         $product = Product::where('product_slug', $slug)
             ->withCount('product_ratings')
             ->withSum('product_ratings', 'rating')

@@ -24,8 +24,12 @@
             margin-top: 15px;
         }
 
-        #rigidMediaContainer {
-            display: none;
+        /* #rigidMediaContainer {
+                display: none;
+            } */
+        #singleSideContainer,
+        #doubleSideContainer {
+            min-height: 200px;
         }
     </style>
 @endsection
@@ -428,6 +432,7 @@
                                         </div>
                                     @endforeach
                                 </div>
+
                                 <div id="fixedContainer" class="{{ $selectedOption != 'fixed' ? 'hidden' : '' }}">
                                     @if (isset($product->fixed_price_options) && $product->fixed_price_options->isNotEmpty())
                                         @foreach ($product->fixed_price_options as $index => $fixedOption)
@@ -500,1450 +505,1430 @@
                                     class="{{ $selectedOption != 'rigidMedia' ? 'hidden' : '' }}">
                                     <h3>Rigid Media</h3>
 
-                                    <!-- Checkbox Selection for Single Side or Double Side -->
-                                    <div class="row">
+                                    <!-- Checkbox Selection -->
+                                    <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <div class="form-check form-check-inline">
+                                            <div class="form-check">
                                                 <input class="form-check-input" type="checkbox"
-                                                    name="rigidMediaOption[0][]" id="singleOption0" value="single side"
-                                                    @if ($product->rigidMedia->contains('media_type', 'single side')) checked @endif>
+                                                    name="rigidMediaOption[0][]" id="singleOption0" value="single"
+                                                    @if ($product->rigidMedia->contains('media_type', 'single')) checked @endif>
                                                 <label class="form-check-label" for="singleOption0">Single Side</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-check form-check-inline">
+                                            <div class="form-check">
                                                 <input class="form-check-input" type="checkbox"
-                                                    name="rigidMediaOption[0][]" id="doubleOption0" value="double side"
-                                                    @if ($product->rigidMedia->contains('media_type', 'double side')) checked @endif>
+                                                    name="rigidMediaOption[0][]" id="doubleOption0" value="double"
+                                                    @if ($product->rigidMedia->contains('media_type', 'double')) checked @endif>
                                                 <label class="form-check-label" for="doubleOption0">Double Side</label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Dynamic Rows for Rigid Media Options -->
-                                    <div class="row mt-3">
-                                        <!-- Single Side Options on the Left -->
-                                        <div class="col-md-6" id="singleSideContainer"
-                                            style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
-                                            @foreach ($product->rigidMedia->where('media_type', 'single side') as $index => $rigidMediaOption)
-                                                <div class="price-fields-container mt-3">
-                                                    <h5>Single Side</h5>
-                                                    <div class="row price-fields">
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Minimum Range (Total Sq Mtr.)</label>
-                                                                <input type="number"
-                                                                    value="{{ $rigidMediaOption->min_range }}"
-                                                                    name="rigidMedia[single][{{ $index }}][min_range]"
-                                                                    class="form-control" placeholder="Min Sq Mtr."
-                                                                    min="0" step="0.01">
-                                                            </div>
+                                    <!-- Two-Column Layout -->
+                                    <div class="row">
+                                        <!-- Single Side Column -->
+                                        <div class="col-md-6">
+                                            <div id="singleSideContainer"
+                                                style="display: {{ $product->rigidMedia->contains('media_type', 'single') ? 'block' : 'none' }};">
+                                                <h5>Single Side</h5>
+
+                                               @foreach ($product->rigidMedia->where('media_type', 'single') as $index => $rigidMediaOption)
+                                                   <div class="row price-fields">
+                                                        <div class="col-md-4 mb-2">
+                                                            <label>Min Qty</label>
+                                                            <input type="number"
+                                                                name="rigidMedia[single][{{ $index }}][min_range]"
+                                                                value="{{ $rigidMediaOption->min_range }}"
+                                                                class="form-control" step="0.01" min="0">
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Maximum Range (Total Sq Mtr.)</label>
-                                                                <input type="number"
-                                                                    value="{{ $rigidMediaOption->max_range }}"
-                                                                    name="rigidMedia[single][{{ $index }}][max_range]"
-                                                                    class="form-control" placeholder="Max Sq Mtr."
-                                                                    min="0" step="0.01">
-                                                            </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label>Max Qty</label>
+                                                            <input type="number"
+                                                                name="rigidMedia[single][{{ $index }}][max_range]"
+                                                                value="{{ $rigidMediaOption->max_range }}"
+                                                                class="form-control" step="0.01" min="0">
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Price</label>
-                                                                <input type="number"
-                                                                    value="{{ $rigidMediaOption->price }}"
-                                                                    name="rigidMedia[single][{{ $index }}][price]"
-                                                                    class="form-control" placeholder="Price"
-                                                                    min="0" step="0.01">
-                                                            </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <label>Price ($)</label>
+                                                            <input type="number"
+                                                                name="rigidMedia[single][{{ $index }}][price]"
+                                                                value="{{ $rigidMediaOption->price }}"
+                                                                class="form-control" step="0.01" min="0">
                                                         </div>
-                                                        <div class="col-md-12 text-end mt-2">
+                                                        <div class="col-md-12 text-end">
                                                             <button type="button"
-                                                                class="btn btn-danger remove-price-field">
+                                                                class="btn btn-danger btn-sm remove-price-field mt-2 mb-2">
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
 
-                                            <!-- Add More Button for Single Side -->
-                                            <div class="text-center mt-3">
-                                                <button type="button" class="btn btn-primary add-more-price-field"
+                                                
+                                            </div>
+                                            <button type="button" class="btn btn-primary add-more-price-field mt-2"
                                                     data-side="single">
-                                                    <i class="fas fa-plus"></i> Add More Single Side
-                                                </button>
-                                            </div>
+                                                    <i class="fas fa-plus"></i> Add More
+                                            </button>
                                         </div>
 
-                                        <!-- Double Side Options on the Right -->
-                                        <div class="col-md-6" id="doubleSideContainer"
-                                            style="{{ $selectedOption == 'rigidMedia' ? 'display:block;' : 'display:none;' }}">
-                                            @foreach ($product->rigidMedia->where('media_type', 'double side') as $index => $rigidMediaOption)
-                                                <div class="price-fields-container mt-3">
-                                                    <h5>Double Side</h5>
-                                                    <div class="row price-fields">
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Minimum Range (Total Sq Mtr.)</label>
+                                        <!-- Double Side Column -->
+                                        <div class="col-md-6">
+                                            <div id="doubleSideContainer"
+                                                style="display: {{ $product->rigidMedia->contains('media_type', 'double') ? 'block' : 'none' }};">
+                                                <h5>Double Side</h5>
+
+                                                <!-- Existing Entries -->
+                                              @foreach ($product->rigidMedia->where('media_type', 'double') as $index => $rigidMediaOption)
+                                                    
+                                                        <div class="row price-fields">
+                                                            <div class="col-md-4 mb-2">
+                                                                <label>Min Range (Sq Mtr)</label>
                                                                 <input type="number"
-                                                                    value="{{ $rigidMediaOption->min_range }}"
                                                                     name="rigidMedia[double][{{ $index }}][min_range]"
-                                                                    class="form-control" placeholder="Min Sq Mtr."
-                                                                    min="0" step="0.01">
+                                                                    value="{{ $rigidMediaOption->min_range }}"
+                                                                    class="form-control" step="0.01" min="0">
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Maximum Range (Total Sq Mtr.)</label>
+                                                            <div class="col-md-4 mb-2">
+                                                                <label>Max Range (Sq Mtr)</label>
                                                                 <input type="number"
-                                                                    value="{{ $rigidMediaOption->max_range }}"
                                                                     name="rigidMedia[double][{{ $index }}][max_range]"
-                                                                    class="form-control" placeholder="Max Sq Mtr."
-                                                                    min="0" step="0.01">
+                                                                    value="{{ $rigidMediaOption->max_range }}"
+                                                                    class="form-control" step="0.01" min="0">
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
+                                                            <div class="col-md-4 mb-2">
                                                                 <label>Price</label>
                                                                 <input type="number"
-                                                                    value="{{ $rigidMediaOption->price }}"
                                                                     name="rigidMedia[double][{{ $index }}][price]"
-                                                                    class="form-control" placeholder="Price"
-                                                                    min="0" step="0.01">
+                                                                    value="{{ $rigidMediaOption->price }}"
+                                                                    class="form-control" step="0.01" min="0">
+                                                            </div>
+                                                            <div class="col-md-12 text-end">
+                                                                <button type="button"
+                                                                    class="btn btn-danger btn-sm remove-price-field mt-2">
+                                                                    <i class="fas fa-minus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 text-end mt-2">
-                                                            <button type="button"
-                                                                class="btn btn-danger remove-price-field">
-                                                                <i class="fas fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-
-                                            <!-- Add More Button for Double Side -->
-                                            <div class="text-center mt-3">
-                                                <button type="button" class="btn btn-primary add-more-price-field"
-                                                    data-side="double">
-                                                    <i class="fas fa-plus"></i> Add More Double Side
-                                                </button>
+                                                    
+                                                @endforeach
+                                               
                                             </div>
+                                            <!-- Add More Button -->
+                                            <button type="button" class="btn btn-primary add-more-price-field mt-2"
+                                                data-side="double">
+                                                <i class="fas fa-plus"></i> Add More
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
 
-
-
-
-                                <button type="button" id="addFixedFieldsBtn" class="btn btn-success">Add Fixed
-                                    Media</button>
-                                <button type="button" id="addRollMediaFieldsBtn" class="btn btn-success">Add
-                                    More</button>
                             </div>
+
                         </div>
 
-                        <!-- Product Size Option Card -->
-                        <div class="card mb-3" id="productSizeCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Size Option</h2>
-                                <div id="sizeFieldsContainer">
-                                    <?php if (is_array($product->product_prices) || is_object($product->product_prices)): ?>
-                                    <?php if (count($product->product_prices) > 0): ?>
-                                    <?php foreach ($product->product_prices as $attribute): ?>
-                                    <div class="row size-fields">
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="product_width">Width MM</label>
-                                                <input type="number" name="product_width[]" class="form-control"
-                                                    value="{{ $attribute->product_width }}" placeholder="Width mm"
-                                                    min="0" step="0.01">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="product_height">Height MM</label>
-                                                <input type="number" name="product_height[]" class="form-control"
-                                                    value="{{ $attribute->product_height }}" placeholder="Height mm"
-                                                    min="0" step="0.01">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4" hidden>
-                                            <div class="mb-3">
-                                                <label for="product_price_quantity">Quantity</label>
-                                                <input type="number" name="product_price_quantity[]"
-                                                    value="{{ $attribute->product_quantity }}" class="form-control"
-                                                    placeholder="Quantity" min="0" step="0.01">
-                                            </div>
-                                        </div>
 
+
+
+                        <button type="button" id="addFixedFieldsBtn" class="btn btn-success mt-4">Add Fixed
+                            Media</button>
+                        <button type="button" id="addRollMediaFieldsBtn" class="btn btn-success mt-4">Add Roll Media
+                        </button>
+                    
+                
+
+                <!-- Product Size Option Card -->
+                <div class="card mb-3" id="productSizeCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Size Option</h2>
+                        <div id="sizeFieldsContainer">
+                            <?php if (is_array($product->product_prices) || is_object($product->product_prices)): ?>
+                            <?php if (count($product->product_prices) > 0): ?>
+                            <?php foreach ($product->product_prices as $attribute): ?>
+                            <div class="row size-fields">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_width">Width MM</label>
+                                        <input type="number" name="product_width[]" class="form-control"
+                                            value="{{ $attribute->product_width }}" placeholder="Width mm"
+                                            min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_height">Height MM</label>
+                                        <input type="number" name="product_height[]" class="form-control"
+                                            value="{{ $attribute->product_height }}" placeholder="Height mm"
+                                            min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-4" hidden>
+                                    <div class="mb-3">
+                                        <label for="product_price_quantity">Quantity</label>
+                                        <input type="number" name="product_price_quantity[]"
+                                            value="{{ $attribute->product_quantity }}" class="form-control"
+                                            placeholder="Quantity" min="0" step="0.01">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger removeBtn mt-4">Remove</button>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <!-- If no product prices exist, display empty input fields -->
+                            <div class="row size-fields">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_width">Width MM</label>
+                                        <input type="number" name="product_width[]" class="form-control" value=""
+                                            placeholder="Width mm" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_height">Height MM</label>
+                                        <input type="number" name="product_height[]" class="form-control"
+                                            value="" placeholder="Height mm" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-4" hidden>
+                                    <div class="mb-3">
+                                        <label for="product_price_quantity">Quantity</label>
+                                        <input type="number" name="product_price_quantity[]" value=""
+                                            class="form-control" placeholder="Quantity" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <?php else: ?>
+                            <!-- If $product->product_prices is not set, show empty input fields -->
+                            <div class="row size-fields">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_width">Width MM</label>
+                                        <input type="number" name="product_width[]" class="form-control" value=""
+                                            placeholder="Width mm" min="0" step="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="product_height">Height MM</label>
+                                        <input type="number" name="product_height[]" class="form-control"
+                                            value="" placeholder="Height mm" min="0" step="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-4" hidden>
+                                    <div class="mb-3">
+                                        <label for="product_price_quantity">Quantity</label>
+                                        <input type="number" name="product_price_quantity[]" value=""
+                                            class="form-control" placeholder="Quantity" min="0" step="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <button type="button" id="addFieldsBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Color Option Card -->
+                <div class="card mb-3" id="productColorCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Color Option</h2>
+                        <div id="colorFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'color')
+                                    <div class="row color">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_color">Color</label>
+                                                <input type="text" name="product_color[]" class="form-control"
+                                                    value="{{ $attribute->attribute_value }}" placeholder="Color">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="color_price">Color Price</label>
+                                                <input type="text" name="color_price[]" class="form-control"
+                                                    value="{{ $attribute->attribute_price }}" placeholder="Color Price">
+                                            </div>
+                                        </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-danger removeBtn">Remove</button>
                                         </div>
                                     </div>
-                                    <?php endforeach; ?>
-                                    <?php else: ?>
-                                    <!-- If no product prices exist, display empty input fields -->
-                                    <div class="row size-fields">
-                                        <div class="col-md-4">
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'color')->isEmpty())
+                                <div class="row color">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_color">Color</label>
+                                            <input type="text" name="product_color[]" class="form-control"
+                                                placeholder="Color">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="color_price">Color Price</label>
+                                            <input type="text" name="color_price[]" class="form-control"
+                                                placeholder="Color Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+
+                        </div>
+                        <button type="button" id="addColorFieldsBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+                {{-- Color END --}}
+
+                <!-- Product Print Side Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productPrintSideCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Print Side Option</h2>
+                        <div id="sideFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'print_side')
+                                    <div class="row side">
+                                        <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label for="product_width">Width MM</label>
-                                                <input type="number" name="product_width[]" class="form-control"
-                                                    value="" placeholder="Width mm" min="0" step="0.01">
+                                                <label for="product_print_side">Print Side</label>
+                                                <input type="text" name="product_print_side[]" class="form-control"
+                                                    placeholder="Print Side" value="{{ $attribute->attribute_value }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label for="product_height">Height MM</label>
-                                                <input type="number" name="product_height[]" class="form-control"
-                                                    value="" placeholder="Height mm" min="0"
-                                                    step="0.01">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4" hidden>
-                                            <div class="mb-3">
-                                                <label for="product_price_quantity">Quantity</label>
-                                                <input type="number" name="product_price_quantity[]" value=""
-                                                    class="form-control" placeholder="Quantity" min="0"
-                                                    step="0.01">
+                                                <label for="print_side_price">Print Side Price</label>
+                                                <input type="text" name="print_side_price[]" class="form-control"
+                                                    placeholder="Print Side Price"
+                                                    value="{{ $attribute->attribute_price }}">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-danger removeBtn">Remove</button>
                                         </div>
                                     </div>
-                                    <?php endif; ?>
-                                    <?php else: ?>
-                                    <!-- If $product->product_prices is not set, show empty input fields -->
-                                    <div class="row size-fields">
-                                        <div class="col-md-4">
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'print_side')->isEmpty())
+                                <div class="row side">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_print_side">Print Side</label>
+                                            <input type="text" name="product_print_side[]" class="form-control"
+                                                placeholder="Print Side">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="print_side_price">Print Side Price</label>
+                                            <input type="text" name="print_side_price[]" class="form-control"
+                                                placeholder="Print Side Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addPrintSideBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Finishing Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productFinishingCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Finishing Option</h2>
+                        <div id="finishingFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'finishing')
+                                    <div class="row finishing">
+                                        <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label for="product_width">Width MM</label>
-                                                <input type="number" name="product_width[]" class="form-control"
-                                                    value="" placeholder="Width mm" min="0" step="1">
+                                                <label for="product_finishing">Finishing</label>
+                                                <input type="text" name="product_finishing[]" class="form-control"
+                                                    placeholder="Finishing" value="{{ $attribute->attribute_value }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label for="product_height">Height MM</label>
-                                                <input type="number" name="product_height[]" class="form-control"
-                                                    value="" placeholder="Height mm" min="0"
-                                                    step="1">
+                                                <label for="finishing_price">Finishing Price</label>
+                                                <input type="text" name="finishing_price[]" class="form-control"
+                                                    placeholder="Finishing Price"
+                                                    value="{{ $attribute->attribute_price }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4" hidden>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn mt-4">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'finishing')->isEmpty())
+                                <div class="row finishing">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_finishing">Finishing</label>
+                                            <input type="text" name="product_finishing[]" class="form-control"
+                                                placeholder="Finishing">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="finishing_price">Finishing Price</label>
+                                            <input type="text" name="finishing_price[]" class="form-control"
+                                                placeholder="Finishing Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+
+                        </div>
+                        <button type="button" id="addFinishingBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Thickness Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productThicknessCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Thickness Option</h2>
+                        <div id="thicknessFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'thickness')
+                                    <div class="row thickness">
+                                        <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label for="product_price_quantity">Quantity</label>
-                                                <input type="number" name="product_price_quantity[]" value=""
-                                                    class="form-control" placeholder="Quantity" min="0"
-                                                    step="1">
+                                                <label for="product_thickness">Thickness</label>
+                                                <input type="text" name="product_thickness[]" class="form-control"
+                                                    placeholder="Thickness" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="thickness_price">Thickness Price</label>
+                                                <input type="text" name="thickness_price[]" class="form-control"
+                                                    placeholder="Thickness Price"
+                                                    value="{{ $attribute->attribute_price }}">
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <button type="button" class="btn btn-danger removeBtn">Remove</button>
                                         </div>
                                     </div>
-                                    <?php endif; ?>
-                                </div>
-                                <button type="button" id="addFieldsBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Color Option Card -->
-                        <div class="card mb-3" id="productColorCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Color Option</h2>
-                                <div id="colorFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'color')
-                                            <div class="row color">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_color">Color</label>
-                                                        <input type="text" name="product_color[]" class="form-control"
-                                                            value="{{ $attribute->attribute_value }}"
-                                                            placeholder="Color">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="color_price">Color Price</label>
-                                                        <input type="text" name="color_price[]" class="form-control"
-                                                            value="{{ $attribute->attribute_price }}"
-                                                            placeholder="Color Price">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'color')->isEmpty())
-                                        <div class="row color">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_color">Color</label>
-                                                    <input type="text" name="product_color[]" class="form-control"
-                                                        placeholder="Color">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="color_price">Color Price</label>
-                                                    <input type="text" name="color_price[]" class="form-control"
-                                                        placeholder="Color Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'thickness')->isEmpty())
+                                <div class="row thickness">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_thickness">Thickness</label>
+                                            <input type="text" name="product_thickness[]" class="form-control"
+                                                placeholder="Thickness">
                                         </div>
-                                    @endif
-
-                                </div>
-                                <button type="button" id="addColorFieldsBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-                        {{-- Color END --}}
-
-                        <!-- Product Print Side Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productPrintSideCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Print Side Option</h2>
-                                <div id="sideFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'print_side')
-                                            <div class="row side">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_print_side">Print Side</label>
-                                                        <input type="text" name="product_print_side[]"
-                                                            class="form-control" placeholder="Print Side"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="print_side_price">Print Side Price</label>
-                                                        <input type="text" name="print_side_price[]"
-                                                            class="form-control" placeholder="Print Side Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'print_side')->isEmpty())
-                                        <div class="row side">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_print_side">Print Side</label>
-                                                    <input type="text" name="product_print_side[]"
-                                                        class="form-control" placeholder="Print Side">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="print_side_price">Print Side Price</label>
-                                                    <input type="text" name="print_side_price[]" class="form-control"
-                                                        placeholder="Print Side Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addPrintSideBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Finishing Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productFinishingCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Finishing Option</h2>
-                                <div id="finishingFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'finishing')
-                                            <div class="row finishing">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_finishing">Finishing</label>
-                                                        <input type="text" name="product_finishing[]"
-                                                            class="form-control" placeholder="Finishing"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="finishing_price">Finishing Price</label>
-                                                        <input type="text" name="finishing_price[]"
-                                                            class="form-control" placeholder="Finishing Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'finishing')->isEmpty())
-                                        <div class="row finishing">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_finishing">Finishing</label>
-                                                    <input type="text" name="product_finishing[]" class="form-control"
-                                                        placeholder="Finishing">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="finishing_price">Finishing Price</label>
-                                                    <input type="text" name="finishing_price[]" class="form-control"
-                                                        placeholder="Finishing Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                </div>
-                                <button type="button" id="addFinishingBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Thickness Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productThicknessCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Thickness Option</h2>
-                                <div id="thicknessFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'thickness')
-                                            <div class="row thickness">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_thickness">Thickness</label>
-                                                        <input type="text" name="product_thickness[]"
-                                                            class="form-control" placeholder="Thickness"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="thickness_price">Thickness Price</label>
-                                                        <input type="text" name="thickness_price[]"
-                                                            class="form-control" placeholder="Thickness Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'thickness')->isEmpty())
-                                        <div class="row thickness">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_thickness">Thickness</label>
-                                                    <input type="text" name="product_thickness[]" class="form-control"
-                                                        placeholder="Thickness">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="thickness_price">Thickness Price</label>
-                                                    <input type="text" name="thickness_price[]" class="form-control"
-                                                        placeholder="Thickness Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addThicknessBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Wire Stakes QTY Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productWireStakesQtyCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Wire Stakes QTY Option</h2>
-                                <div id="wirestakesqtyFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'wirestakesqty')
-                                            <div class="row wirestakesqty">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_wirestakesqty">Wire Stakes Qty</label>
-                                                        <input type="text" name="product_wirestakesqty[]"
-                                                            class="form-control" placeholder="WireStakesQty"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="wirestakesqty_price">Wire Stakes Qty Price</label>
-                                                        <input type="text" name="wirestakesqty_price[]"
-                                                            class="form-control" placeholder="WireStakesQty Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'wirestakesqty')->isEmpty())
-                                        <div class="row wirestakesqty">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_wirestakesqty">Wire Stakes Qty</label>
-                                                    <input type="text" name="product_wirestakesqty[]"
-                                                        class="form-control" placeholder="WireStakesQty">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="wirestakesqty_price">Wire Stakes Qty Price</label>
-                                                    <input type="text" name="wirestakesqty_price[]"
-                                                        class="form-control" placeholder="WireStakesQty Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addWireStakesQtyBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Frame Size Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productFrameSizeCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Frame Size Option</h2>
-                                <div id="framesizeFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'framesize')
-                                            <div class="row framesize">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_framesize">Frame Size</label>
-                                                        <input type="text" name="product_framesize[]"
-                                                            class="form-control" placeholder="FrameSize"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="framesize_price">Frame Size Price</label>
-                                                        <input type="text" name="framesize_price[]"
-                                                            class="form-control" placeholder="Frame Size Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'framesize')->isEmpty())
-                                        <div class="row framesize">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_framesize">Frame Size</label>
-                                                    <input type="text" name="product_framesize[]" class="form-control"
-                                                        placeholder="FrameSize">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="framesize_price">Frame Size Price</label>
-                                                    <input type="text" name="framesize_price[]" class="form-control"
-                                                        placeholder="Frame Size Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addFrameSizeBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-                        <!-- Product displaytyp Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productDisplayTypeCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Display Type Option</h2>
-                                <div id="displaytypeFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'displaytype')
-                                            <div class="row displaytype">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_displaytype">Display Type</label>
-                                                        <input type="text" name="product_displaytype[]"
-                                                            class="form-control" placeholder="Display Type"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="displaytype_price">Display Type Price</label>
-                                                        <input type="text" name="displaytype_price[]"
-                                                            class="form-control" placeholder="Display Type Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'displaytype')->isEmpty())
-                                        <div class="row displaytype">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_displaytype">Display Type</label>
-                                                    <input type="text" name="product_displaytype[]"
-                                                        class="form-control" placeholder="Display Type">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="displaytype_price">Display Type Price</label>
-                                                    <input type="text" name="displaytype_price[]" class="form-control"
-                                                        placeholder="Display Type Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addDisplayTypeBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Installation Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productInstallationCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Installation Option</h2>
-                                <div id="installationFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'installation')
-                                            <div class="row installation">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_installation">Installation</label>
-                                                        <input type="text" name="product_installation[]"
-                                                            class="form-control" placeholder="Installation"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="installation_price">Installation Price</label>
-                                                        <input type="text" name="installation_price[]"
-                                                            class="form-control" placeholder="Installation Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'finishing')->isEmpty())
-                                        <div class="row installation">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_installation">Installation</label>
-                                                    <input type="text" name="product_installation[]"
-                                                        class="form-control" placeholder="Installation">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="installation_price">Installation Price</label>
-                                                    <input type="text" name="installation_price[]"
-                                                        class="form-control" placeholder="Installation Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addInstallationBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Material Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productMaterialCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Material Option</h2>
-                                <div id="materialFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'material')
-                                            <div class="row material">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_material">Material</label>
-                                                        <input type="text" name="product_material[]"
-                                                            class="form-control" placeholder="Material"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="material_price">Material Price</label>
-                                                        <input type="text" name="material_price[]"
-                                                            class="form-control" placeholder="Material Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'material')->isEmpty())
-                                        <div class="row material">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_material">Material</label>
-                                                    <input type="text" name="product_material[]" class="form-control"
-                                                        placeholder="Material">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="material_price">Material Price</label>
-                                                    <input type="text" name="material_price[]" class="form-control"
-                                                        placeholder="Material Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addMaterialBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Corners Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productCornersCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Corners Option</h2>
-                                <div id="cornersFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'corners')
-                                            <div class="row corners">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_corners">Corners</label>
-                                                        <input type="text" name="product_corners[]"
-                                                            class="form-control" placeholder="Corners"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="corners_price">Corners Price</label>
-                                                        <input type="text" name="corners_price[]"
-                                                            class="form-control" placeholder="Corners Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'corners')->isEmpty())
-                                        <div class="row corners">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_corners">Corners</label>
-                                                    <input type="text" name="product_corners[]"
-                                                        class="form-control" placeholder="Corners">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="corners_price">Corners Price</label>
-                                                    <input type="text" name="corners_price[]" class="form-control"
-                                                        placeholder="Corners Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addCornersBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Application Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productApplicationCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Application Option</h2>
-                                <div id="applicationFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'application')
-                                            <div class="row application">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_application">Application</label>
-                                                        <input type="text" name="product_application[]"
-                                                            class="form-control" placeholder="Application"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="application_price">Application Price</label>
-                                                        <input type="text" name="application_price[]"
-                                                            class="form-control" placeholder="Application Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'application')->isEmpty())
-                                        <div class="row application">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_application">Application</label>
-                                                    <input type="text" name="product_application[]"
-                                                        class="form-control" placeholder="Application">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="application_price">Application Price</label>
-                                                    <input type="text" name="application_price[]"
-                                                        class="form-control" placeholder="Application Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addApplicationBtn" class="btn btn-success">Add
-                                    More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Paper Thickness Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productPaperThicknessCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Paper Thickness Option</h2>
-                                <div id="paperthicknessFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'paperthickness')
-                                            <div class="row paperthickness">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_paperthickness">Paper Thickness</label>
-                                                        <input type="text" name="product_paperthickness[]"
-                                                            class="form-control" placeholder="PaperThickness"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="paperthickness_price">Paper Thickness Price</label>
-                                                        <input type="text" name="paperthickness_price[]"
-                                                            class="form-control" placeholder="Paper Thickness Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'paperthickness')->isEmpty())
-                                        <div class="row paperthickness">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_paperthickness">Paper Thickness</label>
-                                                    <input type="text" name="product_paperthickness[]"
-                                                        class="form-control" placeholder="PaperThickness">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="paperthickness_price">Paper Thickness Price</label>
-                                                    <input type="text" name="paperthickness_price[]"
-                                                        class="form-control" placeholder="Paper Thickness Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addPaperThicknessBtn" class="btn btn-success">Add
-                                    More</button>
-                            </div>
-                        </div>
-                        <!-- Product QTY Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productQtyCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Qty Option</h2>
-                                <div id="qtyFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'qty')
-                                            <div class="row qty">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_qty">Qty</label>
-                                                        <input type="text" name="product_qty[]"
-                                                            class="form-control" placeholder="Qty"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="qty_price">Qty Price</label>
-                                                        <input type="text" name="qty_price[]" class="form-control"
-                                                            placeholder="Qty Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'qty')->isEmpty())
-                                        <div class="row qty">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_qty">Qty</label>
-                                                    <input type="text" name="product_qty[]" class="form-control"
-                                                        placeholder="Qty">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="qty_price">Qty Price</label>
-                                                    <input type="text" name="qty_price[]" class="form-control"
-                                                        placeholder="Qty Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addqtyBtn" class="btn btn-success">Add More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Pages in Book Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productPagesinBookCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Pages in Book Option</h2>
-                                <div id="pagesinbookFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'pagesinbook')
-                                            <div class="row pagesinbook">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_pagesinbook">Pages in Book</label>
-                                                        <input type="text" name="product_pagesinbook[]"
-                                                            class="form-control" placeholder="Pages in Book"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="pagesinbook_price">Pages in Book Price</label>
-                                                        <input type="text" name="pagesinbook_price[]"
-                                                            class="form-control" placeholder="Pages in Book Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'pagesinbook')->isEmpty())
-                                        <div class="row pagesinbook">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_pagesinbook">Pages in Book</label>
-                                                    <input type="text" name="product_pagesinbook[]"
-                                                        class="form-control" placeholder="Pages in Book">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="pagesinbook_price">Pages in Book Price</label>
-                                                    <input type="text" name="pagesinbook_price[]"
-                                                        class="form-control" placeholder="Pages in Book Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addPagesinBookBtn" class="btn btn-success">Add
-                                    More</button>
-                            </div>
-                        </div>
-                        <!-- Product productCopiesRequiredCard Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productCopiesRequiredCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Copies Required Option</h2>
-                                <div id="copiesrequiredFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'copiesrequired')
-                                            <div class="row copiesrequired">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_copiesrequired">Copies Required</label>
-                                                        <input type="text" name="product_copiesrequired[]"
-                                                            class="form-control" placeholder="Copies"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="copiesrequired_price">Copies Required Price</label>
-                                                        <input type="text" name="copiesrequired_price[]"
-                                                            class="form-control" placeholder="Copies Required Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'copiesrequired')->isEmpty())
-                                        <div class="row copiesrequired">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_copiesrequired">Copies Required</label>
-                                                    <input type="text" name="product_copiesrequired[]"
-                                                        class="form-control" placeholder="Copies">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="copiesrequired_price">Copies Required Price</label>
-                                                    <input type="text" name="copiesrequired_price[]"
-                                                        class="form-control" placeholder="Copies Required Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addCopiesRequiredBtn" class="btn btn-success">Add
-                                    More</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Product Pages in Notepad Option Card (Initially Hidden) -->
-                        <div class="card mb-3" id="productPagesinNotepadCard" style="display: none;">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product Pages in Notepad Option</h2>
-                                <div id="pagesinnotepadFieldsContainer">
-                                    @foreach ($product->product_attribute as $attribute)
-                                        @if ($attribute->attribute_type == 'pagesinnotepad')
-                                            <div class="row pagesinnotepad">
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="product_pagesinnotepad">Thickness</label>
-                                                        <input type="text" name="product_pagesinnotepad[]"
-                                                            class="form-control" placeholder="Pages in Notepad"
-                                                            value="{{ $attribute->attribute_value }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="mb-3">
-                                                        <label for="pagesinnotepad_price">Pages in Notepad Price</label>
-                                                        <input type="text" name="pagesinnotepad_price[]"
-                                                            class="form-control" placeholder="Pages in Notepad Price"
-                                                            value="{{ $attribute->attribute_price }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button type="button"
-                                                        class="btn btn-danger removeBtn">Remove</button>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                    @if ($product->product_attribute->where('attribute_type', 'pagesinnotepad')->isEmpty())
-                                        <div class="row pagesinnotepad">
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="product_pagesinnotepad">Thickness</label>
-                                                    <input type="text" name="product_pagesinnotepad[]"
-                                                        class="form-control" placeholder="Pages in Notepad">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-3">
-                                                    <label for="pagesinnotepad_price">Pages in Notepad Price</label>
-                                                    <input type="text" name="pagesinnotepad_price[]"
-                                                        class="form-control" placeholder="Pages in Notepad Price">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="button" id="addPagesinNotepadBtn" class="btn btn-success">Add
-                                    More</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Cutting Option Card (Initially Hidden) -->
-                        @php
-                            $trimToSizeOptions = $cutting_options->where('cutting_type', 'trimtosize')->values();
-                            $customShapeOptions = $cutting_options->where('cutting_type', 'customesize')->values();
-                        @endphp
-
-                    <div class="card shadow-sm border-0 mb-4" id="productcuttingCard" style="display: block;">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-cut me-2"></i> Cutting Options</h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="row gy-4">
-                                <!-- Trim to Size Section -->
-                                <div class="col-md-6">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="trimtosizeption" name="cuttingOption[]" value="trimtosize" {{ $trimToSizeOptions->isNotEmpty() ? 'checked' : '' }}>
-                                        <label class="form-check-label fw-bold" for="trimtosizeption">
-                                            <i class="fas fa-ruler-combined me-1"></i> Trim to Size
-                                        </label>
                                     </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="thickness_price">Thickness Price</label>
+                                            <input type="text" name="thickness_price[]" class="form-control"
+                                                placeholder="Thickness Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addThicknessBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
 
-                                    <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border" style="{{ $trimToSizeOptions->isNotEmpty() ? '' : 'display: none;' }}">
-                                        @foreach ($trimToSizeOptions as $index => $option)
+                <!-- Wire Stakes QTY Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productWireStakesQtyCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Wire Stakes QTY Option</h2>
+                        <div id="wirestakesqtyFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'wirestakesqty')
+                                    <div class="row wirestakesqty">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_wirestakesqty">Wire Stakes Qty</label>
+                                                <input type="text" name="product_wirestakesqty[]" class="form-control"
+                                                    placeholder="WireStakesQty"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="wirestakesqty_price">Wire Stakes Qty Price</label>
+                                                <input type="text" name="wirestakesqty_price[]" class="form-control"
+                                                    placeholder="WireStakesQty Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'wirestakesqty')->isEmpty())
+                                <div class="row wirestakesqty">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_wirestakesqty">Wire Stakes Qty</label>
+                                            <input type="text" name="product_wirestakesqty[]" class="form-control"
+                                                placeholder="WireStakesQty">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="wirestakesqty_price">Wire Stakes Qty Price</label>
+                                            <input type="text" name="wirestakesqty_price[]" class="form-control"
+                                                placeholder="WireStakesQty Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addWireStakesQtyBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Frame Size Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productFrameSizeCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Frame Size Option</h2>
+                        <div id="framesizeFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'framesize')
+                                    <div class="row framesize">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_framesize">Frame Size</label>
+                                                <input type="text" name="product_framesize[]" class="form-control"
+                                                    placeholder="FrameSize" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="framesize_price">Frame Size Price</label>
+                                                <input type="text" name="framesize_price[]" class="form-control"
+                                                    placeholder="Frame Size Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'framesize')->isEmpty())
+                                <div class="row framesize">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_framesize">Frame Size</label>
+                                            <input type="text" name="product_framesize[]" class="form-control"
+                                                placeholder="FrameSize">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="framesize_price">Frame Size Price</label>
+                                            <input type="text" name="framesize_price[]" class="form-control"
+                                                placeholder="Frame Size Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addFrameSizeBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+                <!-- Product displaytyp Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productDisplayTypeCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Display Type Option</h2>
+                        <div id="displaytypeFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'displaytype')
+                                    <div class="row displaytype">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_displaytype">Display Type</label>
+                                                <input type="text" name="product_displaytype[]" class="form-control"
+                                                    placeholder="Display Type" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="displaytype_price">Display Type Price</label>
+                                                <input type="text" name="displaytype_price[]" class="form-control"
+                                                    placeholder="Display Type Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'displaytype')->isEmpty())
+                                <div class="row displaytype">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_displaytype">Display Type</label>
+                                            <input type="text" name="product_displaytype[]" class="form-control"
+                                                placeholder="Display Type">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="displaytype_price">Display Type Price</label>
+                                            <input type="text" name="displaytype_price[]" class="form-control"
+                                                placeholder="Display Type Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addDisplayTypeBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Installation Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productInstallationCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Installation Option</h2>
+                        <div id="installationFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'installation')
+                                    <div class="row installation">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_installation">Installation</label>
+                                                <input type="text" name="product_installation[]" class="form-control"
+                                                    placeholder="Installation" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="installation_price">Installation Price</label>
+                                                <input type="text" name="installation_price[]" class="form-control"
+                                                    placeholder="Installation Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'finishing')->isEmpty())
+                                <div class="row installation">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_installation">Installation</label>
+                                            <input type="text" name="product_installation[]" class="form-control"
+                                                placeholder="Installation">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="installation_price">Installation Price</label>
+                                            <input type="text" name="installation_price[]" class="form-control"
+                                                placeholder="Installation Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addInstallationBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Material Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productMaterialCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Material Option</h2>
+                        <div id="materialFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'material')
+                                    <div class="row material">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_material">Material</label>
+                                                <input type="text" name="product_material[]" class="form-control"
+                                                    placeholder="Material" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="material_price">Material Price</label>
+                                                <input type="text" name="material_price[]" class="form-control"
+                                                    placeholder="Material Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'material')->isEmpty())
+                                <div class="row material">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_material">Material</label>
+                                            <input type="text" name="product_material[]" class="form-control"
+                                                placeholder="Material">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="material_price">Material Price</label>
+                                            <input type="text" name="material_price[]" class="form-control"
+                                                placeholder="Material Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addMaterialBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Corners Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productCornersCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Corners Option</h2>
+                        <div id="cornersFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'corners')
+                                    <div class="row corners">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_corners">Corners</label>
+                                                <input type="text" name="product_corners[]" class="form-control"
+                                                    placeholder="Corners" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="corners_price">Corners Price</label>
+                                                <input type="text" name="corners_price[]" class="form-control"
+                                                    placeholder="Corners Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'corners')->isEmpty())
+                                <div class="row corners">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_corners">Corners</label>
+                                            <input type="text" name="product_corners[]" class="form-control"
+                                                placeholder="Corners">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="corners_price">Corners Price</label>
+                                            <input type="text" name="corners_price[]" class="form-control"
+                                                placeholder="Corners Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addCornersBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Application Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productApplicationCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Application Option</h2>
+                        <div id="applicationFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'application')
+                                    <div class="row application">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_application">Application</label>
+                                                <input type="text" name="product_application[]"
+                                                    class="form-control" placeholder="Application"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="application_price">Application Price</label>
+                                                <input type="text" name="application_price[]" class="form-control"
+                                                    placeholder="Application Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'application')->isEmpty())
+                                <div class="row application">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_application">Application</label>
+                                            <input type="text" name="product_application[]" class="form-control"
+                                                placeholder="Application">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="application_price">Application Price</label>
+                                            <input type="text" name="application_price[]" class="form-control"
+                                                placeholder="Application Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addApplicationBtn" class="btn btn-success">Add
+                            More</button>
+                    </div>
+                </div>
+
+                <!-- Product Paper Thickness Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productPaperThicknessCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Paper Thickness Option</h2>
+                        <div id="paperthicknessFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'paperthickness')
+                                    <div class="row paperthickness">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_paperthickness">Paper Thickness</label>
+                                                <input type="text" name="product_paperthickness[]"
+                                                    class="form-control" placeholder="PaperThickness"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="paperthickness_price">Paper Thickness Price</label>
+                                                <input type="text" name="paperthickness_price[]"
+                                                    class="form-control" placeholder="Paper Thickness Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'paperthickness')->isEmpty())
+                                <div class="row paperthickness">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_paperthickness">Paper Thickness</label>
+                                            <input type="text" name="product_paperthickness[]" class="form-control"
+                                                placeholder="PaperThickness">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="paperthickness_price">Paper Thickness Price</label>
+                                            <input type="text" name="paperthickness_price[]" class="form-control"
+                                                placeholder="Paper Thickness Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addPaperThicknessBtn" class="btn btn-success">Add
+                            More</button>
+                    </div>
+                </div>
+                <!-- Product QTY Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productQtyCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Qty Option</h2>
+                        <div id="qtyFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'qty')
+                                    <div class="row qty">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_qty">Qty</label>
+                                                <input type="text" name="product_qty[]" class="form-control"
+                                                    placeholder="Qty" value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="qty_price">Qty Price</label>
+                                                <input type="text" name="qty_price[]" class="form-control"
+                                                    placeholder="Qty Price" value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'qty')->isEmpty())
+                                <div class="row qty">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_qty">Qty</label>
+                                            <input type="text" name="product_qty[]" class="form-control"
+                                                placeholder="Qty">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="qty_price">Qty Price</label>
+                                            <input type="text" name="qty_price[]" class="form-control"
+                                                placeholder="Qty Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addqtyBtn" class="btn btn-success">Add More</button>
+                    </div>
+                </div>
+
+                <!-- Product Pages in Book Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productPagesinBookCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Pages in Book Option</h2>
+                        <div id="pagesinbookFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'pagesinbook')
+                                    <div class="row pagesinbook">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_pagesinbook">Pages in Book</label>
+                                                <input type="text" name="product_pagesinbook[]"
+                                                    class="form-control" placeholder="Pages in Book"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="pagesinbook_price">Pages in Book Price</label>
+                                                <input type="text" name="pagesinbook_price[]" class="form-control"
+                                                    placeholder="Pages in Book Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'pagesinbook')->isEmpty())
+                                <div class="row pagesinbook">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_pagesinbook">Pages in Book</label>
+                                            <input type="text" name="product_pagesinbook[]" class="form-control"
+                                                placeholder="Pages in Book">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="pagesinbook_price">Pages in Book Price</label>
+                                            <input type="text" name="pagesinbook_price[]" class="form-control"
+                                                placeholder="Pages in Book Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addPagesinBookBtn" class="btn btn-success">Add
+                            More</button>
+                    </div>
+                </div>
+                <!-- Product productCopiesRequiredCard Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productCopiesRequiredCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Copies Required Option</h2>
+                        <div id="copiesrequiredFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'copiesrequired')
+                                    <div class="row copiesrequired">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_copiesrequired">Copies Required</label>
+                                                <input type="text" name="product_copiesrequired[]"
+                                                    class="form-control" placeholder="Copies"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="copiesrequired_price">Copies Required Price</label>
+                                                <input type="text" name="copiesrequired_price[]"
+                                                    class="form-control" placeholder="Copies Required Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'copiesrequired')->isEmpty())
+                                <div class="row copiesrequired">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_copiesrequired">Copies Required</label>
+                                            <input type="text" name="product_copiesrequired[]" class="form-control"
+                                                placeholder="Copies">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="copiesrequired_price">Copies Required Price</label>
+                                            <input type="text" name="copiesrequired_price[]" class="form-control"
+                                                placeholder="Copies Required Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addCopiesRequiredBtn" class="btn btn-success">Add
+                            More</button>
+                    </div>
+                </div>
+
+                <!-- Product Pages in Notepad Option Card (Initially Hidden) -->
+                <div class="card mb-3" id="productPagesinNotepadCard" style="display: none;">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product Pages in Notepad Option</h2>
+                        <div id="pagesinnotepadFieldsContainer">
+                            @foreach ($product->product_attribute as $attribute)
+                                @if ($attribute->attribute_type == 'pagesinnotepad')
+                                    <div class="row pagesinnotepad">
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="product_pagesinnotepad">Thickness</label>
+                                                <input type="text" name="product_pagesinnotepad[]"
+                                                    class="form-control" placeholder="Pages in Notepad"
+                                                    value="{{ $attribute->attribute_value }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="mb-3">
+                                                <label for="pagesinnotepad_price">Pages in Notepad Price</label>
+                                                <input type="text" name="pagesinnotepad_price[]"
+                                                    class="form-control" placeholder="Pages in Notepad Price"
+                                                    value="{{ $attribute->attribute_price }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @if ($product->product_attribute->where('attribute_type', 'pagesinnotepad')->isEmpty())
+                                <div class="row pagesinnotepad">
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="product_pagesinnotepad">Thickness</label>
+                                            <input type="text" name="product_pagesinnotepad[]" class="form-control"
+                                                placeholder="Pages in Notepad">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label for="pagesinnotepad_price">Pages in Notepad Price</label>
+                                            <input type="text" name="pagesinnotepad_price[]" class="form-control"
+                                                placeholder="Pages in Notepad Price">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" id="addPagesinNotepadBtn" class="btn btn-success">Add
+                            More</button>
+                    </div>
+                </div>
+
+                <!-- Product Cutting Option Card (Initially Hidden) -->
+                @php
+                    $trimToSizeOptions = $cutting_options->where('cutting_type', 'trimtosize')->values();
+                    $customShapeOptions = $cutting_options->where('cutting_type', 'customesize')->values();
+                @endphp
+
+                <div class="card shadow-sm border-0 mb-4" id="productcuttingCard" style="display: none;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-cut me-2"></i> Cutting Options</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row gy-4">
+                            <!-- Trim to Size Section -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="trimtosizeption"
+                                        name="cuttingOption[]" value="trimtosize"
+                                        {{ $trimToSizeOptions->isNotEmpty() ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-bold" for="trimtosizeption">
+                                        <i class="fas fa-ruler-combined me-1"></i> Trim to Size
+                                    </label>
+                                </div>
+remove-customeshape
+                                <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border"
+                                    style="{{ $trimToSizeOptions->isNotEmpty() ? '' : 'display: none;' }}">
+                                    @foreach ($trimToSizeOptions as $index => $option)
                                         <div class="row trimtosize-price-fields g-2 align-items-end mb-2">
                                             <div class="col-md-4">
                                                 <label class="form-label">Min Qty</label>
-                                                <input type="number" name="cutting[trimtosize][{{ $index }}][min_qty]" value="{{ $option->min_qty }}" class="form-control" step="0.01" min="0">
+                                                <input type="number"
+                                                    name="cutting[trimtosize][{{ $index }}][min_qty]"
+                                                    value="{{ $option->min_qty }}" class="form-control"
+                                                    step="0.01" min="0">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Max Qty</label>
-                                                <input type="number" name="cutting[trimtosize][{{ $index }}][max_qty]" value="{{ $option->max_qty }}" class="form-control" step="0.01" min="0">
+                                                <input type="number"
+                                                    name="cutting[trimtosize][{{ $index }}][max_qty]"
+                                                    value="{{ $option->max_qty }}" class="form-control"
+                                                    step="0.01" min="0">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Price</label>
-                                                <input type="number" name="cutting[trimtosize][{{ $index }}][price]" value="{{ $option->price }}" class="form-control" step="0.01" min="0">
+                                                <input type="number"
+                                                    name="cutting[trimtosize][{{ $index }}][price]"
+                                                    value="{{ $option->price }}" class="form-control" step="0.01"
+                                                    min="0">
                                             </div>
                                             <div class="col-12 text-end mt-2">
-                                                <button type="button" class="btn btn-outline-danger btn-sm remove-trimtosize" style="{{ $index === 0 ? 'display: none;' : '' }}">
+                                                <button type="button"
+                                                    class="btn btn-outline-danger btn-sm remove-trimtosize"
+                                                    style="{{ $index === 0 ? 'display: none;' : '' }}">
                                                     <i class="fas fa-minus-circle"></i> Remove
                                                 </button>
-                                            </div>
-                                        </div>
-                                        @endforeach
-
-                                        <div class="mt-3 text-end">
-                                            <button type="button" class="btn btn-outline-primary addTrimToSizeBtn btn-sm">
-                                                <i class="fas fa-plus-circle"></i> Add More
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Custom Shape Section -->
-                                <div class="col-md-6">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="customeshapeOption" name="cuttingOption[]" value="customesize" {{ $customShapeOptions->isNotEmpty() ? 'checked' : '' }}>
-                                        <label class="form-check-label fw-bold" for="customeshapeOption">
-                                            <i class="fas fa-shapes me-1"></i> Custom Shape
-                                        </label>
-                                    </div>
-
-                                    <div id="customeshapeFieldsContainer" class="bg-light p-3 rounded border" style="{{ $customShapeOptions->isNotEmpty() ? '' : 'display: none;' }}">
-                                        @foreach ($customShapeOptions as $index => $option)
-                                        <div class="row customeshape-price-fields g-2 align-items-end mb-2">
-                                            <div class="col-md-4">
-                                                <label class="form-label">Min Qty</label>
-                                                <input type="number" name="cutting[customesize][{{ $index }}][min_qty]" value="{{ $option->min_qty }}" class="form-control" step="0.01" min="0">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Max Qty</label>
-                                                <input type="number" name="cutting[customesize][{{ $index }}][max_qty]" value="{{ $option->max_qty }}" class="form-control" step="0.01" min="0">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">Price</label>
-                                                <input type="number" name="cutting[customesize][{{ $index }}][price]" value="{{ $option->price }}" class="form-control" step="0.01" min="0">
-                                            </div>
-                                            <div class="col-12 text-end mt-2">
-                                                <button type="button" class="btn btn-outline-danger btn-sm remove-customeshape" style="{{ $index === 0 ? 'display: none;' : '' }}">
-                                                    <i class="fas fa-minus-circle"></i> Remove
-                                                </button>
-                                            </div>
-                                        </div>
-                                        @endforeach
-
-                                        <div class="mt-3 text-end">
-                                            <button type="button" class="btn btn-outline-primary btn-sm add-more-custome">
-                                                <i class="fas fa-plus-circle"></i> Add More
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                        
-                        {{-- Product FAQ --}}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product FAQs</h2>
-                                <div id="faqsContainer">
-                                    @php
-                                        $questions = explode('~', $product->product_question);
-                                        $answers = explode('~', $product->product_answer);
-                                    @endphp
-                                    @foreach ($questions as $key => $question)
-                                        <div class="row faqsContainer">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="question">Question</label>
-                                                    <textarea name="product_question[]" placeholder="Question" class="summernote" rows="3">{{ old('product_question', $question) }}</textarea>
-                                                    <p></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="answer">Answer</label>
-                                                    <textarea name="product_answer[]" placeholder="Answer" class="summernote" rows="3">{{ old('product_answer', $answers[$key] ?? '') }}</textarea>
-                                                    <p></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 text-right">
-                                                <button type="button" class="btn btn-danger removeBtn"
-                                                    style="display:none;">Remove</button>
                                             </div>
                                         </div>
                                     @endforeach
-                                </div>
-                                <button type="button" id="addFaqsBtn" class="btn btn-success">Add More FAQs</button>
-                            </div>
-                        </div>
-                        {{-- Related Products --}}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Related Products</h2>
-                                <div class="mb-3">
-                                    <select multiple class="related_products w-100" name="related_products[]"
-                                        id="related_products">
-                                        @if (!empty($relatedProducts))
-                                            @foreach ($relatedProducts as $relatedProduct)
-                                                <option selected value="{{ $relatedProduct->id }}">
-                                                    {{ $relatedProduct->product_name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
 
+                                    <div class="mt-3 text-end">
+                                        <button type="button" class="btn btn-outline-primary addTrimToSizeBtn btn-sm">
+                                            <i class="fas fa-plus-circle"></i> Add More
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Custom Shape Section -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="customeshapeOption"
+                                        name="cuttingOption[]" value="customesize"
+                                        {{ $customShapeOptions->isNotEmpty() ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-bold" for="customeshapeOption">
+                                        <i class="fas fa-shapes me-1"></i> Custom Shape
+                                    </label>
+                                </div>
+
+                                <div id="customeshapeFieldsContainer" class="bg-light p-3 rounded border"
+                                    style="{{ $customShapeOptions->isNotEmpty() ? '' : 'display: none;' }}">
+                                    @foreach ($customShapeOptions as $index => $option)
+                                        <div class="row customeshape-price-fields g-2 align-items-end mb-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Min Qty</label>
+                                                <input type="number"
+                                                    name="cutting[customesize][{{ $index }}][min_qty]"
+                                                    value="{{ $option->min_qty }}" class="form-control"
+                                                    step="0.01" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Max Qty</label>
+                                                <input type="number"
+                                                    name="cutting[customesize][{{ $index }}][max_qty]"
+                                                    value="{{ $option->max_qty }}" class="form-control"
+                                                    step="0.01" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Price</label>
+                                                <input type="number"
+                                                    name="cutting[customesize][{{ $index }}][price]"
+                                                    value="{{ $option->price }}" class="form-control" step="0.01"
+                                                    min="0">
+                                            </div>
+                                            <div class="col-12 text-end mt-2">
+                                                <button type="button"
+                                                    class="btn btn-outline-danger btn-sm remove-customeshape"
+                                                    style="{{ $index === 0 ? 'display: none;' : '' }}">
+                                                    <i class="fas fa-minus-circle"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                    <div class="mt-3 text-end">
+                                        <button type="button" class="btn btn-outline-primary btn-sm add-more-custome">
+                                            <i class="fas fa-plus-circle"></i> Add More
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- Right Side Bar --}}
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Product status</h2>
-                                <div class="mb-3">
-                                    <select name="product_status" id="product_status" class="form-control">
-                                        <option {{ $product->product_status == 'inactive' ? 'selected' : '' }}
-                                            value="inactive">Block</option>
-                                        <option {{ $product->product_status == 'active' ? 'selected' : '' }}
-                                            value="active">Active</option>
-                                    </select>
+                </div>
+
+
+
+                {{-- Product FAQ --}}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Product FAQs</h2>
+                        <div id="faqsContainer">
+                            @php
+                                $questions = explode('~', $product->product_question);
+                                $answers = explode('~', $product->product_answer);
+                            @endphp
+                            @foreach ($questions as $key => $question)
+                                <div class="row faqsContainer">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="question">Question</label>
+                                            <textarea name="product_question[]" placeholder="Question" class="summernote" rows="3">{{ old('product_question', $question) }}</textarea>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="answer">Answer</label>
+                                            <textarea name="product_answer[]" placeholder="Answer" class="summernote" rows="3">{{ old('product_answer', $answers[$key] ?? '') }}</textarea>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-right">
+                                        <button type="button" class="btn btn-danger removeBtn"
+                                            style="display:none;">Remove</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
+                        <button type="button" id="addFaqsBtn" class="btn btn-success">Add More FAQs</button>
+                    </div>
+                </div>
+                {{-- Related Products --}}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3">Related Products</h2>
+                        <div class="mb-3">
+                            <select multiple class="related_products w-100" name="related_products[]"
+                                id="related_products">
+                                @if (!empty($relatedProducts))
+                                    @foreach ($relatedProducts as $relatedProduct)
+                                        <option selected value="{{ $relatedProduct->id }}">
+                                            {{ $relatedProduct->product_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
 
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h2 class="h4  mb-3">Product category</h2>
-                                <div class="mb-3">
-                                    <label for="category_id">Category Name</label>
-                                    <select name="category_id" id="category_id" class="form-control">
-                                        @if ($categories->isNotEmpty())
-                                            @foreach ($categories as $item)
-                                                <option {{ $product->category_id == $item->id ? 'selected' : '' }}
-                                                    value="{{ $item->id }}">{{ $item->cat_name }}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">No categories found</option>
-                                        @endif
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="subcategory_id">Sub Category Name</label>
-                                    <select name="subcategory_id" id="subcategory_id" class="form-control">
-                                        <option value="">Select Sub Category</option>
-                                        @if ($subcategories->isNotEmpty())
-                                            @foreach ($subcategories as $item)
-                                                <option {{ $product->subcategory_id == $item->id ? 'selected' : '' }}
-                                                    value="{{ $item->id }}">{{ $item->cat_sub_name }}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">No subcategories found</option>
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
                         </div>
+                    </div>
+                </div>
+        </div>
+        {{-- Right Side Bar --}}
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Product status</h2>
+                    <div class="mb-3">
+                        <select name="product_status" id="product_status" class="form-control">
+                            <option {{ $product->product_status == 'inactive' ? 'selected' : '' }} value="inactive">
+                                Block</option>
+                            <option {{ $product->product_status == 'active' ? 'selected' : '' }} value="active">Active
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
 
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Most Popular product</h2>
-                                <div class="mb-3">
-                                    <select name="product_feature" id="product_feature" class="form-control">
-                                        <option {{ $product->product_feature == '1' ? 'selected' : '' }} value="1">
-                                            Active</option>
-                                        <option {{ $product->product_feature == '0' ? 'selected' : '' }} value="0">
-                                            Block</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Custom Size Allow</h2>
-                                <div class="mb-3">
-                                    <select name="product_allows_custom_size" id="product_allows_custom_size"
-                                        class="form-control">
-                                        <option {{ $product->product_allows_custom_size == '1' ? 'selected' : '' }}
-                                            value="1">
-                                            Allow</option>
-                                        <option {{ $product->product_allows_custom_size == '0' ? 'selected' : '' }}
-                                            value="0">
-                                            Not Allow</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Upload Guidelines</h2>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="h4  mb-3">Product category</h2>
+                    <div class="mb-3">
+                        <label for="category_id">Category Name</label>
+                        <select name="category_id" id="category_id" class="form-control">
+                            @if ($categories->isNotEmpty())
+                                @foreach ($categories as $item)
+                                    <option {{ $product->category_id == $item->id ? 'selected' : '' }}
+                                        value="{{ $item->id }}">{{ $item->cat_name }}</option>
+                                @endforeach
+                            @else
+                                <option value="">No categories found</option>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subcategory_id">Sub Category Name</label>
+                        <select name="subcategory_id" id="subcategory_id" class="form-control">
+                            <option value="">Select Sub Category</option>
+                            @if ($subcategories->isNotEmpty())
+                                @foreach ($subcategories as $item)
+                                    <option {{ $product->subcategory_id == $item->id ? 'selected' : '' }}
+                                        value="{{ $item->id }}">{{ $item->cat_sub_name }}</option>
+                                @endforeach
+                            @else
+                                <option value="">No subcategories found</option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-                                <label for="guidlines">Upload PDF Guidelines</label>
-                                <div class="mb-3">
-                                    <input type="file" name="guidlines[]" id="guidlines" class="form-control"
-                                        accept="application/pdf">
 
-                                </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Most Popular product</h2>
+                    <div class="mb-3">
+                        <select name="product_feature" id="product_feature" class="form-control">
+                            <option {{ $product->product_feature == '1' ? 'selected' : '' }} value="1">
+                                Active</option>
+                            <option {{ $product->product_feature == '0' ? 'selected' : '' }} value="0">
+                                Block</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Custom Size Allow</h2>
+                    <div class="mb-3">
+                        <select name="product_allows_custom_size" id="product_allows_custom_size"
+                            class="form-control">
+                            <option {{ $product->product_allows_custom_size == '1' ? 'selected' : '' }} value="1">
+                                Allow</option>
+                            <option {{ $product->product_allows_custom_size == '0' ? 'selected' : '' }} value="0">
+                                Not Allow</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Upload Guidelines</h2>
 
-                                @if (!empty($product->guidlines))
-                                    @php
-                                        $guidlines = explode('|', $product->guidlines);
-                                    @endphp
+                    <label for="guidlines">Upload PDF Guidelines</label>
+                    <div class="mb-3">
+                        <input type="file" name="guidlines[]" id="guidlines" class="form-control"
+                            accept="application/pdf">
 
-                                    <div class="mt-3">
-                                        <h5>Existing Uploaded Guidelines:</h5>
-                                        @foreach ($guidlines as $value)
-                                            @if (!empty($value))
-                                                <div class="mb-2">
-                                                    <a href="{{ $value }}" target="_blank"
-                                                        class="text-primary">
-                                                        <i class="fa fa-file-pdf"></i> {{ $value }}
-                                                    </a>
-                                                </div>
-                                            @endif
-                                        @endforeach
+                    </div>
+
+                    @if (!empty($product->guidlines))
+                        @php
+                            $guidlines = explode('|', $product->guidlines);
+                        @endphp
+
+                        <div class="mt-3">
+                            <h5>Existing Uploaded Guidelines:</h5>
+                            @foreach ($guidlines as $value)
+                                @if (!empty($value))
+                                    <div class="mb-2">
+                                        <a href="{{ $value }}" target="_blank" class="text-primary">
+                                            <i class="fa fa-file-pdf"></i> {{ $value }}
+                                        </a>
                                     </div>
                                 @endif
-                            </div>
+                            @endforeach
                         </div>
-
-                    </div>
-                    {{-- Right Side Bar End --}}
+                    @endif
                 </div>
+            </div>
+
+        </div>
+        {{-- Right Side Bar End --}}
+        </div>
 
 
-                <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
-                </div>
-            </form>
+        <div class="pb-5 pt-3">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{{ route('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+        </div>
+        </form>
         </div>
         <!-- /.card -->
     </section>
@@ -1965,7 +1950,6 @@
             const addFixedFieldsBtn = document.getElementById('addFixedFieldsBtn');
             const toggleProductPriceBtn = document.getElementById('toggleProductPriceBtn');
             const productPriceCard = document.getElementById('productPriceCard');
-
             // Handle price option selection
             priceOptions.forEach(option => {
                 option.addEventListener('change', function() {
@@ -1983,10 +1967,15 @@
                 if (selectedOption === 'rollMedia') {
                     rollMediaContainer.classList.remove('hidden');
                     addRollMediaFieldsBtn.style.display = 'block';
-                } else if (selectedOption === 'fixed') {
+                }
+                if (selectedOption === 'fixed') {
                     fixedContainer.classList.remove('hidden');
                     addFixedFieldsBtn.style.display = 'block';
                 }
+                if (selectedOption === 'rigidMedia') {
+                    rigidMediaContainer.classList.remove('hidden');
+                }
+
             }
 
             // Function to disable other options when one is selected
@@ -2048,47 +2037,7 @@
                 return newFieldSet;
             }
 
-            function addRigidMediaFields(side) {
-                const container = document.getElementById(`${side}SideContainer`);
-                const fieldContainers = container.querySelectorAll('.price-fields-container');
-                const index = fieldContainers.length; // Use the existing field count as the index for new fields
-
-                // Create a new field set for the specified side
-                const newFieldSet = document.createElement('div');
-                newFieldSet.classList.add('price-fields-container', 'mt-3');
-                newFieldSet.innerHTML = `
-                    <h5>${side.charAt(0).toUpperCase() + side.slice(1)} Side</h5>
-                    <div class="row price-fields">
-                        <div class="col-md-4">
-                            <label>Minimum Qty</label>
-                            <input type="number" name="rigidMedia[${side}][${index}][min_range]" class="form-control" min="0" step="0.01" placeholder="min qty mm">
-                        </div>
-                        <div class="col-md-4">
-                            <label>Maximum Qty</label>
-                            <input type="number" name="rigidMedia[${side}][${index}][max_range]" class="form-control" min="0" step="0.01" placeholder="max qty mm">
-                        </div>
-                        <div class="col-md-4">
-                            <label>Price</label>
-                            <input type="number" name="rigidMedia[${side}][${index}][price]" class="form-control" min="0" step="0.01" placeholder="Price">
-                        </div>
-                        <div class="col-md-12 text-end mt-2">
-                            <button type="button" class="btn btn-danger remove-price-field"><i class="fas fa-minus"></i></button>
-                        </div>
-                    </div>
-                `;
-
-                // Insert the new field set before the add button container
-                const addButton = container.querySelector(`.add-more-price-field[data-side="${side}"]`);
-                container.insertBefore(newFieldSet, addButton.parentElement);
-
-                // Attach an event listener to the remove button
-                newFieldSet.querySelector('.remove-price-field').addEventListener('click', () => {
-                    newFieldSet.remove();
-                    updateRemoveButtons(container); // Update remove button visibility
-                });
-
-                updateRemoveButtons(container); // Refresh remove button visibility
-            }
+            
 
             function updateRemoveButtons(container) {
                 const priceFields = container.querySelectorAll('.price-fields-container');
@@ -2100,11 +2049,7 @@
                 });
             }
 
-            // Initialize add button event listeners for both single and double sides
-            document.querySelectorAll('.add-more-price-field').forEach(button => {
-                const side = button.getAttribute('data-side');
-                button.addEventListener('click', () => addRigidMediaFields(side));
-            });
+
 
             // Ensure remove buttons are correctly initialized on page load
             document.addEventListener('DOMContentLoaded', () => {
@@ -2180,6 +2125,84 @@
         });
     </script>
     {{-- Product Price END --}}
+
+    {{-- For Gidgit Media --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Bind Add More button
+    document.querySelectorAll('.add-more-price-field').forEach(button => {
+        const side = button.getAttribute('data-side');
+        button.addEventListener('click', () => addRigidMediaFields(side));
+    });
+
+    function addRigidMediaFields(side) {
+        const container = document.getElementById(`${side}SideContainer`);
+        const fieldsContainerId = `${side}PriceFieldsContainer`;
+
+        let targetContainer = container.querySelector(`#${fieldsContainerId}`);
+        
+        // If not exists, create one
+        if (!targetContainer) {
+            targetContainer = document.createElement('div');
+            targetContainer.id = fieldsContainerId;
+            container.appendChild(targetContainer);
+        }
+
+        // Count existing `.price-fields` to determine correct index
+        const existingFields = container.querySelectorAll('.price-fields');
+        const index = existingFields.length;
+
+        const newFieldSet = document.createElement('div');
+        newFieldSet.classList.add('row', 'price-fields', 'mt-3');
+        newFieldSet.innerHTML = `
+            <div class="col-md-4">
+                <input type="number" name="rigidMedia[${side}][${index}][min_range]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="rigidMedia[${side}][${index}][max_range]" class="form-control" placeholder="Max Qty" step="0.01" min="0">
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="rigidMedia[${side}][${index}][price]" class="form-control" placeholder="Price" step="0.01" min="0">
+            </div>
+            <div class="col-md-12 text-end mt-2">
+                <button type="button" class="btn btn-danger btn-sm remove-price-field">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        `;
+
+        // Append
+        targetContainer.appendChild(newFieldSet);
+
+        // Bind remove logic
+        newFieldSet.querySelector('.remove-price-field').addEventListener('click', () => {
+            newFieldSet.remove();
+            updateRemoveButtons(container);
+        });
+
+        updateRemoveButtons(container);
+    }
+
+    function updateRemoveButtons(container) {
+        const removeButtons = container.querySelectorAll('.remove-price-field');
+        removeButtons.forEach(btn => {
+            btn.style.display = (removeButtons.length > 1) ? 'inline-block' : 'none';
+        });
+    }
+
+    // Bind existing remove buttons
+    document.querySelectorAll('.remove-price-field').forEach(button => {
+        button.addEventListener('click', function () {
+            const fieldSet = button.closest('.price-fields');
+            if (fieldSet) {
+                fieldSet.remove();
+                updateRemoveButtons(button.closest(`#singleSideContainer, #doubleSideContainer`));
+            }
+        });
+    });
+});
+</script>
+
 
 
     {{-- product size  --}}
@@ -3872,27 +3895,27 @@
     </script>
     {{-- Product Pages in Notepad END --}}
 
-     {{-- Product cutting --}}
+    {{-- Product cutting --}}
     <script>
         $(document).ready(function() {
 
             // Show cutting card if any input has a value
-            if ($('#productcuttingCard input[type="number"]').filter(function () {
-                return $(this).val().trim() !== '';
-            }).length > 0) {
+            if ($('#productcuttingCard input[type="number"]').filter(function() {
+                    return $(this).val().trim() !== '';
+                }).length > 0) {
                 $('#toggleCuttingBtn').addClass('active').prop('disabled', false);
                 $('#productcuttingCard').show();
             }
 
             // Toggle cutting card visibility
-            $('#toggleCuttingBtn').click(function () {
+            $('#toggleCuttingBtn').click(function() {
                 $(this).toggleClass('active');
                 $('#productcuttingCard').slideToggle();
             });
 
             // Function to add new cutting input group
             function addCutting(buttonSelector, containerSelector, groupSelector, removeBtnSelector) {
-                $(document).on('click', buttonSelector, function () {
+                $(document).on('click', buttonSelector, function() {
                     const clone = $(groupSelector).first().clone().find('input').val('').end();
                     $(containerSelector).append(clone);
                     $(removeBtnSelector).show(); // show remove button on new item
@@ -3902,11 +3925,13 @@
             }
 
             // Initialize add buttons
-            addCutting('.addTrimToSizeBtn', '#trimToSizeFieldsContainer', '.trimtosize-price-fields', '.remove-trimtosize');
-            addCutting('.add-more-custome', '#customeshapeFieldsContainer', '.customeshape-price-fields', '.remove-customeshape');
+            addCutting('.addTrimToSizeBtn', '#trimToSizeFieldsContainer', '.trimtosize-price-fields',
+                '.remove-trimtosize');
+            addCutting('.add-more-custome', '#customeshapeFieldsContainer', '.customeshape-price-fields',
+                '.remove-customeshape');
 
             // Remove cutting input group
-            $(document).on('click', '.remove-trimtosize, .remove-customeshape', function () {
+            $(document).on('click', '.remove-trimtosize, .remove-customeshape', function() {
                 $(this).closest('.row').remove();
             });
 
@@ -3971,7 +3996,7 @@
         });
     </script>
     {{-- Product cutting END --}}
-   
+
 
     <script>
         $(document).ready(function() {
@@ -4426,6 +4451,59 @@
             updateRemoveButtons();
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceOptionRadioButtons = document.querySelectorAll('input[name="priceOption"]');
+            const rigidMediaContainer = document.getElementById('rigidMediaContainer');
+
+            function toggleRigidMediaVisibility() {
+                const selectedOption = document.querySelector('input[name="priceOption"]:checked')?.value;
+                if (selectedOption === 'rigidMedia') {
+                    rigidMediaContainer.classList.remove('d-none');
+                } else {
+                    rigidMediaContainer.classList.add('d-none');
+                }
+            }
+
+            priceOptionRadioButtons.forEach(button => {
+                button.addEventListener('change', toggleRigidMediaVisibility);
+            });
+
+            toggleRigidMediaVisibility();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const singleCheckbox = document.getElementById('singleOption0');
+            const singleContainer = document.getElementById('singleSideContainer');
+
+            const doubleCheckbox = document.getElementById('doubleOption0');
+            const doubleContainer = document.getElementById('doubleSideContainer');
+
+            // Function to toggle container based on checkbox
+            function toggleContainer(checkbox, container) {
+                if (checkbox.checked) {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+
+                    // Optionally clear inputs
+                    container.querySelectorAll('input[type="number"]').forEach(input => {
+                        input.value = '';
+                    });
+                }
+            }
+
+            // Add event listeners
+            singleCheckbox.addEventListener('change', () => toggleContainer(singleCheckbox, singleContainer));
+            doubleCheckbox.addEventListener('change', () => toggleContainer(doubleCheckbox, doubleContainer));
+
+            // Initial toggle on page load
+            toggleContainer(singleCheckbox, singleContainer);
+            toggleContainer(doubleCheckbox, doubleContainer);
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -4521,94 +4599,34 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const priceOptionRadioButtons = document.querySelectorAll('input[name="priceOption"]');
-            const rigidMediaContainer = document.getElementById('rigidMediaContainer');
 
-            // Function to toggle visibility of rigid media based on selected radio button
-            function toggleRigidMediaVisibility() {
-                // Get the selected price option
-                const selectedOption = document.querySelector('input[name="priceOption"]:checked')?.value;
-
-                // Show or hide the rigid media container
-                if (selectedOption === 'rigidMedia') {
-                    rigidMediaContainer.style.display = 'block'; // Show
-                } else {
-                    rigidMediaContainer.style.display = 'none'; // Hide
-                }
-            }
-
-            // Add event listeners to all radio buttons
-            priceOptionRadioButtons.forEach(button => {
-                button.addEventListener('change', toggleRigidMediaVisibility);
-            });
-
-            // Initial check to set visibility on page load
-            toggleRigidMediaVisibility();
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle Single Side Checkbox
-            const singleCheckbox = document.getElementById('singleOption0');
-            const singleContainer = document.getElementById('singleSideContainer');
-            singleCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    singleContainer.style.display = 'block';
-                } else {
-                    singleContainer.style.display = 'none';
-                    // Clear all inputs inside the single side container
-                    Array.from(singleContainer.querySelectorAll('input')).forEach(input => {
-                        input.value = '';
-                    });
-                }
-            });
-
-            // Handle Double Side Checkbox
-            const doubleCheckbox = document.getElementById('doubleOption0');
-            const doubleContainer = document.getElementById('doubleSideContainer');
-            doubleCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    doubleContainer.style.display = 'block';
-                } else {
-                    doubleContainer.style.display = 'none';
-                    // Clear all inputs inside the double side container
-                    Array.from(doubleContainer.querySelectorAll('input')).forEach(input => {
-                        input.value = '';
-                    });
-                }
-            });
-        });
-    </script>
     {{-- For Cutting --}}
     <script>
-    $(document).ready(function () {
-        let trimIndex = 1;
-        let customIndex = 1;
+        $(document).ready(function() {
+            let trimIndex = 1;
+            let customIndex = 1;
 
-        // Toggle Trim to Size container
-        $('#trimtosizeption').on('change', function () {
-            if ($(this).is(':checked')) {
-                $('#trimToSizeFieldsContainer').slideDown();
-            } else {
-                $('#trimToSizeFieldsContainer').slideUp();
-            }
-        });
+            // Toggle Trim to Size container
+            $('#trimtosizeption').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#trimToSizeFieldsContainer').slideDown();
+                } else {
+                    $('#trimToSizeFieldsContainer').slideUp();
+                }
+            });
 
-        // Toggle Custom Shape container
-        $('#customeshapeOption').on('change', function () {
-            if ($(this).is(':checked')) {
-                $('#customeshapeFieldsContainer').slideDown();
-            } else {
-                $('#customeshapeFieldsContainer').slideUp();
-            }
-        });
+            // Toggle Custom Shape container
+            $('#customeshapeOption').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#customeshapeFieldsContainer').slideDown();
+                } else {
+                    $('#customeshapeFieldsContainer').slideUp();
+                }
+            });
 
-        // Add new row for Trim to Size
-        $('.addTrimToSizeBtn').on('click', function () {
-            let newRow = `
+            // Add new row for Trim to Size
+            $('.addTrimToSizeBtn').on('click', function() {
+                let newRow = `
                 <div class="row trimtosize-price-fields mt-2">
                     <div class="col-md-4">
                         <input type="number" name="cutting[trimtosize][${trimIndex}][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
@@ -4624,13 +4642,13 @@
                     </div>
                 </div>
             `;
-            $('#trimToSizeFieldsContainer').append(newRow);
-            trimIndex++;
-        });
+                $('#trimToSizeFieldsContainer').append(newRow);
+                trimIndex++;
+            });
 
-        // Add new row for Custom Shape
-        $('.add-more-custome').on('click', function () {
-            let newRow = `
+            // Add new row for Custom Shape
+            $('.add-more-custome').on('click', function() {
+                let newRow = `
                 <div class="row customeshape-price-fields mt-2">
                     <div class="col-md-4">
                         <input type="number" name="cutting[customesize][${customIndex}][min_qty]" class="form-control" placeholder="Min Qty" step="0.01" min="0">
@@ -4646,20 +4664,19 @@
                     </div>
                 </div>
             `;
-            $('#customeshapeFieldsContainer').append(newRow);
-            customIndex++;
-        });
+                $('#customeshapeFieldsContainer').append(newRow);
+                customIndex++;
+            });
 
-        // Remove row for Trim to Size
-        $(document).on('click', '.remove-trimtosize', function () {
-            $(this).closest('.trimtosize-price-fields').remove();
-        });
+            // Remove row for Trim to Size
+            $(document).on('click', '.remove-trimtosize', function() {
+                $(this).closest('.trimtosize-price-fields').remove();
+            });
 
-        // Remove row for Custom Shape
-        $(document).on('click', '.remove-customeshape', function () {
-            $(this).closest('.customeshape-price-fields').remove();
+            // Remove row for Custom Shape
+            $(document).on('click', '.remove-customeshape', function() {
+                $(this).closest('.customeshape-price-fields').remove();
+            });
         });
-    });
-</script>
-
+    </script>
 @endsection
