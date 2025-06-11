@@ -263,6 +263,20 @@ table.quote-results td {
                             <td colspan="2"><strong>Item Price:</strong></td>
                             <td><strong class="item-price">${{ number_format($item->price,2) }}</strong></td>
                         </tr>
+                         <tr>
+                             @php
+                             $Item_price_without_tax= ($item->price) *  ($item->qty);
+                                $gst_indivisual = $Item_price_without_tax  * 0.1;
+                                $Subtotal_product_wise = $Item_price_without_tax + $gst_indivisual;
+                            @endphp
+                            <td colspan="2"><strong>GST:</strong></td>
+                            <td><strong class="item-price">${{ number_format($gst_indivisual,2) }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Total:</strong></td>
+                           <td><strong class="item-price">${{ number_format($Subtotal_product_wise, 2) }}</strong></td>
+
+                        </tr>
                     </table>
                 </td>
             </tr>

@@ -941,7 +941,7 @@
                             $pagesinbooks = []; // 15
                             $copiesrequireds = []; // 16
                             $pagesinnotepads = []; // 17
-                            $cuttings = []; // 18
+
                             
                             // Loop through all attributes and sort them into the correct arrays
                             foreach ($product->product_attribute as $attribute) {
@@ -994,9 +994,7 @@
                                     case 'pagesinnotepad':
                                         $pagesinnotepads[] = $attribute->attribute_value;
                                         break;
-                                    case 'cutting':
-                                        $cuttings[] = $attribute->attribute_value;
-                                        break;
+                                    
                                 }
                             }
                             ?>
@@ -1118,10 +1116,10 @@
                                         </div>
 
                                         <!-- Product Specifications Section -->
-                                        @if (!empty($colors) || !empty($printSides) || !empty($finishings) || !empty($thickness))
                                         <div class="form-section">
                                             <h4 class="form-section-title">Product Specifications</h4>
                                             <div class="row">
+                                            @if (!empty($colors) || !empty($printSides) || !empty($finishings) || !empty($thickness))
                                                 @if (
                                                     !empty($product->rigidMedia) &&
                                                         collect($product->rigidMedia)->contains(function ($media) {
@@ -1216,21 +1214,25 @@
                                                     </div>
                                                 @endif
 
-                                                @if (!empty($cuttings))
-                                                    <div class="form-group col-md-6">
-                                                        <label for="product_cuttingDropdown">Cutting</label>
-                                                        <select class="form-control" id="product_cuttingDropdown" name="product_cutting" required>
-                                                            <option value="">Select Cutting</option>
-                                                            @foreach ($cuttings as $value)
-                                                                <option value="{{ $value }}">{{ $value }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <p id="product_cuttingError" style="color: red; display: none;">Please select Cutting.</p>
-                                                    </div>
-                                                @endif
+                                               
+                                            @endif
+                                            {{-- For Cutting Section --}} 
+                                            @if ($product->price_option=='rigidMedia' || $product->price_option=='rollMedia')
+                                                <div class="form-group col-md-6">
+                                                    <label for="cutting_type">Cutting Type</label>
+                                                    <select class="form-control" id="cutting_type" name="cutting_type" required>
+                                                        <option value="trimtosize" selected>Trim to Size</option>
+                                                        <option value="customesize">Custom Shape</option>
+                                                    </select>
+                                                    <p id="colorsError" style="color: red; display: none;">Please select a Base Color.</p>
+                                                </div>
+                                            @endif
                                             </div>
                                         </div>
-                                        @endif
+
+                                        {{-- If Roll Media And RedgitMedia TypeProduct --}}
+                                        {{-- {{dd($product->price_option)}} --}}
+                                      
 
                                         <!-- Additional Options Section -->
                                         @if (!empty($materials) || !empty($corners) || !empty($applications) || !empty($wirestakesqtys) || !empty($framesizes) || !empty($displaytypes) || !empty($installations))
