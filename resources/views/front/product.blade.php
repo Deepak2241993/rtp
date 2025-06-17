@@ -1116,22 +1116,21 @@
                                         </div>
 
                                         <!-- Product Specifications Section -->
+                                        {{-- {{dd($product->rigidMedia);}} --}}
                                         <div class="form-section">
                                             <h4 class="form-section-title">Product Specifications</h4>
                                             <div class="row">
                                             @if (!empty($colors) || !empty($printSides) || !empty($finishings) || !empty($thickness))
-                                                @if (
-                                                    !empty($product->rigidMedia) &&
-                                                        collect($product->rigidMedia)->contains(function ($media) {
-                                                            return in_array($media['media_type'], ['single side', 'double side']);
-                                                        }))
+                                               @if ($product->rigidMedia->contains(function ($media) {
+                                                    return in_array(strtolower($media->media_type), ['single', 'double']);
+                                                }))
                                                     <div class="form-group col-md-6">
                                                         <label for="printSidesDropdown">Print Sides</label>
                                                         <select class="form-control" id="printSidesDropdown" name="printSides" required>
                                                             @foreach (collect($product->rigidMedia)->unique('media_type') as $media)
-                                                                @if (!empty($media['media_type']) && in_array($media['media_type'], ['single side', 'double side']))
+                                                                @if (!empty($media['media_type']) && in_array($media['media_type'], ['single', 'double']))
                                                                     <option value="{{ $media['media_type'] }}"
-                                                                        @if ($media['media_type'] === 'single side') selected @endif>
+                                                                        @if ($media['media_type'] === 'single') selected @endif>
                                                                         {{ ucfirst($media['media_type']) }}
                                                                     </option>
                                                                 @endif
@@ -1141,27 +1140,6 @@
                                                     </div>
                                                 @endif
                                                 
-                                                {{-- @if (!empty($product->cuttingoption) &&
-                                                    collect($product->cuttingoption)->contains(function ($option) {
-                                                        return in_array($option->cutting_type, ['trimtosize', 'customesize']);
-                                                    }))
-                                                    <div class="form-group col-md-6">
-                                                        <label for="printSidesDropdown">Cutting Option</label>
-                                                        <select class="form-control" id="printSidesDropdown" name="printSides" required>
-                                                            @foreach (collect($product->cuttingoption)->unique('cutting_type') as $option)
-                                                                @php $type = $option->cutting_type ?? ''; @endphp
-                                                                @if (in_array($type, ['trimtosize', 'customesize']))
-                                                                    <option value="{{ $type }}" {{ $type === 'trimtosize' ? 'selected' : '' }}>
-                                                                        {{ $type === 'trimtosize' ? 'Trim to Size' : 'Custom Shape' }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                        <p id="media_typeError" style="color: red; display: none;">Please select a Cutting Option.</p>
-                                                    </div>
-                                                @endif --}}
-
-
 
                                                 @if (!empty($colors))
                                                     <div class="form-group col-md-6">
@@ -1879,9 +1857,8 @@
             pagesinbooks: $("#pagesinbooksDropdown").val(),
             copiesrequireds: $("#copiesrequiredsDropdown").val(),
             pagesinnotepads: $("#pagesinnotepadsDropdown").val(),
-            product_cutting: $("#product_cuttingDropdown").val()
+            product_cutting: $("#cutting_type").val()
         };
-
         // Validate required fields
         let hasErrors = false;
         let errorMessage = '';
@@ -1953,7 +1930,7 @@ function displayPriceBreakdown(data) {
     const printing = $('#printSidesDropdown').val();
     const material = $('#materialsDropdown').val();
     const finishing = $('#finishingsDropdown').val();
-    const cutting = $('#product_cuttingDropdown').val();
+    const cutting = $('#cutting_type').val();
     const color = $('#colorsDropdown').val();
     const wireStakes = $('#wirestakesqtysDropdown').val();
     const frameSize = $('#framesizesDropdown').val();
