@@ -1652,7 +1652,6 @@
                                         <i class="fas fa-ruler-combined me-1"></i> Trim to Size
                                     </label>
                                 </div>
-remove-customeshape
                                 <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border"
                                     style="{{ $trimToSizeOptions->isNotEmpty() ? '' : 'display: none;' }}">
                                     @foreach ($trimToSizeOptions as $index => $option)
