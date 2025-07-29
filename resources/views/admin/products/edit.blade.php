@@ -1652,6 +1652,7 @@
                                         <i class="fas fa-ruler-combined me-1"></i> Trim to Size
                                     </label>
                                 </div>
+
                                 <div id="trimToSizeFieldsContainer" class="bg-light p-3 rounded border"
                                     style="{{ $trimToSizeOptions->isNotEmpty() ? '' : 'display: none;' }}">
                                     @foreach ($trimToSizeOptions as $index => $option)
@@ -3922,12 +3923,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('#productcuttingCard').slideDown();
                 });
             }
-
-            // Initialize add buttons
-            addCutting('.addTrimToSizeBtn', '#trimToSizeFieldsContainer', '.trimtosize-price-fields',
-                '.remove-trimtosize');
-            addCutting('.add-more-custome', '#customeshapeFieldsContainer', '.customeshape-price-fields',
-                '.remove-customeshape');
 
             // Remove cutting input group
             $(document).on('click', '.remove-trimtosize, .remove-customeshape', function() {
