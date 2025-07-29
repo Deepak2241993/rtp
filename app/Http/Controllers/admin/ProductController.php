@@ -406,45 +406,45 @@ public function store(Request $request)
 
         // For Cuttion Option Prices
     protected function createCuttingOptionPrices(Request $request, Product $product)
-{
-    if (!$product || !$product->id) {
-        throw new \Exception('Product not found.');
-    }
+    {
+        if (!$product || !$product->id) {
+            throw new \Exception('Product not found.');
+        }
 
-    $cuttingOptions = $request->input('cuttingOption', []); // e.g., ['Trim to Size', 'Custom Shape']
-    $cutting = $request->input('cutting', []); // e.g., ['trimtosize' => [...], 'customesize' => [...]]
+        $cuttingOptions = $request->input('cuttingOption', []); // e.g., ['Trim to Size', 'Custom Shape']
+        $cutting = $request->input('cutting', []); // e.g., ['trimtosize' => [...], 'customesize' => [...]]
 
-    foreach ($cuttingOptions as $option) {
-        // Normalize the key to match input array key (e.g., 'Trim to Size' -> 'trimtosize')
-        // $normalizedKey = strtolower(str_replace(' ', '', $option));
-        $entries = $cutting[$option] ?? [];
+        foreach ($cuttingOptions as $option) {
+            // Normalize the key to match input array key (e.g., 'Trim to Size' -> 'trimtosize')
+            // $normalizedKey = strtolower(str_replace(' ', '', $option));
+            $entries = $cutting[$option] ?? [];
 
-        foreach ($entries as $entry) {
-            if (
-                isset($entry['min_qty'], $entry['max_qty'], $entry['price']) &&
-                is_numeric($entry['min_qty']) &&
-                is_numeric($entry['max_qty']) &&
-                is_numeric($entry['price'])
-            ) {
-                CuttingOption::create([
-                    'product_id'   => $product->id,
-                    'cutting_type' => $option,
-                    'min_qty'      => $entry['min_qty'],
-                    'max_qty'      => $entry['max_qty'],
-                    'price'        => $entry['price'],
-                ]);
-            } else {
-                \Log::warning("Invalid cutting entry skipped for type: $option", ['entry' => $entry]);
+            foreach ($entries as $entry) {
+                if (
+                    isset($entry['min_qty'], $entry['max_qty'], $entry['price']) &&
+                    is_numeric($entry['min_qty']) &&
+                    is_numeric($entry['max_qty']) &&
+                    is_numeric($entry['price'])
+                ) {
+                    CuttingOption::create([
+                        'product_id'   => $product->id,
+                        'cutting_type' => $option,
+                        'min_qty'      => $entry['min_qty'],
+                        'max_qty'      => $entry['max_qty'],
+                        'price'        => $entry['price'],
+                    ]);
+                } else {
+                    \Log::warning("Invalid cutting entry skipped for type: $option", ['entry' => $entry]);
+                }
             }
         }
+
+        return true;
     }
 
-    return true;
-}
 
 
-
-    public function createRigidMediaPrices(Request $request, Product $product)
+    public function updateRigidMediaPrices(Request $request, Product $product)
     {
         if (!$product) {
             return response()->json(['message' => 'Product not found.'], 404);
@@ -480,6 +480,49 @@ public function store(Request $request)
 
         return response()->json(['message' => 'Rigid media prices created successfully.']);
     }
+
+    // Update for cutting option prices
+    public function updateCuttingOptionPrices(Request $request, Product $product)
+    {
+        if (!$product) {
+            return response()->json(['message' => 'Product not found.'], 404);
+        }
+
+        // ✅ Delete existing entries for this product
+        CuttingOption::where('product_id', $product->id)->delete();
+
+        $cuttingTypes = $request->input('cutting', []);
+
+        // ✅ Process "trimtosize"
+        if (!empty($cuttingTypes['trimtosize'])) {
+            foreach ($cuttingTypes['trimtosize'] as $media) {
+                CuttingOption::create([
+                    'cutting_type' => 'trimtosize',
+                    'min_qty' => $media['min_qty'],
+                    'max_qty' => $media['max_qty'],
+                    'price' => $media['price'],
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        // ✅ Process "customesize"
+        if (!empty($cuttingTypes['customesize'])) {
+            foreach ($cuttingTypes['customesize'] as $media) {
+                CuttingOption::create([
+                    'cutting_type' => 'customesize',
+                    'min_qty' => $media['min_qty'],
+                    'max_qty' => $media['max_qty'],
+                    'price' => $media['price'],
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Cutting options updated successfully.']);
+    }
+
+    // Cutting Option Prices End
 
     public function edit($productId, Request $request)
     {
@@ -626,7 +669,10 @@ public function store(Request $request)
             $this->createProductPriceDetail($request, $product);
             $this->createProductPriceRange($request, $product);
             $this->createFixedPrices($request, $product);
-            $this->createRigidMediaPrices($request, $product);
+            $this->updateRigidMediaPrices($request, $product);
+            $this->updateCuttingOptionPrices($request, $product);
+            
+ 
 
             $request->session()->flash('success', 'product Updated Successfully');
 
